@@ -27,3 +27,9 @@ jobs:
         run: sdkmanager --channel=3 'platforms;android-37.0' 'build-tools;36.0.0'
       - name: Build debug APK and run unit tests
         run: ./gradlew --no-daemon :app:assembleDebug :app:testDebugUnitTest
+      - name: Upload demo APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: driveassistant-demo-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
