@@ -24,6 +24,6 @@ jobs:
         with:
           packages: platform-tools
       - name: Install Android SDK packages
-        run: sdkmanager --channel=3 'platforms;android-37' 'build-tools;36.0.0'
+        run: sdkmanager --channel=3 'platforms;android-37.0' 'build-tools;36.0.0'
       - name: Build debug APK and run unit tests
         run: ./gradlew --no-daemon :app:assembleDebug :app:testDebugUnitTest
