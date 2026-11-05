@@ -1,18 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SDK_SITE="https://nexus-playground.pleos.ai/repository/raw-releases/connect-avd/2.x/crp-sys-img.xml"
 IMAGE_PACKAGE="system-images;android-34;pleos_car_emulator;x86_64"
-mkdir -p "$HOME/.android" pleos-evidence
-cat > "$HOME/.android/repositories.cfg" <<CONFIG
-count=1
-disp00=Pleos Connect System Image
-src00=$SDK_SITE
-enabled00=true
-CONFIG
+mkdir -p pleos-evidence
 sdkmanager --channel=3 'platforms;android-37.0' 'platforms;android-34' 'build-tools;36.0.0' emulator
 sdkmanager --list > pleos-evidence/sdk-packages.txt
-sdkmanager "$IMAGE_PACKAGE" < <(yes)
+python3 .github/scripts/install-pleos-image.py
 printf 'no\n' | avdmanager create avd --force --name pleos-ci --package "$IMAGE_PACKAGE"
 cat >> "$HOME/.android/avd/pleos-ci.avd/config.ini" <<'CONFIG'
 hw.ramSize=4096
