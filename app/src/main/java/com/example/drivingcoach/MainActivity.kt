@@ -1,5 +1,7 @@
 package com.example.drivingcoach
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -33,14 +35,42 @@ import androidx.compose.ui.unit.dp
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
 
 class MainActivity : ComponentActivity() {
+    private val automotive by lazy {
+        packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)
+    }
+    private var restrictionsMonitor: CarRestrictionsMonitor? = null
+    private var vehicleRestricted by mutableStateOf<Boolean?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DrivingCoachUITheme {
-                TrainingDemo()
+                if (automotive) {
+                    TrainingFlow(
+                        drivingRestricted = vehicleRestricted != false,
+                        restrictionKnown = vehicleRestricted != null
+                    )
+                } else {
+                    TrainingDemo()
+                }
             }
         }
+    }
+    override fun onStart() {
+        super.onStart()
+        if (automotive && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val monitor = CarRestrictionsMonitor(this) { vehicleRestricted = it }
+            restrictionsMonitor = monitor
+            monitor.start()
+        }
+    }
+
+    override fun onStop() {
+        restrictionsMonitor?.stop()
+        restrictionsMonitor = null
+        vehicleRestricted = null
+        super.onStop()
     }
 }
 
@@ -81,6 +111,7 @@ private fun TrainingDemo() {
 private fun TrainingFlow(
     initialScreen: TrainingScreen = TrainingScreen.Home,
     drivingRestricted: Boolean = false,
+    restrictionKnown: Boolean = true,
     demoControls: @Composable () -> Unit = {}
 ) {
     var screen by rememberSaveable { mutableStateOf(initialScreen) }
@@ -125,8 +156,9 @@ private fun TrainingFlow(
                     color = MaterialTheme.colorScheme.primary
                 )
                 if (content == null) {
-                    Text("주행 중 이용 제한", style = MaterialTheme.typography.headlineLarge)
-                    Text("주차 상태에서 이어서 이용할 수 있어요.")
+                    val title = if (restrictionKnown) "주행 중 이용 제한" else "차량 상태 확인 중"
+                    Text(title, style = MaterialTheme.typography.headlineLarge)
+                    Text("차량에서 이용 가능 상태가 확인되면 이어서 이용할 수 있어요.")
                 } else {
                     TrainingScreenContent(content) {
                         screen = when (screen) {
