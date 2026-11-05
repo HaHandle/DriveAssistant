@@ -66,9 +66,17 @@ class TrainingFlowTest {
 
     private fun saveScreenshot(name: String) {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val command = "mkdir -p /data/local/tmp/driveassistant-ui && " +
-            "screencap -p /data/local/tmp/driveassistant-ui/$name.png"
-        val output = instrumentation.uiAutomation.executeShellCommand(command)
-        ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() }
+        val automation = instrumentation.uiAutomation
+        val directory = "/data/local/tmp/driveassistant-ui"
+        val commands = listOf("mkdir -p $directory", "screencap -p $directory/$name.png")
+        for (command in commands) {
+            val output = automation.executeShellCommand(command)
+            ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() }
+        }
+        val output = automation.executeShellCommand("stat -c %s $directory/$name.png")
+        val size = ParcelFileDescriptor.AutoCloseInputStream(output).bufferedReader().use {
+            it.readText().trim().toLongOrNull()
+        }
+        check(size != null && size > 0) { "Screenshot was not saved" }
     }
 }
