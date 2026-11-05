@@ -10,17 +10,26 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -69,9 +78,7 @@ class MainActivity : ComponentActivity() {
                         interruptionVersion = interruptionVersion,
                         demoControls = {
                             if (vehicleRestricted == false && !speedPermissionGranted) {
-                                TextButton(onClick = { speedPermission.launch("android.car.permission.CAR_SPEED") }) {
-                                    Text("속도 데이터 권한 허용")
-                                }
+                                SecondaryAction("속도 데이터 권한 허용") { speedPermission.launch("android.car.permission.CAR_SPEED") }
                             }
                         }
                     )
@@ -123,8 +130,8 @@ private fun TrainingDemo() {
     TrainingFlow(
         drivingRestricted = drivingRestricted,
         demoControls = {
-            TextButton(onClick = { drivingRestricted = !drivingRestricted }) {
-                Text(if (drivingRestricted) "데모 · 주차 상태로 전환" else "데모 · 주행 제한 재현")
+            SecondaryAction(if (drivingRestricted) "데모 · 주차 상태로 전환" else "데모 · 주행 제한 재현") {
+                drivingRestricted = !drivingRestricted
             }
         }
     )
@@ -175,9 +182,9 @@ private fun TrainingFlow(
     val content = if (drivingRestricted) null else when (screen) {
         TrainingScreen.Home -> ScreenContent(
             title = "운전 연수",
-            description = if (demo) "데모 속도 데이터를 재생해 감속을 평가해요." else "속도 데이터가 수신되면 연수를 시작할 수 있어요.",
+            description = if (demo) "속도 시나리오로 감속 연수를 체험하세요." else "속도 연결을 확인한 뒤 시작하세요.",
             cardTitle = "기본 연수",
-            cardText = "주차 상태에서 시작한 뒤 주차 상태로 돌아와 결과를 확인해 주세요.",
+            cardText = "주차 상태에서 시작하고, 연수 후 다시 주차해 결과를 확인하세요.",
             action = "연수 시작"
         )
         TrainingScreen.Session -> ScreenContent(
@@ -203,41 +210,42 @@ private fun TrainingFlow(
     }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Box(
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
-            contentAlignment = Alignment.Center
-        ) {
+        BoxWithConstraints(Modifier.fillMaxSize().padding(innerPadding)) {
+            // Use the application window, not full display dimensions or a simulated system GNB.
+            val wide = maxWidth >= 840.dp
+            val inset = if (maxWidth >= 1000.dp) 40.dp else 24.dp
             Column(
-                modifier = Modifier
-                    .widthIn(max = 640.dp)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(inset),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 Text(
-                    text = if (demo) "DRIVE COACH · 데모" else "DRIVE COACH · 차량 연동",
+                    if (demo) "DRIVE COACH · 데모" else "DRIVE COACH · 차량 연동",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (content == null) {
-                    val title = if (restrictionKnown) "주행 중 이용 제한" else "차량 상태 확인 중"
-                    Text(title, style = MaterialTheme.typography.headlineLarge)
-                    Text("차량에서 이용 가능 상태가 확인되면 이어서 이용할 수 있어요.")
-                } else {
-                    if (demo && screen == TrainingScreen.Home) {
-                        TextButton(onClick = {
-                            scenario = if (scenario == DemoScenario.Smooth) DemoScenario.Abrupt else DemoScenario.Smooth
-                        }) {
-                            Text("시나리오 · " + scenario.label)
+                    // No score, speed, action or detailed feedback while restricted/unknown.
+                    Surface(shape = RoundedCornerShape(24.dp), modifier = Modifier.fillMaxWidth()) {
+                        Column(Modifier.padding(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                            Text(if (restrictionKnown) "주행 중 이용 제한" else "차량 상태 확인 중",
+                                style = MaterialTheme.typography.titleLarge)
+                            Text("이용 가능한 차량 상태가 확인되면 화면이 다시 열려요.",
+                                style = MaterialTheme.typography.bodySmall)
                         }
                     }
-                    TrainingScreenContent(
-                        content,
+                } else {
+                    TrainingScreenContent(content, wide,
                         actionEnabled = when (screen) {
                             TrainingScreen.Home -> demo || speedSample != null
                             TrainingScreen.Session -> !demo || replayFinished
                             TrainingScreen.Result -> true
+                        },
+                        options = {
+                            if (demo && screen == TrainingScreen.Home) {
+                                SecondaryAction("시나리오 · " + scenario.label) {
+                                    scenario = if (scenario == DemoScenario.Smooth) DemoScenario.Abrupt else DemoScenario.Smooth
+                                }
+                            }
                         }
                     ) {
                         when (screen) {
@@ -256,11 +264,13 @@ private fun TrainingFlow(
                         }
                     }
                     if (screen == TrainingScreen.Result) {
-                        Text("실험용 지표 · 감속 구간 중 3 m/s² 초과 구간의 시간 비율로 계산",
-                            style = MaterialTheme.typography.bodySmall)
+                        Text("실험용 지표 · 감속 중 3 m/s² 초과 시간 비율로 계산",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
-                demoControls()
+                // Demo-only simulation switch is absent from the actual vehicle app.
+                ProvideTextStyle(MaterialTheme.typography.labelLarge) { demoControls() }
             }
         }
     }
@@ -269,26 +279,81 @@ private fun TrainingFlow(
 @Composable
 private fun TrainingScreenContent(
     content: ScreenContent,
+    wide: Boolean,
     actionEnabled: Boolean = true,
+    options: @Composable () -> Unit = {},
     onAction: () -> Unit
 ) {
-    Text(content.title, style = MaterialTheme.typography.headlineLarge)
-    Text(content.description, style = MaterialTheme.typography.bodyLarge)
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(content.cardTitle, style = MaterialTheme.typography.titleMedium)
-            Text(content.cardText, style = MaterialTheme.typography.bodyMedium)
+    val heading: @Composable () -> Unit = {
+        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text(content.title, style = MaterialTheme.typography.titleLarge)
+            Text(content.description, style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+            options()
         }
     }
-    Button(
-        onClick = onAction,
-        enabled = actionEnabled,
-        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)
-    ) {
-        Text(content.action)
+    val detail: @Composable () -> Unit = {
+        Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+            Surface(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp),
+                color = MaterialTheme.colorScheme.surface,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) {
+                Column(Modifier.padding(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text(content.cardTitle, style = MaterialTheme.typography.titleSmall)
+                    content.cardText.split("\n").forEach { paragraph ->
+                        val sentences = paragraph.split(". ")
+                        sentences.forEachIndexed { index, sentence ->
+                            Text(sentence + if (index < sentences.lastIndex) "." else "",
+                                style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+            }
+            PrimaryAction(content.action, actionEnabled, onAction)
+        }
+    }
+    if (wide) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(40.dp),
+            verticalAlignment = Alignment.Top) {
+            Box(Modifier.weight(0.42f)) { heading() }
+            Box(Modifier.weight(0.58f)) { detail() }
+        }
+    } else {
+        heading()
+        detail()
+    }
+}
+
+@Composable
+private fun PrimaryAction(label: String, enabled: Boolean, onClick: () -> Unit) {
+    val interactions = remember { MutableInteractionSource() }
+    val pressed by interactions.collectIsPressedAsState()
+    val colors = MaterialTheme.colorScheme
+    // Basic600 enabled / Basic700 light pressed / Basic500 dark pressed.
+    val isDark = colors.background == com.example.drivingcoach.ui.theme.Basic50Dark
+    val pressedColor = if (isDark) com.example.drivingcoach.ui.theme.Basic500Dark
+        else androidx.compose.ui.graphics.Color(0xFF313236)
+    Button(onClick = onClick, enabled = enabled, interactionSource = interactions,
+        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier.fillMaxWidth().heightIn(min = 80.dp),
+        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 24.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (pressed) pressedColor else colors.primary,
+            contentColor = colors.onPrimary,
+            disabledContainerColor = colors.surfaceVariant,
+            disabledContentColor = colors.onSurfaceVariant
+        )) {
+        // In-progress label stays visible when disabled; no distracting animated spinner.
+        Text(label, style = MaterialTheme.typography.labelLarge)
+    }
+}
+
+@Composable
+private fun SecondaryAction(label: String, onClick: () -> Unit) {
+    TextButton(onClick = onClick, shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.sizeIn(minWidth = 64.dp, minHeight = 64.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)) {
+        Text(label, style = MaterialTheme.typography.labelLarge)
     }
 }
 
@@ -317,3 +382,19 @@ private fun DrivingRestrictionPreview() {
         TrainingFlow(initialScreen = TrainingScreen.Result, drivingRestricted = true)
     }
 }
+
+@Preview(name = "분할 창 · 세로", widthDp = 600, heightDp = 960)
+@Composable
+private fun PortraitPreview() { DrivingCoachUITheme { TrainingFlow() } }
+
+@Preview(name = "가로 창 · 주간", widthDp = 1280, heightDp = 720)
+@Composable
+private fun WidePreview() { DrivingCoachUITheme(darkTheme = false) { TrainingFlow() } }
+
+@Preview(name = "가로 창 · 야간", widthDp = 1280, heightDp = 720)
+@Composable
+private fun NightPreview() { DrivingCoachUITheme(darkTheme = true) { TrainingFlow() } }
+
+@Preview(name = "큰 글자 · 분할 창", widthDp = 600, heightDp = 960, fontScale = 1.3f)
+@Composable
+private fun LargeTextPreview() { DrivingCoachUITheme { TrainingFlow() } }
