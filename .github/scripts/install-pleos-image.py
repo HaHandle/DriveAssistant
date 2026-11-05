@@ -1,5 +1,4 @@
 """Install the official Pleos image when command-line sdkmanager omits custom sites."""
-import copy
 import hashlib
 import os
 from pathlib import Path, PurePosixPath
@@ -12,7 +11,9 @@ import zipfile
 SITE = "https://nexus-playground.pleos.ai/repository/raw-releases/connect-avd/2.x/crp-sys-img.xml"
 PACKAGE = "system-images;android-34;pleos_car_emulator;x86_64"
 SDK = Path(os.environ["ANDROID_SDK_ROOT"])
-destination = SDK.joinpath(*PACKAGE.split(";"))
+# The archive source.properties declares android-automotive as its local tag.
+LOCAL_PACKAGE = "system-images;android-34;android-automotive;x86_64"
+destination = SDK.joinpath(*LOCAL_PACKAGE.split(";"))
 metadata = ET.fromstring(urllib.request.urlopen(SITE, timeout=60).read())
 package = next(item for item in metadata if item.tag == "remotePackage" and item.get("path") == PACKAGE)
 archive = package.find("archives/archive/complete")
@@ -54,17 +55,5 @@ with tempfile.TemporaryDirectory(prefix="pleos-image-", dir=os.environ.get("RUNN
                 with image.open(entry) as source, target.open("wb") as output:
                     shutil.copyfileobj(source, output, 8 * 1024 * 1024)
 
-# Register the package using the vendor's SDK metadata rather than a generic image.
-ET.register_namespace("repo", "http://schemas.android.com/repository/android/common/02")
-ET.register_namespace("xsi", "http://www.w3.org/2001/XMLSchema-instance")
-repository = ET.Element(
-    "{http://schemas.android.com/repository/android/common/02}repository",
-    {"xmlns:sys-img": "http://schemas.android.com/sdk/android/repo/sys-img2/01"}
-)
-license_element = next(item for item in metadata if item.tag == "license")
-repository.append(copy.deepcopy(license_element))
-local = ET.SubElement(repository, "localPackage", {"path": PACKAGE, "obsolete": "false"})
-for tag in ("type-details", "revision", "display-name", "uses-license"):
-    local.append(copy.deepcopy(package.find(tag)))
-ET.ElementTree(repository).write(destination / "package.xml", encoding="utf-8", xml_declaration=True)
-print("Installed", PACKAGE, flush=True)
+# Let Android tools register the archive's own source.properties metadata.
+print("Installed", LOCAL_PACKAGE, flush=True)

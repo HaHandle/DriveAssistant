@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-IMAGE_PACKAGE="system-images;android-34;pleos_car_emulator;x86_64"
+IMAGE_PACKAGE="system-images;android-34;android-automotive;x86_64"
 mkdir -p pleos-evidence
 sdkmanager --channel=3 'platforms;android-37.0' 'platforms;android-34' 'build-tools;36.0.0' emulator
 sdkmanager --list > pleos-evidence/sdk-packages.txt
