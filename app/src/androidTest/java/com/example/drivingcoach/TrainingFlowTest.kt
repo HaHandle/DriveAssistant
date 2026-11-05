@@ -1,13 +1,12 @@
 package com.example.drivingcoach
 
-import android.graphics.Bitmap
+import android.os.ParcelFileDescriptor
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.platform.app.InstrumentationRegistry
-import java.io.File
 import org.junit.Rule
 import org.junit.Test
 
@@ -67,12 +66,9 @@ class TrainingFlowTest {
 
     private fun saveScreenshot(name: String) {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val directory = File(instrumentation.targetContext.getExternalFilesDir(null), "ui-evidence")
-        check(directory.mkdirs() || directory.isDirectory)
-        val screenshot = checkNotNull(instrumentation.uiAutomation.takeScreenshot())
-        File(directory, "$name.png").outputStream().use {
-            check(screenshot.compress(Bitmap.CompressFormat.PNG, 100, it))
-        }
-        screenshot.recycle()
+        val command = "mkdir -p /data/local/tmp/driveassistant-ui && " +
+            "screencap -p /data/local/tmp/driveassistant-ui/$name.png"
+        val output = instrumentation.uiAutomation.executeShellCommand(command)
+        ParcelFileDescriptor.AutoCloseInputStream(output).use { it.readBytes() }
     }
 }
