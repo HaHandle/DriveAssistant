@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             DrivingCoachUITheme {
-                TrainingFlow()
+                TrainingDemo()
             }
         }
     }
@@ -64,13 +65,30 @@ private val mockResult = ScreenContent(
 )
 
 @Composable
-private fun TrainingFlow(initialScreen: TrainingScreen = TrainingScreen.Home) {
+private fun TrainingDemo() {
+    var drivingRestricted by rememberSaveable { mutableStateOf(false) }
+    TrainingFlow(
+        drivingRestricted = drivingRestricted,
+        demoControls = {
+            TextButton(onClick = { drivingRestricted = !drivingRestricted }) {
+                Text(if (drivingRestricted) "데모 · 주차 상태로 전환" else "데모 · 주행 제한 재현")
+            }
+        }
+    )
+}
+
+@Composable
+private fun TrainingFlow(
+    initialScreen: TrainingScreen = TrainingScreen.Home,
+    drivingRestricted: Boolean = false,
+    demoControls: @Composable () -> Unit = {}
+) {
     var screen by rememberSaveable { mutableStateOf(initialScreen) }
-    BackHandler(enabled = screen != TrainingScreen.Home) {
+    BackHandler(enabled = !drivingRestricted && screen != TrainingScreen.Home) {
         screen = TrainingScreen.Home
     }
 
-    val content = when (screen) {
+    val content = if (drivingRestricted) null else when (screen) {
         TrainingScreen.Home -> ScreenContent(
             title = "운전 연수",
             description = "첫 연습으로 부드러운 감속을 체험해 보세요.",
@@ -106,31 +124,42 @@ private fun TrainingFlow(initialScreen: TrainingScreen = TrainingScreen.Home) {
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
-                Text(content.title, style = MaterialTheme.typography.headlineLarge)
-                Text(content.description, style = MaterialTheme.typography.bodyLarge)
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(
-                        modifier = Modifier.padding(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text(content.cardTitle, style = MaterialTheme.typography.titleMedium)
-                        Text(content.cardText, style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-                Button(
-                    onClick = {
+                if (content == null) {
+                    Text("주행 중 이용 제한", style = MaterialTheme.typography.headlineLarge)
+                    Text("주차 상태에서 이어서 이용할 수 있어요.")
+                } else {
+                    TrainingScreenContent(content) {
                         screen = when (screen) {
                             TrainingScreen.Home -> TrainingScreen.Session
                             TrainingScreen.Session -> TrainingScreen.Result
                             TrainingScreen.Result -> TrainingScreen.Home
                         }
-                    },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)
-                ) {
-                    Text(content.action)
+                    }
                 }
+                demoControls()
             }
         }
+    }
+}
+
+@Composable
+private fun TrainingScreenContent(content: ScreenContent, onAction: () -> Unit) {
+    Text(content.title, style = MaterialTheme.typography.headlineLarge)
+    Text(content.description, style = MaterialTheme.typography.bodyLarge)
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(content.cardTitle, style = MaterialTheme.typography.titleMedium)
+            Text(content.cardText, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
+    Button(
+        onClick = onAction,
+        modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)
+    ) {
+        Text(content.action)
     }
 }
 
@@ -150,4 +179,12 @@ private fun SessionPreview() {
 @Composable
 private fun ResultPreview() {
     DrivingCoachUITheme { TrainingFlow(TrainingScreen.Result) }
+}
+
+@Preview(name = "주행 제한 데모", widthDp = 840, heightDp = 480)
+@Composable
+private fun DrivingRestrictionPreview() {
+    DrivingCoachUITheme {
+        TrainingFlow(initialScreen = TrainingScreen.Result, drivingRestricted = true)
+    }
 }
