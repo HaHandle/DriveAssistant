@@ -6,8 +6,12 @@ mkdir -p pleos-evidence
 sdkmanager --channel=3 'platforms;android-37.0' 'platforms;android-34' 'build-tools;36.0.0' emulator
 sdkmanager --list > pleos-evidence/sdk-packages.txt
 python3 .github/scripts/install-pleos-image.py
-printf 'no\n' | avdmanager create avd --force --name pleos-ci --package "$IMAGE_PACKAGE"
-cat >> "$HOME/.android/avd/pleos-ci.avd/config.ini" <<'CONFIG'
+export ANDROID_AVD_HOME="$RUNNER_TEMP/pleos-avd"
+mkdir -p "$ANDROID_AVD_HOME"
+printf 'no\n' | avdmanager create avd --force --name pleos-ci --package "$IMAGE_PACKAGE" --path "$ANDROID_AVD_HOME/pleos-ci.avd"
+avdmanager list avd > pleos-evidence/avds.txt
+test -s "$ANDROID_AVD_HOME/pleos-ci.avd/config.ini"
+cat >> "$ANDROID_AVD_HOME/pleos-ci.avd/config.ini" <<'CONFIG'
 hw.ramSize=4096
 hw.lcd.width=2560
 hw.lcd.height=1440
