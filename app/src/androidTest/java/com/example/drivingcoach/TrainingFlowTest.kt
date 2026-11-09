@@ -19,13 +19,13 @@ class TrainingFlowTest {
         compose.mainClock.autoAdvance = false
         click("연수 시작")
         finishReplay()
-        show("실험용 감속 점수 100점")
+        show("강한 감속 후보 0회")
         saveScreenshot("smooth-result")
         click("홈으로")
         click("시나리오 · 부드러운 감속")
         click("연수 시작")
         finishReplay()
-        show("실험용 감속 점수 25점")
+        show("강한 감속 후보 1회")
         saveScreenshot("abrupt-result")
     }
 
@@ -41,12 +41,12 @@ class TrainingFlowTest {
         compose.mainClock.advanceTimeBy(12_000)
         click("데모 · 주차 상태로 전환")
         click("연수 종료 및 결과 보기")
-        show("실험용 감속 점수 100점")
+        show("강한 감속 후보 0회")
         click("데모 · 주행 제한 재현")
-        compose.onNodeWithText("실험용 감속 점수 100점").assertDoesNotExist()
+        compose.onNodeWithText("강한 감속 후보 0회").assertDoesNotExist()
         show("주행 중 이용 제한")
         click("데모 · 주차 상태로 전환")
-        show("실험용 감속 점수 100점")
+        show("강한 감속 후보 0회")
     }
 
     private fun finishReplay() {

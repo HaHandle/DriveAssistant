@@ -13,7 +13,7 @@
 
 ## 구현한 방향지시등 연수
 
-일반 Android 앱의 홈에서 **방향지시등 연수**를 열고 왼쪽 또는 오른쪽 차로 변경을 고른다. 사용자는 8개 모의 장면에서 방향지시등을 켜거나 끈 뒤 다음 장면으로 넘긴다. 차로 변경 시작·완료 위치는 시나리오가 제공한다. 결과 화면은 세 신호 행동을 따로 보여 준다. 다음 연습은 안전 간격 판단에서 보완할 점을 먼저 고르고, 그다음 신호 행동을 본다. 차로 변경 전에는 뒤에서 차량이 접근하는 장면에서 ‘기다리기’와 ‘지금 이동하기’ 중 하나를 고른다. 이 선택은 신호 결과와 별도로 피드백한다. 장면은 접근 차량이 지나간 뒤 재개한다.
+일반 Android와 지원되는 Pleos 디버그 빌드의 모의 연수 홈에서 **방향지시등 연수**를 열고 교통 상황과 왼쪽 또는 오른쪽 차로 변경을 고른다. 사용자는 8개 모의 장면에서 방향지시등을 켜거나 끈 뒤 다음 장면으로 넘긴다. 차로 변경 시작·완료 위치는 시나리오가 제공한다. 결과 화면은 세 신호 행동을 따로 보여 준다. 다음 연습은 안전 간격 판단에서 보완할 점을 먼저 고르고, 그다음 신호 행동을 본다. 차로 변경 전에는 뒤차 접근, 시야 가림 또는 간격 확인 장면에서 ‘기다리기’와 ‘지금 이동하기’ 중 하나를 고른다. 이 선택은 신호 결과와 별도로 피드백한다. 이동 장면은 안전한 간격이 확인된 뒤 시작한다.
 
 | 평가 | 일반도로 모의 연수 규칙 |
 | --- | --- |
@@ -30,7 +30,7 @@
 1. 대상 차종과 앱 권한을 확인한다. Pleos SDK의 `checkTurnSignalStateCapabilities`, `getCurrentTurnSignalState`, `registerTurnSignalState`로 지원·초깃값·상태 변화를 확인한다. 조회에는 승인된 `pleos.car.permission.CAR_LIGHTS`가 필요하다. AAOS의 표준 스위치 상태가 제공되는 환경에서는 API 수준, 권한, 차량 지원을 확인해 선택한다. [TurnSignal SDK](https://document.pleos.ai/api-reference/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/turn-signal/entry) · [Pleos 권한](https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle-permission) · [AAOS 프로퍼티](https://developer.android.com/reference/android/car/VehiclePropertyIds#TURN_SIGNAL_SWITCH)
 2. 신호와 같은 기준 시계로 정렬할 수 있는 독립 기동 기록을 연결한다. 먼저 연수 영상 또는 강사 표식으로 차로 변경 시작과 새 차로 정착 위치를 표시한다. 승인된 차로 위치 신호를 사용할 수 있다면, 실제 차로 전환과 일치하는지 확인한 뒤 자동 검출에 사용한다. 핸들 각도 변화는 곡선과 회피에서도 나타나므로 그것만으로 차로 변경을 확정할 수 없다.
 3. 신호를 켠 뒤 이동한 거리는 유효 속도 쌍의 평균 속도와 경과 시간으로 누적한다. 결손, 후진, 이벤트 지연 또는 거리 오차 때문에 임계값의 어느 쪽인지 확정할 수 없으면 해당 결과를 관찰 부족으로 둔다. 실제 방향지시등 조작과 차로 변경 기록을 정차 뒤 비교해 정확도를 보정한다.
-4. 지원되는 범위 안에서만 수집한다. 주행 중 상호작용하는 이번 모의 연수는 차량 화면에 제공하지 않는다. 차량 결과 화면은 주차 상태와 `CarUxRestrictions`가 허용되는 범위에서 연다. [Pleos 주행 안전 설계](https://document.pleos.ai/docs/pleos-only/vehicle-app-planning-guide/driver-distraction-guideline) · [지역별 주행 규제](https://document.pleos.ai/en/docs/pleos-only/vehicle-app-planning-guide/driving-restiction-policy)
+4. 지원되는 범위 안에서만 수집한다. Pleos 디버그 빌드에서는 P와 조작 허용이 확인된 상태에서 모의 연수를 제공한다. 차량 결과 화면은 주차 상태와 `CarUxRestrictions`가 허용되는 범위에서 연다. [Pleos 주행 안전 설계](https://document.pleos.ai/docs/pleos-only/vehicle-app-planning-guide/driver-distraction-guideline) · [지역별 주행 규제](https://document.pleos.ai/en/docs/pleos-only/vehicle-app-planning-guide/driving-restiction-policy)
 
 ## 후속 평가
 

@@ -3,6 +3,7 @@ package com.example.drivingcoach
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+internal const val MAX_SPEED_GAP_NANOS = 2_000_000_000L
 internal const val DECELERATION_FLOOR = 0.2
 
 internal data class SpeedSample(val timestampNanos: Long, val metersPerSecond: Float)
@@ -41,7 +42,7 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
         if (lastTimestamp != null && timestamp <= lastTimestamp) return
         val precedingTimestamp = lastTimestamp ?: startedAtNanos
         if (!sample.metersPerSecond.isFinite() ||
-            (precedingTimestamp != null && timestamp - precedingTimestamp > MAX_GAP_NANOS)
+            (precedingTimestamp != null && timestamp - precedingTimestamp > MAX_SPEED_GAP_NANOS)
         ) {
             interrupt()
             return
@@ -83,7 +84,7 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
     fun finish(endTimestampNanos: Long? = null, includeDemoScore: Boolean = true): DecelerationResult {
         val lastTimestamp = lastTimestampNanos
         val stale = endTimestampNanos != null && lastTimestamp != null &&
-            endTimestampNanos - lastTimestamp !in 0L..MAX_GAP_NANOS
+            endTimestampNanos - lastTimestamp !in 0L..MAX_SPEED_GAP_NANOS
         if (interrupted || stale) {
             return DecelerationResult(null, "연수 기록이 중단되어 결과를 확인할 수 없어요.")
         }
@@ -104,7 +105,6 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
 
     private companion object {
         const val MIN_INTERVAL_NANOS = 100_000_000L
-        const val MAX_GAP_NANOS = 2_000_000_000L
         const val MIN_FORWARD_INTERVALS = 4
         const val MIN_DECELERATION_NANOS = 3_000_000_000L
     }
