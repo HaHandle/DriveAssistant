@@ -1,0 +1,46 @@
+PR #7 Pleos emulator Android log evidence for c3737c5
+======================================================
+
+Target branch: review/pr7-visual
+Target commit: c3737c5aa63010da0cc57b5733ca8a6801da0204
+Package: com.example.drivingcoach
+Device: emulator-5554
+Product: crp_avd
+Model: Connect on x86_64 emulator
+Android: 14 / API 34
+Package version: 1.0 (versionCode 1)
+Package lastUpdateTime: 2026-11-09 06:46:58
+
+Install and launch excerpt
+--------------------------
+
+11-09 06:46:52.753   874  1150 I ActivityManager: Force stopping com.example.drivingcoach appid=10175 user=10: from pid 17112
+11-09 06:46:52.837   874  1150 I ActivityManager: Killing 6683:com.example.drivingcoach/u10a175 (adj 900): stop com.example.drivingcoach due to from pid 17112
+11-09 06:46:58.400   874   947 I ActivityManager: Force stopping com.example.drivingcoach appid=10175 user=-1: installPackageLI
+11-09 06:46:58.449   874   972 I PackageManager: Update package com.example.drivingcoach code path from /data/app/~~LNnFCmICOT76Pap99JOBqA==/com.example.drivingcoach-ywbe8SoEVQdAZdVcpo2erw== to /data/app/~~L6DAE8cXB8ksv0C6oaDiuw==/com.example.drivingcoach-nf7URA49Eyen86cQKmcrXQ==; Retain data and using new
+11-09 06:47:01.430   874   972 I ActivityManager: Force stopping com.example.drivingcoach appid=10175 user=10: pkg removed
+11-09 06:47:01.783  1275  1415 D CarPackageManagerService: Updating allowlist and denylist mapping for package: com.example.drivingcoach for UserId: 10
+11-09 06:47:02.409   874  1211 I ActivityManager: Force stopping com.example.drivingcoach appid=10175 user=10: from pid 18390
+11-09 06:47:03.648   874 17312 I ActivityTaskManager: startSpecificActivity: com.example.drivingcoach/.MainActivity userId=10 hasSavedState=true isProcessRunning=false attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=null wpcHasThread=false sharedLibraryFiles=[/system_ext/framework/androidx.window.extensions.jar, /system_ext/framework/androidx.window.sidecar.jar]
+11-09 06:47:03.658   874 17312 I ActivityTaskManager: START u10 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.example.drivingcoach/.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+11-09 06:47:03.890   874 17312 I ActivityTaskManager: startSpecificActivity: com.example.drivingcoach/.MainActivity userId=10 hasSavedState=true isProcessRunning=false attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{74f3bb4 0:com.example.drivingcoach/u10a175} wpcHasThread=false sharedLibraryFiles=[/system_ext/framework/androidx.window.extensions.jar, /system_ext/framework/androidx.window.sidecar.jar]
+11-09 06:47:03.898   874 17312 I ActivityTaskManager: startSpecificActivity: com.example.drivingcoach/.MainActivity userId=10 hasSavedState=true isProcessRunning=false attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{74f3bb4 0:com.example.drivingcoach/u10a175} wpcHasThread=false sharedLibraryFiles=[/system_ext/framework/androidx.window.extensions.jar, /system_ext/framework/androidx.window.sidecar.jar]
+11-09 06:47:04.090   874   948 I ActivityManager: Start proc 18568:com.example.drivingcoach/u10a175 for top-activity {com.example.drivingcoach/com.example.drivingcoach.MainActivity}
+11-09 06:47:06.957   874 17312 I ActivityTaskManager: startSpecificActivity: com.example.drivingcoach/.MainActivity userId=10 hasSavedState=true isProcessRunning=true attachedToProcess=false hasProcess=false state=INITIALIZING launchFailed=false wpc=ProcessRecord{74f3bb4 18568:com.example.drivingcoach/u10a175} wpcHasThread=true sharedLibraryFiles=[/system_ext/framework/androidx.window.extensions.jar, /system_ext/framework/androidx.window.sidecar.jar]
+11-09 06:47:10.117   874  4318 D CoreBackPreview: Window{c0d40f7 u10 com.example.drivingcoach/com.example.drivingcoach.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@5843030, mPriority=0, mIsAnimationCallback=false}
+
+Current activity and permission state
+-------------------------------------
+
+topResumedActivity=ActivityRecord{79c7087 u10 com.example.drivingcoach/.MainActivity t1000056}
+ResumedActivity=ActivityRecord{79c7087 u10 com.example.drivingcoach/.MainActivity t1000056}
+mCurrentFocus=Window{c0d40f7 u10 com.example.drivingcoach/com.example.drivingcoach.MainActivity}
+android.car.permission.CAR_SPEED (User 10): granted=true, flags=[USER_SET]
+FATAL EXCEPTION / Process: com.example.drivingcoach / AndroidRuntime match: none
+
+Notes
+-----
+
+- The force-stop and process-kill entries precede APK replacement and are expected during reinstall.
+- User 0 reports CAR_SPEED as not granted because the app is not installed for that user. The running app is User 10, where CAR_SPEED is granted.
+- The app does not emit speed-sample or driving-restriction callback values to Logcat, so those events cannot be verified from this capture.
