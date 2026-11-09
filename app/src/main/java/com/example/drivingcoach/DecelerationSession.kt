@@ -8,66 +8,123 @@ internal data class SpeedSample(val timestampNanos: Long, val metersPerSecond: F
 internal data class DecelerationResult(
     val score: Int?,
     val feedback: String,
-    val peakDeceleration: Double = 0.0
+    val peakDeceleration: Double = 0.0,
+    val strongEventCount: Int? = null
 )
 
-/** Experimental comfort metric. Thresholds require calibration against recorded vehicle data. */
-internal class DecelerationSession {
+/** Estimates forward deceleration from vehicle speed. Event thresholds are provisional. */
+internal class DecelerationSession(private val startedAtNanos: Long? = null) {
     private var previous: SpeedSample? = null
-    private var sampleCount = 0
-    private var decelerationSeconds = 0.0
-    private var strongDecelerationSeconds = 0.0
+    private var lastTimestampNanos: Long? = null
+    private var forwardIntervals = 0
+    private var decelerationNanos = 0L
+    private var strongDecelerationNanos = 0L
     private var peakDeceleration = 0.0
     private var interrupted = false
 
+    private var strongEventCount = 0
+    private var strongEventActive = false
+    private var aboveThresholdNanos = 0L
+    private var belowThresholdNanos = 0L
+
     fun add(sample: SpeedSample) {
-        if (!sample.metersPerSecond.isFinite() || sample.metersPerSecond < 0 ||
-            sample.timestampNanos <= 0
+        if (interrupted) return
+        val timestamp = sample.timestampNanos
+        if (timestamp <= 0) {
+            interrupt()
+            return
+        }
+        if (startedAtNanos != null && timestamp < startedAtNanos) return
+        val lastTimestamp = lastTimestampNanos
+        if (lastTimestamp != null && timestamp <= lastTimestamp) return
+        val precedingTimestamp = lastTimestamp ?: startedAtNanos
+        if (!sample.metersPerSecond.isFinite() ||
+            (precedingTimestamp != null && timestamp - precedingTimestamp > MAX_GAP_NANOS)
         ) {
             interrupt()
             return
         }
+        lastTimestampNanos = timestamp
+
         val last = previous
-        if (last != null) {
-            val seconds = (sample.timestampNanos - last.timestampNanos) / 1_000_000_000.0
-            if (seconds <= 0) return
-            if (seconds > 2.0) {
-                interrupted = true
-            } else {
-                val deceleration = (last.metersPerSecond - sample.metersPerSecond) / seconds
-                peakDeceleration = max(peakDeceleration, deceleration)
-                if (deceleration > 0.2) {
-                    decelerationSeconds += seconds
-                    if (deceleration > 3.0) strongDecelerationSeconds += seconds
-                }
-            }
+        if (last == null) {
+            previous = sample
+            return
         }
+        if (last.metersPerSecond < 0f || sample.metersPerSecond < 0f) {
+            previous = sample
+            resetStrongEvent()
+            return
+        }
+        // Wait for a minimum interval before taking another speed difference.
+        val intervalNanos = timestamp - last.timestampNanos
+        if (intervalNanos < MIN_INTERVAL_NANOS) return
         previous = sample
-        sampleCount++
+
+        if (last.metersPerSecond > 0f || sample.metersPerSecond > 0f) forwardIntervals++
+        val seconds = intervalNanos / 1_000_000_000.0
+        val deceleration = (last.metersPerSecond.toDouble() - sample.metersPerSecond) / seconds
+        peakDeceleration = max(peakDeceleration, deceleration)
+        if (deceleration > DECELERATION_FLOOR) decelerationNanos += intervalNanos
+        if (deceleration > STRONG_START) strongDecelerationNanos += intervalNanos
+        updateStrongEvent(deceleration, intervalNanos)
     }
 
     fun interrupt() {
         interrupted = true
-        previous = null
     }
 
-    fun finish(endTimestampNanos: Long? = null): DecelerationResult {
-        val lastTimestamp = previous?.timestampNanos
+    fun finish(endTimestampNanos: Long? = null, includeDemoScore: Boolean = true): DecelerationResult {
+        val lastTimestamp = lastTimestampNanos
         val stale = endTimestampNanos != null && lastTimestamp != null &&
-            endTimestampNanos - lastTimestamp > 2_000_000_000L
+            endTimestampNanos - lastTimestamp !in 0L..MAX_GAP_NANOS
         if (interrupted || stale) {
-            return DecelerationResult(null, "데이터 수신이 중단되어 평가를 완료하지 못했어요. 다시 연습해 주세요.")
+            return DecelerationResult(null, "연수 기록이 중단되어 결과를 확인할 수 없어요.")
         }
-        if (sampleCount < 5 || decelerationSeconds < 3.0) {
-            return DecelerationResult(null, "평가할 감속 데이터가 부족해요. 충분한 데이터를 수집한 뒤 다시 확인해 주세요.")
+        if (forwardIntervals < MIN_FORWARD_INTERVALS || decelerationNanos < MIN_DECELERATION_NANOS) {
+            return DecelerationResult(null, "관찰한 감속 구간이 충분하지 않아요.")
         }
-        val score = (100 * (1 - strongDecelerationSeconds / decelerationSeconds)).roundToInt()
-        val feedback = if (strongDecelerationSeconds > 0) {
-            "속도가 빠르게 줄어든 구간이 있었어요. 주차 후 해당 상황을 복기해 보세요."
+        val score = if (includeDemoScore) {
+            (100 * (1 - strongDecelerationNanos.toDouble() / decelerationNanos)).roundToInt()
+        } else null
+        val feedback = if (strongEventCount > 0) {
+            "속도가 빠르게 줄었던 당시의 교통 상황을 떠올려 보세요."
         } else {
-            "수집된 감속 구간에서는 속도가 비교적 부드럽게 줄었어요."
+            "측정 구간에서 강한 감속 기준을 충족한 사건이 없어요."
         }
-        return DecelerationResult(score.coerceIn(0, 100), feedback, peakDeceleration)
+        return DecelerationResult(score, feedback, peakDeceleration, strongEventCount)
+    }
+
+    private fun updateStrongEvent(deceleration: Double, intervalNanos: Long) {
+        if (strongEventActive) {
+            belowThresholdNanos = if (deceleration <= STRONG_END) belowThresholdNanos + intervalNanos else 0L
+            if (belowThresholdNanos >= MIN_RELEASE_NANOS) resetStrongEvent()
+            return
+        }
+
+        aboveThresholdNanos = if (deceleration > STRONG_START) aboveThresholdNanos + intervalNanos else 0L
+        if (aboveThresholdNanos >= MIN_EVENT_NANOS) {
+            strongEventCount++
+            strongEventActive = true
+        }
+    }
+
+    private fun resetStrongEvent() {
+        strongEventActive = false
+        aboveThresholdNanos = 0L
+        belowThresholdNanos = 0L
+    }
+
+    private companion object {
+        const val MIN_INTERVAL_NANOS = 100_000_000L
+        const val MAX_GAP_NANOS = 2_000_000_000L
+        const val MIN_FORWARD_INTERVALS = 4
+        const val MIN_DECELERATION_NANOS = 3_000_000_000L
+        const val DECELERATION_FLOOR = 0.2
+        const val STRONG_START = 3.0
+        const val STRONG_END = 2.0
+        const val MIN_EVENT_NANOS = 600_000_000L
+        const val MIN_RELEASE_NANOS = 300_000_000L
     }
 }
 
