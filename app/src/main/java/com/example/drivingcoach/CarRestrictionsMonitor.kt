@@ -1,77 +1,78 @@
 package com.example.drivingcoach
 
+import android.car.Car
+import android.car.VehicleGear
 import android.car.VehiclePropertyIds
+import android.car.drivingstate.CarUxRestrictionsManager
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
-import android.content.pm.PackageManager
-import android.car.Car
-import android.car.drivingstate.CarUxRestrictionsManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+
+internal const val PARK_SIGNAL_PERMISSION = "android.car.permission.CAR_POWERTRAIN"
 
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class CarRestrictionsMonitor(
     private val context: Context,
     private val onRestrictionChanged: (Boolean?) -> Unit,
-    private val onSpeedChanged: (SpeedSample?) -> Unit
+    private val onSpeedChanged: (SpeedSample?) -> Unit,
+    private val onParkChanged: (Boolean?) -> Unit = {}
 ) {
     private var active = false
     private var car: Car? = null
-    private var manager: CarUxRestrictionsManager? = null
-
+    private var restrictions: CarUxRestrictionsManager? = null
     private var properties: CarPropertyManager? = null
     private var speedCallback: CarPropertyManager.CarPropertyEventCallback? = null
+    private var parkCallback: CarPropertyManager.CarPropertyEventCallback? = null
+    private var connectionGeneration = 0
 
     fun start() {
+        if (active) return
         active = true
         try {
             car = Car.createCar(context, null, Car.CAR_WAIT_TIMEOUT_DO_NOT_WAIT) { connectedCar, ready ->
                 if (active) {
-                    if (ready) {
-                        subscribe(connectedCar)
-                        try {
-                            properties = connectedCar.getCarManager(Car.PROPERTY_SERVICE) as? CarPropertyManager
-                            refreshSpeedSubscription()
-                        } catch (error: RuntimeException) {
-                            Log.w(TAG, "Vehicle speed service unavailable", error)
-                            onSpeedChanged(null)
-                        }
-                    } else {
-                        properties = null
-                        speedCallback = null
-                        onSpeedChanged(null)
-                        manager = null
-                        onRestrictionChanged(null)
-                    }
+                    clearSubscriptions()
+                    if (ready) subscribe(connectedCar)
                 }
             }
         } catch (error: RuntimeException) {
             Log.w(TAG, "Car service connection failed", error)
-            onRestrictionChanged(null)
+            clearSubscriptions()
         } catch (error: LinkageError) {
             Log.w(TAG, "Car library unavailable", error)
-            onRestrictionChanged(null)
+            clearSubscriptions()
         }
     }
 
     private fun subscribe(connectedCar: Car) {
+        val generation = connectionGeneration
         try {
-            val restrictions = connectedCar.getCarManager(Car.CAR_UX_RESTRICTION_SERVICE)
+            val manager = connectedCar.getCarManager(Car.CAR_UX_RESTRICTION_SERVICE)
                 as? CarUxRestrictionsManager
-            manager = restrictions
-            restrictions?.registerListener { value ->
-                if (active && manager === restrictions) {
+            restrictions = manager
+            manager?.registerListener { value ->
+                if (active && generation == connectionGeneration && restrictions === manager) {
                     onRestrictionChanged(value?.isRequiresDistractionOptimization())
                 }
             }
-            onRestrictionChanged(
-                restrictions?.currentCarUxRestrictions?.isRequiresDistractionOptimization()
-            )
+            onRestrictionChanged(manager?.currentCarUxRestrictions?.isRequiresDistractionOptimization())
         } catch (error: RuntimeException) {
             Log.w(TAG, "Could not read vehicle UX restrictions", error)
+            restrictions = null
             onRestrictionChanged(null)
+        }
+        try {
+            properties = connectedCar.getCarManager(Car.PROPERTY_SERVICE) as? CarPropertyManager
+            refreshSpeedSubscription()
+            subscribePark()
+        } catch (error: RuntimeException) {
+            Log.w(TAG, "Vehicle property service unavailable", error)
+            onSpeedChanged(null)
+            onParkChanged(null)
         }
     }
 
@@ -83,55 +84,113 @@ internal class CarRestrictionsMonitor(
             onSpeedChanged(null)
             return
         }
+
         val callback = object : CarPropertyManager.CarPropertyEventCallback {
             override fun onChangeEvent(value: CarPropertyValue<*>) {
-                if (!active || properties !== propertyManager) return
-                if (value.propertyId != VehiclePropertyIds.PERF_VEHICLE_SPEED) return
+                if (!active || speedCallback !== this || value.propertyId != VehiclePropertyIds.PERF_VEHICLE_SPEED) return
                 val speed = if (value.status == CarPropertyValue.STATUS_AVAILABLE) value.value as? Float else null
-                if (value.status == CarPropertyValue.STATUS_AVAILABLE && speed != null && speed.isFinite()) {
-                    onSpeedChanged(SpeedSample(value.timestamp, speed))
-                } else {
-                    onSpeedChanged(null)
-                }
+                onSpeedChanged(speed?.takeIf { it.isFinite() && value.timestamp > 0 }
+                    ?.let { SpeedSample(value.timestamp, it) })
             }
 
             override fun onErrorEvent(propertyId: Int, areaId: Int) {
-                if (active && properties === propertyManager) onSpeedChanged(null)
+                if (active && speedCallback === this && propertyId == VehiclePropertyIds.PERF_VEHICLE_SPEED) {
+                    onSpeedChanged(null)
+                }
             }
         }
+        speedCallback = callback
         try {
-            val registered = propertyManager.registerCallback(
-                callback, VehiclePropertyIds.PERF_VEHICLE_SPEED, CarPropertyManager.SENSOR_RATE_NORMAL
-            )
-            if (registered) speedCallback = callback else onSpeedChanged(null)
+            if (propertyManager.registerCallback(
+                    callback, VehiclePropertyIds.PERF_VEHICLE_SPEED, CarPropertyManager.SENSOR_RATE_NORMAL
+                )
+            ) return
         } catch (error: RuntimeException) {
             Log.w(TAG, "Could not subscribe to vehicle speed", error)
-            onSpeedChanged(null)
         }
+        speedCallback = null
+        onSpeedChanged(null)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun subscribePark() {
+        val propertyManager = properties ?: return
+        if (context.checkSelfPermission(PARK_SIGNAL_PERMISSION) != PackageManager.PERMISSION_GRANTED) return
+
+        val callback = object : CarPropertyManager.CarPropertyEventCallback {
+            private var lastTimestamp = 0L
+
+            override fun onChangeEvent(value: CarPropertyValue<*>) {
+                if (!active || parkCallback !== this || value.propertyId != VehiclePropertyIds.GEAR_SELECTION) return
+                val timestamp = value.timestamp
+                if (timestamp <= 0L || value.status != CarPropertyValue.STATUS_AVAILABLE) {
+                    lastTimestamp = maxOf(lastTimestamp, timestamp)
+                    onParkChanged(null)
+                    return
+                }
+                if (timestamp <= lastTimestamp) return
+                lastTimestamp = timestamp
+                val gear = value.value as? Int
+                onParkChanged(gear?.let { it == VehicleGear.GEAR_PARK })
+            }
+
+            override fun onErrorEvent(propertyId: Int, areaId: Int) {
+                if (active && parkCallback === this && propertyId == VehiclePropertyIds.GEAR_SELECTION) {
+                    onParkChanged(null)
+                }
+            }
+        }
+        parkCallback = callback
+        try {
+            if (propertyManager.registerCallback(
+                    callback, VehiclePropertyIds.GEAR_SELECTION, CarPropertyManager.SENSOR_RATE_ONCHANGE
+                )
+            ) return
+        } catch (error: RuntimeException) {
+            Log.w(TAG, "Could not subscribe to gear selection", error)
+        }
+        parkCallback = null
+        onParkChanged(null)
     }
 
     fun stop() {
         active = false
+        clearSubscriptions()
+        val connection = car
+        car = null
         try {
-            speedCallback?.let { properties?.unregisterCallback(it) }
+            connection?.disconnect()
         } catch (error: RuntimeException) {
-            Log.w(TAG, "Could not unregister vehicle speed listener", error)
-        } finally {
-            speedCallback = null
-            properties = null
-            onSpeedChanged(null)
+            Log.w(TAG, "Could not disconnect from vehicle service", error)
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun clearSubscriptions() {
+        connectionGeneration++
+        val manager = properties
+        val oldSpeed = speedCallback
+        val oldPark = parkCallback
+        val oldRestrictions = restrictions
+        properties = null
+        speedCallback = null
+        parkCallback = null
+        restrictions = null
+        onRestrictionChanged(null)
+        onParkChanged(null)
+        onSpeedChanged(null)
+
+        listOfNotNull(oldSpeed, oldPark).forEach { callback ->
+            try {
+                manager?.unregisterCallback(callback)
+            } catch (error: RuntimeException) {
+                Log.w(TAG, "Could not unregister a vehicle property listener", error)
+            }
         }
         try {
-            manager?.unregisterListener()
+            oldRestrictions?.unregisterListener()
         } catch (error: RuntimeException) {
             Log.w(TAG, "Could not unregister vehicle UX listener", error)
-        } finally {
-            manager = null
-            try {
-                car?.disconnect()
-            } finally {
-                car = null
-            }
         }
     }
 

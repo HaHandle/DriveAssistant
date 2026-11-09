@@ -1,22 +1,23 @@
 package com.example.drivingcoach
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +35,8 @@ import kotlin.math.roundToInt
 private enum class SignalScene(val meters: Int, val title: String, val description: String) {
     Approach(0, "변경까지 60m", "미러로 주변 차량을 확인하는 장면이에요."),
     BeforeWindow(25, "변경까지 35m", "옆 차로의 상황을 보면서 이동을 준비해요."),
-    NearWindow(35, "변경까지 25m", "옆 차로 뒤에서 차가 다가와 간격이 부족해요."),
-    Start(60, "차로 변경 시작", "접근하던 차가 지나가고 안전한 간격이 생겼어요."),
+    NearWindow(35, "변경까지 25m", ""),
+    Start(60, "차로 변경 시작", ""),
     Moving(75, "차로 변경 중", "아직 옆 차로로 이동하는 중이에요."),
     Finish(90, "차로 변경 완료", "차가 새 차로에 자리 잡았어요."),
     AfterSeven(97, "변경 후 7m", "새 차로를 따라 계속 이동해요."),
@@ -48,27 +50,67 @@ private enum class GapChoice(val label: String) {
     Wait("기다리기"), MoveNow("지금 이동하기")
 }
 
+private enum class GapScenario(
+    val label: String,
+    val traffic: String,
+    val safeStart: String,
+    val clearanceConfirmed: Boolean
+) {
+    Approaching(
+        "뒤차 접근",
+        "옆 차로 뒤에서 차가 다가와 간격이 부족해요.",
+        "접근하던 차가 지나가고 안전한 간격이 생겼어요.",
+        false
+    ),
+    Obstructed(
+        "시야 가림",
+        "옆 차로가 가려져 차량이 있는지 확인하기 어려워요.",
+        "시야가 열리고 옆 차로의 안전한 간격을 확인했어요.",
+        false
+    ),
+    Clear(
+        "간격 확인",
+        "미러와 사각지대를 확인했어요. 옆 차로 앞뒤에 충분한 간격이 있어요.",
+        "확인한 간격으로 이동을 시작해요.",
+        true
+    );
+
+    fun assess(choice: GapChoice): GapOutcome = when (choice) {
+        GapChoice.Wait -> if (clearanceConfirmed) GapOutcome.ChoseExtraWait else GapOutcome.WaitedForClearance
+        GapChoice.MoveNow -> if (clearanceConfirmed) GapOutcome.MovedAfterCheck else GapOutcome.MovedWithoutClearance
+    }
+}
+
 private val initialSignal = IndicatorObservation(TravelPoint(0L, 0.0), IndicatorState.Off)
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun TurnSignalPractice(onExit: () -> Unit) {
-    var side by remember { mutableStateOf<LaneChangeSide?>(null) }
-    var sceneIndex by remember { mutableIntStateOf(0) }
-    var indicator by remember { mutableStateOf(IndicatorState.Off) }
-    var gapChoice by remember { mutableStateOf<GapChoice?>(null) }
-    var observations by remember { mutableStateOf(listOf(initialSignal)) }
-    var report by remember { mutableStateOf<LaneChangeSignalReport?>(null) }
+internal fun TurnSignalPractice(
+    onExit: () -> Unit,
+    onCompleted: (PracticeRecord) -> Unit
+) {
+    var gapScenario by rememberSaveable { mutableStateOf(GapScenario.Approaching) }
+    var scenarioMenuOpen by remember { mutableStateOf(false) }
+    var side by rememberSaveable { mutableStateOf<LaneChangeSide?>(null) }
+    var sceneIndex by rememberSaveable { mutableIntStateOf(0) }
+    var indicator by rememberSaveable { mutableStateOf(IndicatorState.Off) }
+    var gapChoice by rememberSaveable { mutableStateOf<GapChoice?>(null) }
+    var recordedStates by rememberSaveable { mutableStateOf(arrayListOf<String>()) }
+    var roundFinished by rememberSaveable { mutableStateOf(false) }
+    val report = remember(side, roundFinished, recordedStates) {
+        val direction = side
+        if (roundFinished && direction != null) evaluateSignalRound(direction, recordedStates) else null
+    }
     val scrollState = rememberScrollState()
-    LaunchedEffect(side, sceneIndex, report) { scrollState.scrollTo(0) }
+    LaunchedEffect(side, sceneIndex, roundFinished) { scrollState.scrollTo(0) }
 
     fun beginRound(direction: LaneChangeSide) {
         side = direction
         sceneIndex = 0
         indicator = IndicatorState.Off
         gapChoice = null
-        observations = listOf(initialSignal)
-        report = null
+        recordedStates = arrayListOf()
+        roundFinished = false
     }
 
     BackHandler(onBack = onExit)
@@ -97,8 +139,23 @@ internal fun TurnSignalPractice(onExit: () -> Unit) {
                             Text("여유가 없으면 기다리고, 이동이 끝나면 신호를 꺼요.",
                                 style = MaterialTheme.typography.bodyMedium)
                         }
-                        Text("깜빡이를 조작하거나 그대로 두고 다음 장면으로 넘어가세요.",
+                        Text("상황을 고른 뒤 깜빡이를 조작하며 장면을 넘겨 보세요.",
                             style = MaterialTheme.typography.bodyMedium)
+                        Box {
+                            SecondaryAction("상황 · ${gapScenario.label}") { scenarioMenuOpen = true }
+                            DropdownMenu(expanded = scenarioMenuOpen, onDismissRequest = { scenarioMenuOpen = false }) {
+                                GapScenario.entries.forEach { scenario ->
+                                    DropdownMenuItem(
+                                        text = { Text(scenario.label, style = MaterialTheme.typography.labelLarge) },
+                                        modifier = Modifier.heightIn(min = 64.dp),
+                                        onClick = {
+                                            gapScenario = scenario
+                                            scenarioMenuOpen = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
                         FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             SecondaryAction("왼쪽 연수 시작") { beginRound(LaneChangeSide.Left) }
                             SecondaryAction("오른쪽 연수 시작") { beginRound(LaneChangeSide.Right) }
@@ -107,21 +164,23 @@ internal fun TurnSignalPractice(onExit: () -> Unit) {
                     completed != null -> {
                         SignalReview(completed)
                         gapChoice?.let { choice ->
-                            val detail = if (choice == GapChoice.Wait) {
-                                "충족. 접근 차량이 지나갈 때까지 기다리기로 했어요."
-                            } else {
-                                "복기. 옆 차로에 충분한 간격이 생길 때까지 기다려요."
-                            }
-                            PracticeCard("안전 간격 판단", detail)
+                            val outcome = gapScenario.assess(choice)
+                            GapReview(outcome)
+                            Text(PracticeRecord.focusForLaneChange(completed, outcome).guidance,
+                                style = MaterialTheme.typography.bodySmall)
                         }
-                        Text(nextPracticeTip(completed, gapChoice), style = MaterialTheme.typography.bodySmall)
                         PrimaryAction("다시 연습", enabled = true) { side = null }
                     }
                     else -> {
                         val scene = SignalScene.entries[sceneIndex]
                         Text("${direction.indicator.label} 차로 변경 · ${sceneIndex + 1}/${SignalScene.entries.size}",
                             style = MaterialTheme.typography.labelLarge)
-                        PracticeCard(scene.title, scene.description) {
+                        val description = when (scene) {
+                            SignalScene.NearWindow -> gapScenario.traffic
+                            SignalScene.Start -> gapScenario.safeStart
+                            else -> scene.description
+                        }
+                        PracticeCard(scene.title, description) {
                             Text("켜진 신호 · ${indicator.label}", style = MaterialTheme.typography.labelLarge)
                         }
                         FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -144,15 +203,18 @@ internal fun TurnSignalPractice(onExit: () -> Unit) {
                         val isLast = scene == SignalScene.entries.last()
                         val canAdvance = !asksAboutGap || gapChoice != null
                         PrimaryAction(if (isLast) "결과 보기" else "다음 장면", enabled = canAdvance) {
-                            if (report != null || scene != SignalScene.entries[sceneIndex] ||
+                            if (roundFinished || scene != SignalScene.entries[sceneIndex] ||
                                 (asksAboutGap && gapChoice == null)
                             ) return@PrimaryAction
-                            val recorded = observations + IndicatorObservation(scene.point, indicator)
-                            observations = recorded
+                            val recorded = ArrayList(recordedStates).apply { add(indicator.name) }
                             if (isLast) {
-                                val window = LaneChangeWindow(direction, SignalScene.Start.point, SignalScene.Finish.point)
-                                report = LaneChangeSignalEvaluator.evaluate(window, recorded)
+                                val choice = gapChoice ?: return@PrimaryAction
+                                val assessment = evaluateSignalRound(direction, recorded)
+                                recordedStates = recorded
+                                roundFinished = true
+                                onCompleted(PracticeRecord.fromLaneChange(assessment, gapScenario.assess(choice)))
                             } else {
+                                recordedStates = recorded
                                 sceneIndex++
                             }
                         }
@@ -163,6 +225,17 @@ internal fun TurnSignalPractice(onExit: () -> Unit) {
             }
         }
     }
+}
+
+private fun evaluateSignalRound(direction: LaneChangeSide, states: List<String>): LaneChangeSignalReport {
+    val scenes = SignalScene.entries
+    if (states.size != scenes.size) return LaneChangeSignalReport()
+    val observations = listOf(initialSignal) + states.mapIndexed { index, state ->
+        val indicator = IndicatorState.entries.firstOrNull { it.name == state } ?: IndicatorState.Unavailable
+        IndicatorObservation(scenes[index].point, indicator)
+    }
+    val window = LaneChangeWindow(direction, SignalScene.Start.point, SignalScene.Finish.point)
+    return LaneChangeSignalEvaluator.evaluate(window, observations)
 }
 
 @Composable
@@ -200,13 +273,15 @@ private fun SignalReview(report: LaneChangeSignalReport) {
     }
 }
 
-private fun nextPracticeTip(report: LaneChangeSignalReport, gapChoice: GapChoice?): String = when {
-    gapChoice == GapChoice.MoveNow -> "다음 연수에서는 접근하는 차량을 먼저 보내 보세요."
-    report.onset != SignalOnset.InAdvance ->
-        "변경 ${LaneChangeSignalEvaluator.MIN_LEAD_METERS}m 전까지 맞는 방향을 켜 보세요."
-    report.hold != SignalHold.Maintained -> "이동이 끝날 때까지 맞는 방향을 유지해 보세요."
-    report.clear != SignalClear.InTime -> "새 차로에 자리 잡으면 바로 신호를 꺼 보세요."
-    else -> "반대 방향도 연습해 보세요. 이동 직전에 사각지대와 간격을 다시 확인하세요."
+@Composable
+private fun GapReview(outcome: GapOutcome) {
+    val detail = when (outcome) {
+        GapOutcome.WaitedForClearance -> "충족. 안전한 간격이 확인될 때까지 기다렸어요."
+        GapOutcome.MovedAfterCheck -> "충족. 간격을 확인하고 이동했어요."
+        GapOutcome.ChoseExtraWait -> "충족. 간격이 있어도 더 기다려도 돼요."
+        GapOutcome.MovedWithoutClearance -> "복기. 옆 차로가 확인될 때까지 기다려요."
+    }
+    PracticeCard("안전 간격 판단", detail)
 }
 
 @Composable
@@ -215,16 +290,8 @@ private fun PracticeCard(
     description: String,
     content: @Composable () -> Unit = {}
 ) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(title, style = MaterialTheme.typography.titleSmall)
-            Text(description, style = MaterialTheme.typography.bodyMedium)
-            content()
-        }
+    PracticePanel(title) {
+        Text(description, style = MaterialTheme.typography.bodyMedium)
+        content()
     }
 }
