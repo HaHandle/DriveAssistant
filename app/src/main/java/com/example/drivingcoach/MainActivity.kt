@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
 import java.util.Locale
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -185,7 +186,7 @@ private fun TrainingFlow(
                 val sample = scenario.sample(index)
                 demoSession.add(sample)
                 replaySpeed = sample.metersPerSecond
-                delay(1000)
+                if (index < scenario.speeds.lastIndex) delay(scenario.replayDelayMillis)
             }
             replayFinished = true
         }
@@ -198,8 +199,8 @@ private fun TrainingFlow(
     val content = if (drivingRestricted) null else when (screen) {
         TrainingScreen.Home -> ScreenContent(
             title = "운전 연수",
-            description = if (demo) "속도 시나리오로 감속 연수를 체험하세요." else "속도 연결을 확인한 뒤 시작하세요.",
-            cardTitle = "기본 연수",
+            description = if (demo) "속도 시나리오로 정차 연수를 체험하세요." else "속도 연결을 확인한 뒤 시작하세요.",
+            cardTitle = "정차 제어 연수",
             cardText = "주차 상태에서 시작하고, 연수 후 다시 주차해 결과를 확인하세요.",
             action = "연수 시작"
         )
@@ -216,7 +217,11 @@ private fun TrainingFlow(
             title = "연수 결과",
             description = if (demo) "데모 데이터 평가" else "차량 속도 기반 관찰",
             cardTitle = result?.score?.let { "실험용 감속 점수 ${it}점" }
-                ?: if (result?.strongEventCount != null) "감속 관찰" else "평가 보류",
+                ?: when {
+                    result?.strongEventCount != null -> "감속 관찰"
+                    result?.stopObservations?.isNotEmpty() == true -> "정차 관찰"
+                    else -> "평가 보류"
+                },
             cardText = result?.let {
                 val eventCount = it.strongEventCount
                 if (eventCount == null) it.feedback else String.format(
@@ -263,8 +268,13 @@ private fun TrainingFlow(
                         options = {
                             if (demo && screen == TrainingScreen.Home) {
                                 SecondaryAction("시나리오 · " + scenario.label) {
-                                    scenario = if (scenario == DemoScenario.Smooth) DemoScenario.Abrupt else DemoScenario.Smooth
+                                    scenario = scenario.next()
                                 }
+                            }
+                        },
+                        resultDetails = {
+                            if (screen == TrainingScreen.Result) {
+                                result?.stopObservations?.let { StopControlDetails(it) }
                             }
                         }
                     ) {
@@ -307,6 +317,7 @@ private fun TrainingScreenContent(
     wide: Boolean,
     actionEnabled: Boolean = true,
     options: @Composable () -> Unit = {},
+    resultDetails: @Composable () -> Unit = {},
     onAction: () -> Unit
 ) {
     val heading: @Composable () -> Unit = {
@@ -333,6 +344,7 @@ private fun TrainingScreenContent(
                     }
                 }
             }
+            resultDetails()
             PrimaryAction(content.action, actionEnabled, onAction)
         }
     }
@@ -345,6 +357,40 @@ private fun TrainingScreenContent(
     } else {
         heading()
         detail()
+    }
+}
+
+@Composable
+private fun StopControlDetails(observations: List<StopControlObservation>) {
+    Surface(
+        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Column(Modifier.padding(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text("정차 제어 관찰", style = MaterialTheme.typography.titleSmall)
+            if (observations.isEmpty()) {
+                Text("조건에 맞는 정차 기록이 부족해요.", style = MaterialTheme.typography.bodyMedium)
+            }
+            observations.forEach { observation ->
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("접근 속도 ${observation.speedBand.label}", style = MaterialTheme.typography.labelLarge)
+                    val observed = observation.observedStops
+                    val withoutCandidate = observation.stopsWithoutStrongCandidate
+                    val fraction = "강한 감속 후보 미감지 ${withoutCandidate}/${observed}회"
+                    if (observed >= MIN_COMPARABLE_STOPS) {
+                        val percent = (100.0 * withoutCandidate / observed).roundToInt()
+                        Text("$fraction ($percent%)", style = MaterialTheme.typography.bodyMedium)
+                    } else {
+                        Text(fraction, style = MaterialTheme.typography.bodyMedium)
+                        val remaining = MIN_COMPARABLE_STOPS - observed
+                        Text("비교에는 같은 속도대 기록이 ${remaining}회 더 필요해요.",
+                            style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+        }
     }
 }
 

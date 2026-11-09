@@ -3,13 +3,16 @@ package com.example.drivingcoach
 import kotlin.math.max
 import kotlin.math.roundToInt
 
+internal const val DECELERATION_FLOOR = 0.2
+
 internal data class SpeedSample(val timestampNanos: Long, val metersPerSecond: Float)
 
 internal data class DecelerationResult(
     val score: Int?,
     val feedback: String,
     val peakDeceleration: Double = 0.0,
-    val strongEventCount: Int? = null
+    val strongEventCount: Int? = null,
+    val stopObservations: List<StopControlObservation>? = null
 )
 
 /** Estimates forward deceleration from vehicle speed. Event thresholds are provisional. */
@@ -23,9 +26,8 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
     private var interrupted = false
 
     private var strongEventCount = 0
-    private var strongEventActive = false
-    private var aboveThresholdNanos = 0L
-    private var belowThresholdNanos = 0L
+    private val strongEvents = StrongDecelerationDetector()
+    private val stopControl = StopControlTracker()
 
     fun add(sample: SpeedSample) {
         if (interrupted) return
@@ -53,7 +55,8 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
         }
         if (last.metersPerSecond < 0f || sample.metersPerSecond < 0f) {
             previous = sample
-            resetStrongEvent()
+            strongEvents.reset()
+            stopControl.discardApproach()
             return
         }
         // Wait for a minimum interval before taking another speed difference.
@@ -66,8 +69,11 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
         val deceleration = (last.metersPerSecond.toDouble() - sample.metersPerSecond) / seconds
         peakDeceleration = max(peakDeceleration, deceleration)
         if (deceleration > DECELERATION_FLOOR) decelerationNanos += intervalNanos
-        if (deceleration > STRONG_START) strongDecelerationNanos += intervalNanos
-        updateStrongEvent(deceleration, intervalNanos)
+        if (deceleration > StrongDecelerationDetector.START_THRESHOLD) {
+            strongDecelerationNanos += intervalNanos
+        }
+        if (strongEvents.add(deceleration, intervalNanos)) strongEventCount++
+        stopControl.add(last, sample, deceleration)
     }
 
     fun interrupt() {
@@ -81,8 +87,9 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
         if (interrupted || stale) {
             return DecelerationResult(null, "연수 기록이 중단되어 결과를 확인할 수 없어요.")
         }
+        val stops = stopControl.observations()
         if (forwardIntervals < MIN_FORWARD_INTERVALS || decelerationNanos < MIN_DECELERATION_NANOS) {
-            return DecelerationResult(null, "관찰한 감속 구간이 충분하지 않아요.")
+            return DecelerationResult(null, "관찰한 감속 구간이 충분하지 않아요.", stopObservations = stops)
         }
         val score = if (includeDemoScore) {
             (100 * (1 - strongDecelerationNanos.toDouble() / decelerationNanos)).roundToInt()
@@ -92,27 +99,7 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
         } else {
             "측정 구간에서 강한 감속 기준을 충족한 사건이 없어요."
         }
-        return DecelerationResult(score, feedback, peakDeceleration, strongEventCount)
-    }
-
-    private fun updateStrongEvent(deceleration: Double, intervalNanos: Long) {
-        if (strongEventActive) {
-            belowThresholdNanos = if (deceleration <= STRONG_END) belowThresholdNanos + intervalNanos else 0L
-            if (belowThresholdNanos >= MIN_RELEASE_NANOS) resetStrongEvent()
-            return
-        }
-
-        aboveThresholdNanos = if (deceleration > STRONG_START) aboveThresholdNanos + intervalNanos else 0L
-        if (aboveThresholdNanos >= MIN_EVENT_NANOS) {
-            strongEventCount++
-            strongEventActive = true
-        }
-    }
-
-    private fun resetStrongEvent() {
-        strongEventActive = false
-        aboveThresholdNanos = 0L
-        belowThresholdNanos = 0L
+        return DecelerationResult(score, feedback, peakDeceleration, strongEventCount, stops)
     }
 
     private companion object {
@@ -120,17 +107,58 @@ internal class DecelerationSession(private val startedAtNanos: Long? = null) {
         const val MAX_GAP_NANOS = 2_000_000_000L
         const val MIN_FORWARD_INTERVALS = 4
         const val MIN_DECELERATION_NANOS = 3_000_000_000L
-        const val DECELERATION_FLOOR = 0.2
-        const val STRONG_START = 3.0
-        const val STRONG_END = 2.0
-        const val MIN_EVENT_NANOS = 600_000_000L
-        const val MIN_RELEASE_NANOS = 300_000_000L
     }
 }
 
-internal enum class DemoScenario(val label: String, val speeds: List<Float>) {
-    Smooth("부드러운 감속", listOf(15f, 13.5f, 12f, 10.5f, 9f, 7.5f, 6f, 4.5f, 3f, 1.5f, 0f)),
-    Abrupt("급한 감속", listOf(15f, 15f, 15f, 11f, 7f, 3f, 0f, 0f, 0f, 0f, 0f));
+internal class StrongDecelerationDetector {
+    private var eventActive = false
+    private var aboveThresholdNanos = 0L
+    private var belowThresholdNanos = 0L
+
+    /** Returns true when the current sequence first qualifies as a strong event. */
+    fun add(deceleration: Double, intervalNanos: Long): Boolean {
+        if (eventActive) {
+            belowThresholdNanos = if (deceleration <= END_THRESHOLD) belowThresholdNanos + intervalNanos else 0L
+            if (belowThresholdNanos >= MIN_RELEASE_NANOS) reset()
+            return false
+        }
+        aboveThresholdNanos = if (deceleration > START_THRESHOLD) aboveThresholdNanos + intervalNanos else 0L
+        eventActive = aboveThresholdNanos >= MIN_EVENT_NANOS
+        return eventActive
+    }
+
+    fun reset() {
+        eventActive = false
+        aboveThresholdNanos = 0L
+        belowThresholdNanos = 0L
+    }
+
+    companion object {
+        const val START_THRESHOLD = 3.0
+        private const val END_THRESHOLD = 2.0
+        private const val MIN_EVENT_NANOS = 600_000_000L
+        private const val MIN_RELEASE_NANOS = 300_000_000L
+    }
+}
+
+internal enum class DemoScenario(
+    val label: String,
+    val speeds: List<Float>,
+    val replayDelayMillis: Long = 1_000L
+) {
+    Smooth("부드러운 감속", listOf(15f, 13.5f, 12f, 10.5f, 9f, 7.5f, 6f, 4.5f, 3f, 1.5f, 0f, 0f)),
+    Abrupt("급한 감속", listOf(15f, 15f, 15f, 11f, 7f, 3f, 0f, 0f, 0f, 0f, 0f)),
+    Repeated(
+        "반복 정차",
+        listOf(
+            15f, 12.5f, 10f, 7.5f, 5f, 2.5f, 0f, 0f,
+            3f, 6f, 9f, 12f, 15f, 11f, 7f, 3f, 0f, 0f,
+            3f, 6f, 9f, 12f, 15f, 12.5f, 10f, 7.5f, 5f, 2.5f, 0f, 0f
+        ),
+        replayDelayMillis = 400L
+    );
+
+    fun next() = entries[(ordinal + 1) % entries.size]
 
     fun sample(index: Int) = SpeedSample((index + 1) * 1_000_000_000L, speeds[index])
 }

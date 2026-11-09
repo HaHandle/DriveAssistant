@@ -2,7 +2,7 @@
 
 ## 이번에 적용한 감속 관찰
 
-`CarRestrictionsMonitor`에서 받은 `PERF_VEHICLE_SPEED`의 차량 타임스탬프와 m/s 값을 `MainActivity`가 `DecelerationSession`에 직접 전달한다. Compose의 속도 상태는 화면 표시용으로 사용한다. 일반 Android 데모는 두 속도 시나리오를 같은 분석기에 재생한다. [Pleos 차량 속도 FAQ](https://document.pleos.ai/docs/pleos-only/vehicle-app-developer-guide/vehicle-app-faq)
+`CarRestrictionsMonitor`에서 받은 `PERF_VEHICLE_SPEED`의 차량 타임스탬프와 m/s 값을 `MainActivity`가 `DecelerationSession`에 직접 전달한다. Compose의 속도 상태는 화면 표시용으로 사용한다. 일반 Android 데모는 부드러운 감속, 급한 감속, 반복 정차 시나리오를 같은 분석기에 재생한다. [Pleos 차량 속도 FAQ](https://document.pleos.ai/docs/pleos-only/vehicle-app-developer-guide/vehicle-app-faq)
 
 | 단계 | 동작 |
 | --- | --- |
@@ -12,6 +12,33 @@
 | 결과 공개 | 전진 속도 구간 4개 이상과 `d > 0.2 m/s²` 감속 시간 3초 이상을 확보하면 후보 수와 구간 최대 감속을 표시한다. 실차 화면은 `CarUxRestrictions`가 허용된 상태를 반환한 뒤 조작과 결과를 제공한다. |
 
 표의 수치는 파일럿 데이터로 조정할 초기값이다. 속도 샘플 사이의 값은 구간 평균으로만 해석한다. 부드러운 데모는 `0회 / 1.5 m/s²`, 급한 데모는 `1회 / 4.0 m/s²`가 설계상 기대값이다. 기존 실험용 점수는 데모에서만 표시한다. 속도 기반 감속 후보에는 브레이크 페달 조작, 회생 제동, 방어 제동이 모두 포함될 수 있다. 결과에는 감속 당시 교통 상황을 복기할 수 있는 한 문장을 붙인다.
+
+## API 기반 정차 제어 관찰
+
+| 읽을 신호 | 평가에 쓰는 방법 | 적용 상태 |
+| --- | --- | --- |
+| AAOS `CarPropertyManager.PERF_VEHICLE_SPEED` | 원본 타임스탬프, m/s, 전후진 부호로 접근 속도, 정차 확인, 감속 후보를 계산한다. | 기존 `android.car.permission.CAR_SPEED`와 속도 구독 경로를 사용한다. 대상 차량에서 데이터 수신과 지원 주기는 확인이 필요하다. |
+| AAOS `CarUxRestrictions` | 상태가 확인되고 플랫폼이 조작을 허용할 때 연수를 시작·종료하고 상세 결과를 연다. | 기존 제한 상태와 상태 미확인 시 차단을 그대로 사용한다. |
+| AAOS `GEAR_SELECTION` | P/R/D를 읽어 주차 상태와 연수 구간을 추가 확인한다. | 차종 지원과 `android.car.permission.CAR_POWERTRAIN` 사용 범위를 확인한 뒤 연동한다. |
+| Pleos Vehicle SDK `Brake` | `checkBrakePedalStatusCapabilities`로 지원을 확인한 뒤 `registerBrakePedalStatus`로 페달 상태를 구독한다. 감속 사건과 시간으로 맞춰 페달 입력 여부와 페달 조작부터 정차까지의 시간을 기록한다. | `pleos.car.permission.CAR_DRIVE`, 앱 권한과 차종 지원 확인 뒤 연동한다. 페달 상태만으로 압력이나 제동 이유를 판정할 수 없다. |
+| Pleos Vehicle SDK `TurnSignal` | 회전·차로 변경 기회가 독립적으로 확인된 연수에서 `registerTurnSignalState`의 상태 변화로 기동 시작 전 점등 여부를 확인한다. | `pleos.car.permission.CAR_LIGHTS`, 차종 지원, 조작 기회의 근거 신호를 확인한 뒤 연동한다. |
+
+[AAOS 차량 프로퍼티](https://developer.android.com/reference/android/car/VehiclePropertyIds) · [Pleos API 가용성](https://document.pleos.ai/en/docs/pleos-only/vehicle-app-planning-guide/api-compatibility-availability) · [Brake SDK](https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle/ai.pleos.playground.vehicle.api/brake/entry) · [Vehicle SDK 권한](https://document.pleos.ai/docs/pleos-only/connect-sdk-pleos/Vehicle/vehicle-permission)
+
+### 앱에 구현한 평가 흐름
+
+1. `StopControlTracker`는 연수의 유효한 전진 속도 쌍으로 첫 감속 구간을 찾는다. 감속을 시작한 속도로 `15 ≤ v < 30 km/h`와 `30 ≤ v ≤ 60 km/h`를 나눈다. 대역 밖에서 시작한 감속은 새 접근이 감지될 때까지 집계하지 않는다.
+2. 접근 속도 쌍 사이에 1.2초를 넘는 간격이 생기거나 후진, `0.4 m/s²` 초과 재가속 또는 정차 확인 전 재출발이 관찰되면 해당 접근을 버린다. 움직이는 구간이 최소 3개, 1초 이상이어야 하며, 20초 이내에 `0.1 m/s` 이하가 1초 유지되어야 정차 1회가 된다. 20초는 감속 시작부터 정차 확인까지의 상한이다.
+3. 각 정차에서 위의 3.0 m/s², 0.6초 기준으로 강한 감속 후보가 있었는지 기록한다. 정차를 1회만 집계하고, 평속이나 재가속 이후 새 접근을 기다린다. 긴 수집 중단이나 Activity 중단으로 세션이 무효화되면 정차 요약도 보류한다.
+4. 결과 화면의 **정차 제어 관찰** 카드가 속도대별 관찰 횟수를 표시한다. 같은 대역에서 3회 이상 관찰되면 `후보가 감지되지 않은 정차 ÷ 관찰한 정차`를 표시한다. 3회 미만은 추가 관찰이 필요한 상태다. 이 수치는 세션 안의 속도 관찰 비율이다.
+
+일반 Android에서 홈의 시나리오 버튼을 눌러 **반복 정차**를 고르면 한 속도대의 세 번 정차를 재생한다. 설계상 기대 출력은 `30–60 km/h`, `강한 감속 후보 미감지 2/3회 (67%)`다. 입력 데이터의 타임스탬프 간격은 1초다. 데모 재생 간격은 0.4초다.
+
+Brake나 방향지시등처럼 원본 이벤트 시간이 없는 신호에는 수신 시간을 붙인다. 시간 정렬 오차를 측정하고, 그 오차와 비슷한 크기의 시차는 평가에 쓰지 않는다.
+
+### 운전 숙련도 판정에 필요한 근거
+
+강사가 같은 연수 과제에서 정차 타이밍과 안정성을 평가하고, 피해야 할 급감속과 필요한 방어 제동을 구분한다. 이 판정과 센서 결과를 대응시켜 기준을 보정한다. 운전자와 경로가 겹치지 않는 검증 데이터에서 정차 검출 누락, 오탐, 방어 제동 오분류를 따로 확인한다. 표본과 맥락을 확보한 항목만 `안정 경향`, `연습 권장`, `추가 관찰`로 나눈다. 공도 관찰에는 정차 이유가 확인되지 않는 경우가 있어 후보를 복기 자료로 사용한다.
 
 ## 주행 습관 분석으로 확장
 
