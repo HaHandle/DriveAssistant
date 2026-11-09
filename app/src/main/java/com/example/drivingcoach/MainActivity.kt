@@ -29,6 +29,8 @@ class MainActivity : ComponentActivity() {
     private var vehicleRestricted by mutableStateOf<Boolean?>(null)
     private var vehicleParked by mutableStateOf<Boolean?>(null)
     private var parkedPracticeKey by mutableStateOf<Long?>(null)
+    private var activityStarted by mutableStateOf(false)
+    private var parkPermissionGranted by mutableStateOf(false)
 
     private var speedSample by mutableStateOf<SpeedSample?>(null)
     private var speedPermissionGranted by mutableStateOf(false)
@@ -38,11 +40,8 @@ class MainActivity : ComponentActivity() {
         if (granted) restrictionsMonitor?.refreshSpeedSubscription()
     }
 
-    private val canReadPark: Boolean
-        get() = checkSelfPermission(PARK_SIGNAL_PERMISSION) == PackageManager.PERMISSION_GRANTED
-
     private val canOpenParkedPractice: Boolean
-        get() = canReadPark && vehicleRestricted == false && vehicleParked == true
+        get() = activityStarted && parkPermissionGranted && vehicleRestricted == false && vehicleParked == true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +51,7 @@ class MainActivity : ComponentActivity() {
                 if (automotive) {
                     VehicleContent()
                 } else {
-                    TrainingDemo(historyStore = practiceHistory)
+                    TrainingDemo(historyStore = practiceHistory, replayActive = activityStarted)
                 }
             }
         }
@@ -95,7 +94,7 @@ class MainActivity : ComponentActivity() {
                     SecondaryAction("주차 중 모의 연수") {
                         if (canOpenParkedPractice) parkedPracticeKey = SystemClock.elapsedRealtimeNanos()
                     }
-                } else if (canReadPark) {
+                } else if (parkPermissionGranted) {
                     val parkMessage = if (vehicleParked == false) "기어를 P에 두면 모의 연수를 열 수 있어요."
                     else "차량에서 주차 상태를 확인하는 중이에요."
                     Text(parkMessage, style = MaterialTheme.typography.bodySmall)
@@ -111,7 +110,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        activityStarted = true
         if (automotive && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            parkPermissionGranted = checkSelfPermission(PARK_SIGNAL_PERMISSION) == PackageManager.PERMISSION_GRANTED
             speedPermissionGranted = checkSelfPermission(SPEED_PERMISSION) == PackageManager.PERMISSION_GRANTED
             val monitor = CarRestrictionsMonitor(
                 this,
@@ -132,6 +133,7 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onStop() {
+        activityStarted = false
         parkedPracticeKey = null
         vehicleSession?.interrupt()
         restrictionsMonitor?.stop()
@@ -151,13 +153,13 @@ class MainActivity : ComponentActivity() {
 
     private fun startVehicleSession(): Boolean {
         val remaining = speedSample?.remainingFreshMillis() ?: 0L
-        if (vehicleRestricted != false || !speedPermissionGranted || remaining <= 0L) return false
+        if (!activityStarted || vehicleRestricted != false || !speedPermissionGranted || remaining <= 0L) return false
         vehicleSession = DecelerationSession(startedAtNanos = SystemClock.elapsedRealtimeNanos())
         return true
     }
 
     private fun finishVehicleSession(): DecelerationResult? {
-        if (vehicleRestricted != false) return null
+        if (!activityStarted || vehicleRestricted != false) return null
         val activeSession = vehicleSession ?: return null
         vehicleSession = null
         return activeSession.finish(SystemClock.elapsedRealtimeNanos(), includeDemoScore = false)

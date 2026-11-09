@@ -123,13 +123,14 @@ internal class CarRestrictionsMonitor(
             override fun onChangeEvent(value: CarPropertyValue<*>) {
                 if (!active || parkCallback !== this || value.propertyId != VehiclePropertyIds.GEAR_SELECTION) return
                 val timestamp = value.timestamp
-                if (timestamp <= 0L) {
+                if (timestamp <= 0L || value.status != CarPropertyValue.STATUS_AVAILABLE) {
+                    lastTimestamp = maxOf(lastTimestamp, timestamp)
                     onParkChanged(null)
                     return
                 }
                 if (timestamp <= lastTimestamp) return
                 lastTimestamp = timestamp
-                val gear = if (value.status == CarPropertyValue.STATUS_AVAILABLE) value.value as? Int else null
+                val gear = value.value as? Int
                 onParkChanged(gear?.let { it == VehicleGear.GEAR_PARK })
             }
 

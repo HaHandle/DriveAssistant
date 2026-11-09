@@ -58,7 +58,8 @@ private data class ScreenContent(
 @Composable
 internal fun TrainingDemo(
     historyStore: PracticeHistoryStore? = null,
-    onExitParkedPractice: (() -> Unit)? = null
+    onExitParkedPractice: (() -> Unit)? = null,
+    replayActive: Boolean = true
 ) {
     val history = rememberPracticeHistory(historyStore)
     var drivingRestricted by rememberSaveable { mutableStateOf(false) }
@@ -67,6 +68,7 @@ internal fun TrainingDemo(
     TrainingFlow(
         drivingRestricted = phoneDemo && drivingRestricted,
         practiceHistory = history.state,
+        replayActive = replayActive,
         savesPracticeOnDevice = historyStore != null,
         onPracticeCompleted = history::record,
         onClearHistory = history::clear,
@@ -94,6 +96,7 @@ internal fun TrainingFlow(
     cancelVehicleSession: () -> Unit = {},
     vehicleOptions: @Composable () -> Unit = {},
     practiceHistory: PracticeHistoryState = PracticeHistoryState(),
+    replayActive: Boolean = true,
     savesPracticeOnDevice: Boolean = false,
     onPracticeCompleted: (PracticeRecord) -> Unit = {},
     onClearHistory: () -> Unit = {},
@@ -129,8 +132,8 @@ internal fun TrainingFlow(
         return
     }
 
-    LaunchedEffect(screen, scenario) {
-        if (screen == TrainingScreen.Session && demo) {
+    LaunchedEffect(screen, scenario, replayActive) {
+        if (screen == TrainingScreen.Session && demo && replayActive) {
             if (replayedSamples == 0) replayedSamples = 1
             while (replayedSamples < scenario.speeds.size) {
                 delay(scenario.replayDelayMillis)
@@ -221,7 +224,7 @@ internal fun TrainingFlow(
                             scenario = scenario,
                             history = practiceHistory,
                             savesOnDevice = savesPracticeOnDevice,
-                            onChooseScenario = { scenario = scenario.next() },
+                            onChooseScenario = { scenario = it },
                             onStartStop = ::startStopDemo,
                             onOpenLaneChange = { showTurnSignalPractice = true },
                             onOpenRecommendation = { focus ->

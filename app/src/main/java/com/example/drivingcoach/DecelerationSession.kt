@@ -158,7 +158,5 @@ internal enum class DemoScenario(
         replayDelayMillis = 400L
     );
 
-    fun next() = entries[(ordinal + 1) % entries.size]
-
     fun sample(index: Int) = SpeedSample((index + 1) * 1_000_000_000L, speeds[index])
 }

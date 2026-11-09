@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -145,7 +146,8 @@ internal fun TurnSignalPractice(
                             DropdownMenu(expanded = scenarioMenuOpen, onDismissRequest = { scenarioMenuOpen = false }) {
                                 GapScenario.entries.forEach { scenario ->
                                     DropdownMenuItem(
-                                        text = { Text(scenario.label) },
+                                        text = { Text(scenario.label, style = MaterialTheme.typography.labelLarge) },
+                                        modifier = Modifier.heightIn(min = 64.dp),
                                         onClick = {
                                             gapScenario = scenario
                                             scenarioMenuOpen = false

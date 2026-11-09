@@ -2,12 +2,16 @@ package com.example.drivingcoach
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,7 +35,7 @@ internal fun PracticeDashboard(
     scenario: DemoScenario,
     history: PracticeHistoryState,
     savesOnDevice: Boolean,
-    onChooseScenario: () -> Unit,
+    onChooseScenario: (DemoScenario) -> Unit,
     onStartStop: () -> Unit,
     onOpenLaneChange: () -> Unit,
     onOpenRecommendation: (PracticeFocus) -> Unit,
@@ -45,7 +49,7 @@ internal fun PracticeDashboard(
         PracticePanel("정차 제어", modifier) {
             Text("비슷한 접근 속도에서 멈추는 습관을 비교해요.",
                 style = MaterialTheme.typography.bodyMedium)
-            SecondaryAction("시나리오 · " + scenario.label, onChooseScenario)
+            StopScenarioPicker(scenario, onChooseScenario)
             PrimaryAction("연수 시작", enabled = true, onClick = onStartStop)
         }
     }
@@ -78,6 +82,26 @@ internal fun PracticeDashboard(
     PracticeHistoryPanel(history, savesOnDevice, onClearHistory)
     if (onExitParkedPractice != null) {
         SecondaryAction("차량 연수로 돌아가기", onExitParkedPractice)
+    }
+}
+
+@Composable
+private fun StopScenarioPicker(selected: DemoScenario, onChoose: (DemoScenario) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        SecondaryAction("시나리오 · " + selected.label) { expanded = true }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DemoScenario.entries.forEach { scenario ->
+                DropdownMenuItem(
+                    text = { Text(scenario.label, style = MaterialTheme.typography.labelLarge) },
+                    modifier = Modifier.heightIn(min = 64.dp),
+                    onClick = {
+                        expanded = false
+                        onChoose(scenario)
+                    }
+                )
+            }
+        }
     }
 }
 
