@@ -178,6 +178,12 @@ private fun TrainingFlow(
     var replayFinished by remember { mutableStateOf(false) }
     var replaySpeed by remember { mutableStateOf<Float?>(null) }
     var result by remember { mutableStateOf<DecelerationResult?>(null) }
+    var showTurnSignalPractice by rememberSaveable { mutableStateOf(false) }
+
+    if (demo && !drivingRestricted && showTurnSignalPractice) {
+        TurnSignalPractice(onExit = { showTurnSignalPractice = false })
+        return
+    }
 
     LaunchedEffect(screen, demoSession) {
         if (screen == TrainingScreen.Session && demo) {
@@ -269,6 +275,9 @@ private fun TrainingFlow(
                             if (demo && screen == TrainingScreen.Home) {
                                 SecondaryAction("시나리오 · " + scenario.label) {
                                     scenario = scenario.next()
+                                }
+                                SecondaryAction("방향지시등 연수") {
+                                    showTurnSignalPractice = true
                                 }
                             }
                         },
@@ -395,7 +404,7 @@ private fun StopControlDetails(observations: List<StopControlObservation>) {
 }
 
 @Composable
-private fun PrimaryAction(label: String, enabled: Boolean, onClick: () -> Unit) {
+internal fun PrimaryAction(label: String, enabled: Boolean, onClick: () -> Unit) {
     val interactions = remember { MutableInteractionSource() }
     val pressed by interactions.collectIsPressedAsState()
     val colors = MaterialTheme.colorScheme
@@ -419,7 +428,7 @@ private fun PrimaryAction(label: String, enabled: Boolean, onClick: () -> Unit) 
 }
 
 @Composable
-private fun SecondaryAction(label: String, onClick: () -> Unit) {
+internal fun SecondaryAction(label: String, onClick: () -> Unit) {
     TextButton(onClick = onClick, shape = RoundedCornerShape(16.dp),
         modifier = Modifier.sizeIn(minWidth = 64.dp, minHeight = 64.dp),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
