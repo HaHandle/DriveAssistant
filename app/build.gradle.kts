@@ -5,6 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.drivingcoach"
+    useLibrary("android.car", false)
     compileSdk {
         version = release(37)
     }
