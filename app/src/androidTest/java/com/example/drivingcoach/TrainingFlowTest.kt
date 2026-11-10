@@ -49,6 +49,20 @@ class TrainingFlowTest {
         show("실험용 감속 점수 100점")
     }
 
+    @Test
+    fun repeatedStopScenarioShowsExpectedObservation() {
+        compose.mainClock.autoAdvance = false
+        click("시나리오 · 부드러운 감속")
+        click("시나리오 · 급한 감속")
+        click("연수 시작")
+        finishReplay()
+
+        show("정차 제어 관찰")
+        show("접근 속도 30–60 km/h")
+        show("강한 감속 후보 미감지 2/3회 (67%)")
+        saveScreenshot("repeated-stop-result")
+    }
+
     private fun finishReplay() {
         compose.mainClock.advanceTimeBy(12_000)
         click("연수 종료 및 결과 보기")

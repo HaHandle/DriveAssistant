@@ -10,11 +10,14 @@ internal enum class StopSpeedBand(val label: String) {
         fun from(metersPerSecond: Float): StopSpeedBand? {
             val kilometersPerHour = metersPerSecond * 3.6
             return when {
-                kilometersPerHour >= 15.0 && kilometersPerHour < 30.0 -> Low
-                kilometersPerHour in 30.0..60.0 -> Medium
+                kilometersPerHour < 15.0 - SPEED_EPSILON_KMH -> null
+                kilometersPerHour < 30.0 - SPEED_EPSILON_KMH -> Low
+                kilometersPerHour <= 60.0 + SPEED_EPSILON_KMH -> Medium
                 else -> null
             }
         }
+
+        private const val SPEED_EPSILON_KMH = 0.001
     }
 }
 
