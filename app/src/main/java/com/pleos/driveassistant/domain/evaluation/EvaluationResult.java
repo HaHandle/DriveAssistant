@@ -25,8 +25,12 @@ public final class EvaluationResult {
         }
         this.step = Objects.requireNonNull(step, "step");
         this.score = score;
-        this.strengths = Collections.unmodifiableList(
-                new ArrayList<String>(Objects.requireNonNull(strengths, "strengths")));
+        Objects.requireNonNull(strengths, "strengths");
+        List<String> validatedStrengths = new ArrayList<String>(strengths.size());
+        for (int index = 0; index < strengths.size(); index++) {
+            validatedStrengths.add(requireText(strengths.get(index), "strengths[" + index + "]"));
+        }
+        this.strengths = Collections.unmodifiableList(validatedStrengths);
         this.improvement = requireText(improvement, "improvement");
         this.nextTask = requireText(nextTask, "nextTask");
     }

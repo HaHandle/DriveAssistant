@@ -80,6 +80,22 @@ public class EvaluationResultTest {
     }
 
     @Test
+    public void rejectsNullOrBlankStrengthItems() {
+        assertThrows(NullPointerException.class, () -> new EvaluationResult(
+                TrainingStep.STRAIGHT_DRIVING,
+                80,
+                Arrays.asList("안전거리 유지", null),
+                "개선점",
+                "다음 과제"));
+        assertThrows(IllegalArgumentException.class, () -> new EvaluationResult(
+                TrainingStep.STRAIGHT_DRIVING,
+                80,
+                Arrays.asList("안전거리 유지", "   "),
+                "개선점",
+                "다음 과제"));
+    }
+
+    @Test
     public void strengthsAreDefensivelyCopiedAndReadOnly() {
         List<String> source = new ArrayList<String>();
         source.add("안전거리 유지");
