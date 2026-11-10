@@ -31,11 +31,11 @@ object MockDriverOverviewData {
             score = DrivingScoreSummary(
                 current = if (partial) null else DrivingScore(92),
                 previous = DrivingScore(88),
-                trend = listOf(
-                    ScoreObservation(1_783_036_800_000L, DrivingScore(84)),
-                    ScoreObservation(1_783_123_200_000L, DrivingScore(88)),
-                    ScoreObservation(1_783_209_600_000L, if (partial) null else DrivingScore(92)),
-                ),
+                trend = listOf(40L to 72, 29L to 75, 20L to 78, 12L to 81, 8L to 84,
+                    5L to 86, 3L to 87, 1L to 88, 0L to 92).map { (daysAgo, score) ->
+                    ScoreObservation(1_783_209_600_000L - daysAgo * 86_400_000L,
+                        if (partial && daysAgo in listOf(3L, 0L)) null else DrivingScore(score))
+                },
             ),
             habits = listOf(
                 DrivingHabitAnalysis(HabitKind.STOP_CONTROL, HabitStatus.REVIEW, ObservationCount(2, 3)),

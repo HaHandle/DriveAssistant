@@ -28,6 +28,7 @@ import com.example.drivingcoach.ui.model.DriverOverview
 import com.example.drivingcoach.ui.model.DrivingHabitAnalysis
 import com.example.drivingcoach.ui.model.HabitKind
 import com.example.drivingcoach.ui.model.HabitStatus
+import com.example.drivingcoach.ui.model.ScorePeriod
 
 private val focusLabels = listOf(R.string.focus_balanced, R.string.focus_smooth, R.string.focus_efficient)
 private val focusTitles = listOf(R.string.balanced_title, R.string.smooth_title, R.string.efficient_title)
@@ -58,6 +59,8 @@ private fun SampleLabel() {
 fun CoachHomeScreen(
     sampleData: Boolean,
     overviewState: DriverOverviewState,
+    scorePeriod: ScorePeriod,
+    onScorePeriod: (ScorePeriod) -> Unit,
     onRetry: () -> Unit,
     focus: Int,
     previewActive: Boolean,
@@ -77,9 +80,13 @@ fun CoachHomeScreen(
             if (wide) {
                 Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                     Column(Modifier.weight(1.3f), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                        CoachingPanel(sampleData, overviewState, onRetry, focus, previewActive, onFocus, onPreview)
+                        ScoreOverviewPanel(sampleData, overviewState, onRetry, focus)
+                        if (sampleData && overviewState is DriverOverviewState.Ready) {
+                            ScoreTrendPanel(overviewState.overview.score.trend, scorePeriod, onScorePeriod)
+                        }
                     }
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                        CoachingPanel(sampleData, focus, previewActive, onFocus, onPreview)
                         if (sampleData && overviewState is DriverOverviewState.Ready) {
                             OverviewHabitsPanel(overviewState.overview.habits)
                         }
@@ -88,7 +95,11 @@ fun CoachHomeScreen(
                     }
                 }
             } else {
-                CoachingPanel(sampleData, overviewState, onRetry, focus, previewActive, onFocus, onPreview)
+                ScoreOverviewPanel(sampleData, overviewState, onRetry, focus)
+                if (sampleData && overviewState is DriverOverviewState.Ready) {
+                    ScoreTrendPanel(overviewState.overview.score.trend, scorePeriod, onScorePeriod)
+                }
+                CoachingPanel(sampleData, focus, previewActive, onFocus, onPreview)
                 if (sampleData && overviewState is DriverOverviewState.Ready) {
                     OverviewHabitsPanel(overviewState.overview.habits)
                 }
@@ -101,14 +112,11 @@ fun CoachHomeScreen(
 }
 
 @Composable
-private fun CoachingPanel(
+private fun ScoreOverviewPanel(
     sampleData: Boolean,
     overviewState: DriverOverviewState,
     onRetry: () -> Unit,
     focus: Int,
-    previewActive: Boolean,
-    onFocus: (Int) -> Unit,
-    onPreview: () -> Unit,
 ) {
     CoachPanel(Modifier.fillMaxWidth()) {
         Eyebrow(stringResource(R.string.score_heading))
@@ -133,7 +141,18 @@ private fun CoachingPanel(
                 color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 3,
                 overflow = TextOverflow.Ellipsis)
         }
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+    }
+}
+
+@Composable
+private fun CoachingPanel(
+    sampleData: Boolean,
+    focus: Int,
+    previewActive: Boolean,
+    onFocus: (Int) -> Unit,
+    onPreview: () -> Unit,
+) {
+    CoachPanel(Modifier.fillMaxWidth()) {
         Eyebrow(stringResource(R.string.focus_heading))
         LiquidSelection(
             focusLabels.map { stringResource(it) }, focus, onFocus,

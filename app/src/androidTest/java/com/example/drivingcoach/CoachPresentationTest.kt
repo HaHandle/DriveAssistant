@@ -6,6 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -102,8 +103,10 @@ class CoachPresentationTest {
         }
         compose.onNodeWithTag("overview-loading").assertIsDisplayed()
         compose.onNodeWithTag("overview-ready").assertDoesNotExist()
+        compose.onNodeWithTag("score-trend-panel").assertDoesNotExist()
         compose.runOnIdle { state.value = DriverOverviewState.Empty }
         compose.onNodeWithTag("overview-empty").assertIsDisplayed()
+        compose.onNodeWithTag("score-trend-panel").assertDoesNotExist()
         compose.runOnIdle { state.value = MockDriverOverviewData.state(OverviewScenario.ERROR) }
         compose.onNodeWithTag("overview-retry").performScrollTo().performClick()
         compose.runOnIdle { org.junit.Assert.assertEquals(1, retries) }
@@ -132,5 +135,18 @@ class CoachPresentationTest {
         compose.onNodeWithTag("overview-ready").assertDoesNotExist()
         compose.onNodeWithTag("sample-data-label").assertDoesNotExist()
         compose.onNodeWithText(text(R.string.connection_title)).assertIsDisplayed()
+        compose.onNodeWithTag("score-trend-panel").assertDoesNotExist()
+    }
+
+    @Test
+    fun scorePeriodSelectionSurvivesSavedStateRestoration() {
+        val restoration = StateRestorationTester(compose)
+        restoration.setContent {
+            DrivingCoachApp(VehicleUxState.PREVIEW, foreground = true,
+                overviewState = MockDriverOverviewData.state(OverviewScenario.NORMAL))
+        }
+        compose.onNodeWithText(text(R.string.dashboard_period_month)).performScrollTo().performClick()
+        restoration.emulateSavedInstanceStateRestore()
+        compose.onNodeWithText(text(R.string.dashboard_period_month)).performScrollTo().assertIsSelected()
     }
 }
