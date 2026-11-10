@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="6" failures="0" errors="0" skipped="0" time="0.000" timestamp="2026-11-10T11:29:23" hostname="localhost">
+  <testsuite name="com.example.drivingcoach.CoachPresentationTest" tests="5" failures="0" errors="0" skipped="0" time="21.836" timestamp="2026-11-10T11:29:23" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="actualRestrictionsRemoveAnAlreadyOpenHistoryScreen" classname="com.example.drivingcoach.CoachPresentationTest" time="9.145" />
+    <testcase name="missingCarStateNeverShowsSampleDataOrUnlockedControls" classname="com.example.drivingcoach.CoachPresentationTest" time="2.234" />
+    <testcase name="previewFocusAndCoachingSessionRespondToInput" classname="com.example.drivingcoach.CoachPresentationTest" time="3.420" />
+    <testcase name="sampleTripOpensDetailsAndReturnsToList" classname="com.example.drivingcoach.CoachPresentationTest" time="3.285" />
+    <testcase name="onlyPhonePreviewOffersAnExitFromSimulatedDrivingRestrictions" classname="com.example.drivingcoach.CoachPresentationTest" time="3.752" />
+  </testsuite>
+  <testsuite name="com.example.drivingcoach.ExampleInstrumentedTest" tests="1" failures="0" errors="0" skipped="0" time="0.023" timestamp="2026-11-10T11:29:23" hostname="localhost">
+    <properties>
+      <property name="device" value="emulator-5554" />
+    </properties>
+    <testcase name="useAppContext" classname="com.example.drivingcoach.ExampleInstrumentedTest" time="0.023" />
+  </testsuite>
+</testsuites>
