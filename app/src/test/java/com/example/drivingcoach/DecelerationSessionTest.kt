@@ -67,6 +67,33 @@ class DecelerationSessionTest {
         assertEquals(100, session.finish().score)
     }
 
+    @Test
+    fun repeatedStopReplayProducesDocumentedObservation() {
+        val result = replay(DemoScenario.Repeated)
+
+        assertEquals(1, result.strongEventCount)
+        assertEquals(4.0, result.peakDeceleration, 0.0)
+        val observation = requireNotNull(result.stopObservations).single()
+        assertEquals(StopSpeedBand.Medium, observation.speedBand)
+        assertEquals(3, observation.observedStops)
+        assertEquals(1, observation.stopsWithStrongCandidate)
+        assertEquals(2, observation.stopsWithoutStrongCandidate)
+    }
+
+    @Test
+    fun vehicleResultKeepsObservationsWithoutPublishingDemoScore() {
+        val session = DecelerationSession()
+        DemoScenario.Repeated.speeds.indices.forEach {
+            session.add(DemoScenario.Repeated.sample(it))
+        }
+
+        val result = session.finish(includeDemoScore = false)
+
+        assertNull(result.score)
+        assertEquals(1, result.strongEventCount)
+        assertEquals(3, requireNotNull(result.stopObservations).single().observedStops)
+    }
+
     private fun replay(scenario: DemoScenario): DecelerationResult {
         val session = DecelerationSession()
         scenario.speeds.indices.forEach { session.add(scenario.sample(it)) }

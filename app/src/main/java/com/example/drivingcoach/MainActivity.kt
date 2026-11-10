@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
 import java.util.Locale
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -58,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
     private var speedSample by mutableStateOf<SpeedSample?>(null)
     private var speedPermissionGranted by mutableStateOf(false)
-    private var interruptionVersion by mutableStateOf(0)
+    private var vehicleSession: DecelerationSession? = null
     private val speedPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         speedPermissionGranted = granted
         if (granted) restrictionsMonitor?.refreshSpeedSubscription()
@@ -75,7 +76,9 @@ class MainActivity : ComponentActivity() {
                         restrictionKnown = vehicleRestricted != null,
                         demo = false,
                         speedSample = speedSample,
-                        interruptionVersion = interruptionVersion,
+                        startVehicleSession = ::startVehicleSession,
+                        finishVehicleSession = ::finishVehicleSession,
+                        cancelVehicleSession = { vehicleSession = null },
                         demoControls = {
                             if (vehicleRestricted == false && !speedPermissionGranted) {
                                 SecondaryAction("속도 데이터 권한 허용") { speedPermission.launch("android.car.permission.CAR_SPEED") }
@@ -95,8 +98,15 @@ class MainActivity : ComponentActivity() {
                 PackageManager.PERMISSION_GRANTED
             val monitor = CarRestrictionsMonitor(
                 this,
-                onRestrictionChanged = { vehicleRestricted = it },
-                onSpeedChanged = { speedSample = it }
+                onRestrictionChanged = { restricted ->
+                    vehicleRestricted = restricted
+                    if (restricted == null) vehicleSession?.interrupt()
+                },
+                onSpeedChanged = { sample ->
+                    // Feed the recorder before Compose renders the latest speed.
+                    if (sample == null) vehicleSession?.interrupt() else vehicleSession?.add(sample)
+                    speedSample = sample
+                }
             )
             restrictionsMonitor = monitor
             monitor.start()
@@ -104,11 +114,24 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onStop() {
-        interruptionVersion++
+        vehicleSession?.interrupt()
         restrictionsMonitor?.stop()
         restrictionsMonitor = null
         vehicleRestricted = null
         super.onStop()
+    }
+
+    private fun startVehicleSession(): Boolean {
+        if (vehicleRestricted != false || !speedPermissionGranted || speedSample == null) return false
+        vehicleSession = DecelerationSession(startedAtNanos = SystemClock.elapsedRealtimeNanos())
+        return true
+    }
+
+    private fun finishVehicleSession(): DecelerationResult? {
+        if (vehicleRestricted != false) return null
+        val activeSession = vehicleSession ?: return null
+        vehicleSession = null
+        return activeSession.finish(SystemClock.elapsedRealtimeNanos(), includeDemoScore = false)
     }
 }
 
@@ -144,46 +167,40 @@ private fun TrainingFlow(
     restrictionKnown: Boolean = true,
     demo: Boolean = true,
     speedSample: SpeedSample? = null,
-    interruptionVersion: Int = 0,
+    startVehicleSession: () -> Boolean = { false },
+    finishVehicleSession: () -> DecelerationResult? = { null },
+    cancelVehicleSession: () -> Unit = {},
     demoControls: @Composable () -> Unit = {}
 ) {
     var screen by remember { mutableStateOf(initialScreen) }
     var scenario by rememberSaveable { mutableStateOf(DemoScenario.Smooth) }
-    var session by remember { mutableStateOf(DecelerationSession()) }
+    var demoSession by remember { mutableStateOf(DecelerationSession()) }
     var replayFinished by remember { mutableStateOf(false) }
     var replaySpeed by remember { mutableStateOf<Float?>(null) }
     var result by remember { mutableStateOf<DecelerationResult?>(null) }
 
-    LaunchedEffect(screen, session) {
+    LaunchedEffect(screen, demoSession) {
         if (screen == TrainingScreen.Session && demo) {
             replayFinished = false
             for (index in scenario.speeds.indices) {
                 val sample = scenario.sample(index)
-                session.add(sample)
+                demoSession.add(sample)
                 replaySpeed = sample.metersPerSecond
-                delay(1000)
+                if (index < scenario.speeds.lastIndex) delay(scenario.replayDelayMillis)
             }
             replayFinished = true
         }
     }
-    LaunchedEffect(speedSample, screen, session) {
-        if (!demo && screen == TrainingScreen.Session) {
-            val sample = speedSample
-            if (sample == null) session.interrupt() else session.add(sample)
-        }
-    }
-    LaunchedEffect(interruptionVersion) {
-        if (!demo && screen == TrainingScreen.Session) session.interrupt()
-    }
     BackHandler(enabled = !drivingRestricted && screen != TrainingScreen.Home) {
+        if (!demo && screen == TrainingScreen.Session) cancelVehicleSession()
         screen = TrainingScreen.Home
     }
 
     val content = if (drivingRestricted) null else when (screen) {
         TrainingScreen.Home -> ScreenContent(
             title = "운전 연수",
-            description = if (demo) "속도 시나리오로 감속 연수를 체험하세요." else "속도 연결을 확인한 뒤 시작하세요.",
-            cardTitle = "기본 연수",
+            description = if (demo) "속도 시나리오로 정차 연수를 체험하세요." else "속도 연결을 확인한 뒤 시작하세요.",
+            cardTitle = "정차 제어 연수",
             cardText = "주차 상태에서 시작하고, 연수 후 다시 주차해 결과를 확인하세요.",
             action = "연수 시작"
         )
@@ -198,12 +215,20 @@ private fun TrainingFlow(
         )
         TrainingScreen.Result -> ScreenContent(
             title = "연수 결과",
-            description = if (demo) "데모 데이터 평가" else "차량 속도 데이터 평가",
-            cardTitle = result?.score?.let { "실험용 감속 점수 ${it}점" } ?: "평가 보류",
+            description = if (demo) "데모 데이터 평가" else "차량 속도 기반 관찰",
+            cardTitle = result?.score?.let { "실험용 감속 점수 ${it}점" }
+                ?: when {
+                    result?.strongEventCount != null -> "감속 관찰"
+                    result?.stopObservations?.isNotEmpty() == true -> "정차 관찰"
+                    else -> "평가 보류"
+                },
             cardText = result?.let {
-                it.feedback + if (it.score != null) {
-                    String.format(Locale.getDefault(), "\n최대 감속 %.1f m/s²", it.peakDeceleration)
-                } else ""
+                val eventCount = it.strongEventCount
+                if (eventCount == null) it.feedback else String.format(
+                    Locale.getDefault(),
+                    "강한 감속 후보 %d회\n구간 최대 감속 %.1f m/s²\n%s",
+                    eventCount, it.peakDeceleration, it.feedback
+                )
             } ?: "연수를 시작해 데이터를 수집해 주세요.",
             action = "홈으로"
         )
@@ -243,28 +268,38 @@ private fun TrainingFlow(
                         options = {
                             if (demo && screen == TrainingScreen.Home) {
                                 SecondaryAction("시나리오 · " + scenario.label) {
-                                    scenario = if (scenario == DemoScenario.Smooth) DemoScenario.Abrupt else DemoScenario.Smooth
+                                    scenario = scenario.next()
                                 }
+                            }
+                        },
+                        resultDetails = {
+                            if (screen == TrainingScreen.Result) {
+                                result?.stopObservations?.let { StopControlDetails(it) }
                             }
                         }
                     ) {
                         when (screen) {
                             TrainingScreen.Home -> {
-                                session = DecelerationSession()
+                                if (demo) {
+                                    demoSession = DecelerationSession()
+                                    replaySpeed = null
+                                    replayFinished = false
+                                } else if (!startVehicleSession()) {
+                                    return@TrainingScreenContent
+                                }
                                 result = null
-                                replaySpeed = null
-                                replayFinished = false
                                 screen = TrainingScreen.Session
                             }
                             TrainingScreen.Session -> {
-                                result = session.finish(if (demo) null else SystemClock.elapsedRealtimeNanos())
+                                val completed = if (demo) demoSession.finish() else finishVehicleSession()
+                                result = completed ?: return@TrainingScreenContent
                                 screen = TrainingScreen.Result
                             }
                             TrainingScreen.Result -> screen = TrainingScreen.Home
                         }
                     }
-                    if (screen == TrainingScreen.Result) {
-                        Text("실험용 지표 · 감속 중 3 m/s² 초과 시간 비율로 계산",
+                    if (screen == TrainingScreen.Result && result?.score != null) {
+                        Text("데모 점수 · 감속 중 3 m/s² 초과 시간 비율로 계산",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
@@ -282,6 +317,7 @@ private fun TrainingScreenContent(
     wide: Boolean,
     actionEnabled: Boolean = true,
     options: @Composable () -> Unit = {},
+    resultDetails: @Composable () -> Unit = {},
     onAction: () -> Unit
 ) {
     val heading: @Composable () -> Unit = {
@@ -308,6 +344,7 @@ private fun TrainingScreenContent(
                     }
                 }
             }
+            resultDetails()
             PrimaryAction(content.action, actionEnabled, onAction)
         }
     }
@@ -320,6 +357,40 @@ private fun TrainingScreenContent(
     } else {
         heading()
         detail()
+    }
+}
+
+@Composable
+private fun StopControlDetails(observations: List<StopControlObservation>) {
+    Surface(
+        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Column(Modifier.padding(32.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            Text("정차 제어 관찰", style = MaterialTheme.typography.titleSmall)
+            if (observations.isEmpty()) {
+                Text("조건에 맞는 정차 기록이 부족해요.", style = MaterialTheme.typography.bodyMedium)
+            }
+            observations.forEach { observation ->
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("접근 속도 ${observation.speedBand.label}", style = MaterialTheme.typography.labelLarge)
+                    val observed = observation.observedStops
+                    val withoutCandidate = observation.stopsWithoutStrongCandidate
+                    val fraction = "강한 감속 후보 미감지 ${withoutCandidate}/${observed}회"
+                    if (observed >= MIN_COMPARABLE_STOPS) {
+                        val percent = (100.0 * withoutCandidate / observed).roundToInt()
+                        Text("$fraction ($percent%)", style = MaterialTheme.typography.bodyMedium)
+                    } else {
+                        Text(fraction, style = MaterialTheme.typography.bodyMedium)
+                        val remaining = MIN_COMPARABLE_STOPS - observed
+                        Text("비교에는 같은 속도대 기록이 ${remaining}회 더 필요해요.",
+                            style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+            }
+        }
     }
 }
 
