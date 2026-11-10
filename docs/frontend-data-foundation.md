@@ -47,7 +47,7 @@
 
 `DriverOverviewRepository.observeOverview()`는 `Flow<DriverOverviewState>` 경계를 제공합니다. 실제 통신 구현은 없습니다. Mock 구현은 수집할 때마다 동일한 상태 한 개를 내보내며 지연·자동 상태 전환·센서·저장·네트워크 호출을 하지 않습니다. LOADING 시나리오는 로딩 화면 검토용으로 그 상태에 머뭅니다.
 
-Preview는 `DriverOverviewPreviewParameterProvider`로 같은 fixture를 직접 주입하므로 Activity, ViewModel 또는 차량 서비스가 필요하지 않습니다. 현재 앱의 `DrivingCoachApp`에는 이 저장소를 아직 연결하지 않았습니다. 따라서 차량에서 Mock 값이 자동 노출되는 경로도 추가하지 않았습니다.
+Preview는 `DriverOverviewPreviewParameterProvider`로 같은 fixture를 직접 주입하므로 Activity, ViewModel 또는 차량 서비스가 필요하지 않습니다. 1~2단계에서는 기존 앱 화면에 저장소를 연결하지 않았습니다. 이후의 [3단계 상태 연결](frontend-state-flow.md)에서는 실제 앱 화면에도 같은 상태를 주입하되 차량에서는 Mock 공급원을 선택하지 않습니다.
 
 기존 코루틴 해결 버전인 1.9.0의 `core` 의존성을 명시했습니다. 다른 의존성은 업그레이드하지 않았습니다.
 
@@ -67,4 +67,4 @@ Android Studio에서 `ui/preview/DriverOverviewPreview.kt`의 Split/Design 보�
 
 ## 다음 단계
 
-ViewModel/상태 수집 계층을 추가한 뒤 기존 앱 화면을 새 모델에 연결합니다. SharedPreferences 키, 탐색 탭과 차량 UX 제한을 보존하고 Preview에는 상태를 직접 전달합니다. 이후 대시보드, 상세 분석, 숙련도·티어 화면을 순서대로 구현합니다.
+3단계의 ViewModel/상태 수집과 기존 앱 화면 연결은 [별도 검토 문서](frontend-state-flow.md)에 기록합니다. 이후 대시보드, 상세 분석, 숙련도·티어 화면을 순서대로 구현합니다.

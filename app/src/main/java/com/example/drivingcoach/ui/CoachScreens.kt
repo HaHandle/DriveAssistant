@@ -23,6 +23,11 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.drivingcoach.R
+import com.example.drivingcoach.data.DriverOverviewState
+import com.example.drivingcoach.ui.model.DriverOverview
+import com.example.drivingcoach.ui.model.DrivingHabitAnalysis
+import com.example.drivingcoach.ui.model.HabitKind
+import com.example.drivingcoach.ui.model.HabitStatus
 
 private val focusLabels = listOf(R.string.focus_balanced, R.string.focus_smooth, R.string.focus_efficient)
 private val focusTitles = listOf(R.string.balanced_title, R.string.smooth_title, R.string.efficient_title)
@@ -52,6 +57,8 @@ private fun SampleLabel() {
 @Composable
 fun CoachHomeScreen(
     sampleData: Boolean,
+    overviewState: DriverOverviewState,
+    onRetry: () -> Unit,
     focus: Int,
     previewActive: Boolean,
     onFocus: (Int) -> Unit,
@@ -70,19 +77,23 @@ fun CoachHomeScreen(
             if (wide) {
                 Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                     Column(Modifier.weight(1.3f), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                        CoachingPanel(sampleData, focus, previewActive, onFocus, onPreview)
+                        CoachingPanel(sampleData, overviewState, onRetry, focus, previewActive, onFocus, onPreview)
                     }
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                        if (sampleData) MetricsPanel()
+                        if (sampleData && overviewState is DriverOverviewState.Ready) {
+                            OverviewHabitsPanel(overviewState.overview.habits)
+                        }
                         InsightPanel()
-                        if (sampleData) LatestTrip(onHistory)
+                        if (sampleData && overviewState is DriverOverviewState.Ready) LatestTrip(onHistory)
                     }
                 }
             } else {
-                CoachingPanel(sampleData, focus, previewActive, onFocus, onPreview)
-                if (sampleData) MetricsPanel()
+                CoachingPanel(sampleData, overviewState, onRetry, focus, previewActive, onFocus, onPreview)
+                if (sampleData && overviewState is DriverOverviewState.Ready) {
+                    OverviewHabitsPanel(overviewState.overview.habits)
+                }
                 InsightPanel()
-                if (sampleData) LatestTrip(onHistory)
+                if (sampleData && overviewState is DriverOverviewState.Ready) LatestTrip(onHistory)
             }
             Spacer(Modifier.height(4.dp))
         }
@@ -92,6 +103,8 @@ fun CoachHomeScreen(
 @Composable
 private fun CoachingPanel(
     sampleData: Boolean,
+    overviewState: DriverOverviewState,
+    onRetry: () -> Unit,
     focus: Int,
     previewActive: Boolean,
     onFocus: (Int) -> Unit,
@@ -100,22 +113,18 @@ private fun CoachingPanel(
     CoachPanel(Modifier.fillMaxWidth()) {
         Eyebrow(stringResource(R.string.score_heading))
         if (sampleData) {
-            BoxWithConstraints(Modifier.fillMaxWidth()) {
-                if (maxWidth >= 510.dp) {
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(28.dp)) {
-                        LiquidScore(92, stringResource(R.string.score_accessibility, 92),
-                            stringResource(R.string.score_caption), contour = focus)
-                        ScoreMessage(Modifier.weight(1f))
-                    }
-                } else {
-                    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        LiquidScore(92, stringResource(R.string.score_accessibility, 92),
-                            stringResource(R.string.score_caption), contour = focus)
-                        ScoreMessage(Modifier.fillMaxWidth())
-                    }
+            when (overviewState) {
+                DriverOverviewState.Loading -> Text(stringResource(R.string.overview_loading),
+                    style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("overview-loading"))
+                DriverOverviewState.Empty -> Text(stringResource(R.string.overview_empty),
+                    style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("overview-empty"))
+                is DriverOverviewState.Error -> {
+                    Text(stringResource(R.string.overview_error), style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.testTag("overview-error"))
+                    LiquidAction(stringResource(R.string.overview_retry), onRetry,
+                        Modifier.fillMaxWidth().testTag("overview-retry"), secondary = true)
                 }
+                is DriverOverviewState.Ready -> OverviewScore(overviewState.overview, focus)
             }
         } else {
             CoachIcon(CoachSymbol.COACH, Modifier.size(48.dp), tint = MaterialTheme.colorScheme.secondary)
@@ -174,12 +183,54 @@ private fun CoachingPanel(
 }
 
 @Composable
-private fun ScoreMessage(modifier: Modifier = Modifier) {
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(stringResource(R.string.score_message), style = MaterialTheme.typography.titleLarge)
-        Text(stringResource(R.string.score_body), style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 3,
-            overflow = TextOverflow.Ellipsis)
+private fun OverviewScore(overview: DriverOverview, focus: Int) {
+    Column(Modifier.fillMaxWidth().testTag("overview-ready"),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        val current = overview.score.current
+        if (current == null) {
+            Text(stringResource(R.string.overview_unmeasured), style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.testTag("overview-unmeasured"))
+        } else {
+            LiquidScore(current.value, stringResource(R.string.score_accessibility, current.value),
+                stringResource(R.string.score_caption), contour = focus)
+        }
+        val change = overview.score.change
+        Text(if (change == null) stringResource(R.string.overview_no_comparison)
+            else stringResource(R.string.overview_score_change, change),
+            style = MaterialTheme.typography.bodyMedium)
+    }
+}
+
+/** Shared by the app and direct-state previews; observations never become aggregate scores. */
+@Composable
+fun OverviewHabitsPanel(habits: List<DrivingHabitAnalysis>) {
+    CoachPanel(Modifier.fillMaxWidth()) {
+        Eyebrow(stringResource(R.string.overview_habits))
+        if (habits.isEmpty()) {
+            Text(stringResource(R.string.habit_unobserved), style = MaterialTheme.typography.bodyMedium)
+        }
+        habits.forEach { habit ->
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(when (habit.kind) {
+                    HabitKind.STOP_CONTROL -> R.string.habit_stop_control
+                    HabitKind.SIGNAL_TIMING -> R.string.habit_signal_timing
+                    HabitKind.SIGNAL_HOLD -> R.string.habit_signal_hold
+                    HabitKind.SIGNAL_CANCEL -> R.string.habit_signal_cancel
+                }), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(when (habit.status) {
+                    HabitStatus.MET -> R.string.habit_met
+                    HabitStatus.REVIEW -> R.string.habit_review
+                    HabitStatus.UNOBSERVED -> R.string.habit_unobserved
+                }), style = MaterialTheme.typography.bodyMedium)
+                val counts = habit.observations
+                if (counts?.hasObservations == true) {
+                    Text(stringResource(R.string.habit_observations, counts.met, counts.observed),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        }
     }
 }
 
