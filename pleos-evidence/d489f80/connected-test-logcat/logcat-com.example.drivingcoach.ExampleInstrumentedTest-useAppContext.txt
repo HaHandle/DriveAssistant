@@ -1,0 +1,11 @@
+11-10 03:29:21.683 13792 14010 I TestRunner: started: useAppContext(com.example.drivingcoach.ExampleInstrumentedTest)
+11-10 03:29:21.684  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task with ID 1000093 not found
+11-10 03:29:21.684  3130  3130 D HOME_SCREEN: [HOME_SCREEN][AppLauncherImpl::updateRemovedTaskLaunchInfo] updateRemovedTaskLaunchInfo #1 (10) : 10
+11-10 03:29:21.684  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onVanished] onVanished: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}
+11-10 03:29:21.684  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::removeVanishedTaskView] removeTaskView: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}
+11-10 03:29:21.684  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::cancelTaskInteractionHandler] cancelTaskInteractionHandler
+11-10 03:29:21.688  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:21.691  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:21.707  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:21.709  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:21.709 13792 14010 I TestRunner: finished: useAppContext(com.example.drivingcoach.ExampleInstrumentedTest)
