@@ -34,3 +34,28 @@ $env:ANDROID_HOME = Join-Path $env:LOCALAPPDATA 'Android\Sdk'
 디버그 APK: `app/build/outputs/apk/debug/app-debug.apk`
 
 Asta Sans는 [Google Fonts 공식 원본](https://github.com/google/fonts/tree/main/ofl/astasans)을 사용하며, [SIL Open Font License](app/src/main/assets/licenses/AstaSans-OFL.txt)를 APK에도 포함합니다.
+
+## 연수 도메인 모델
+
+초보 운전자 연수를 위한 공통 모델과 단계별 평가 계약은 `app/src/main/java/com/pleos/driveassistant`에 있습니다. 이 모델은 현재 Compose 화면에 연결하지 않았습니다.
+
+### Training curriculum
+
+0. 주행 준비
+1. 출발 및 정차
+2. 직선 도로 주행
+3. 곡선 도로 주행
+4. 차선 변경
+5. 교차로 주행
+6. 주차
+
+### Source layout
+
+- `domain`: 공통 모델과 단계 평가 계약
+- `feature`: 준비 과정과 6개 연수 단계별 규칙
+- `application`: 연수 세션 및 코칭 메시지 조정
+- `port`: 차량 데이터, 피드백, 기록 저장 경계
+- `infrastructure`: PLEOS SDK와 저장소 구현
+- `presentation`: 대시보드, 주행 중 코치, 주행 후 복기 화면
+
+자세한 설계 원칙은 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)를 참고하세요.
