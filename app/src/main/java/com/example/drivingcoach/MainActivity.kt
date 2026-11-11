@@ -1,47 +1,44 @@
 package com.example.drivingcoach
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.example.drivingcoach.ui.DrivingCoachApp
+import com.example.drivingcoach.vehicle.AutomotiveUxConnection
+import com.example.drivingcoach.vehicle.VehicleUxState
 
 class MainActivity : ComponentActivity() {
+    private var vehicleUxState by mutableStateOf(VehicleUxState.UNAVAILABLE)
+    private var foreground by mutableStateOf(false)
+    private var vehicleConnection: AutomotiveUxConnection? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+            vehicleConnection = AutomotiveUxConnection(this) { vehicleUxState = it }
+        } else {
+            vehicleUxState = VehicleUxState.PREVIEW
+        }
         setContent {
-            DrivingCoachUITheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            DrivingCoachApp(vehicleUxState = vehicleUxState, foreground = foreground)
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    override fun onStart() {
+        super.onStart()
+        foreground = true
+        vehicleConnection?.start()
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DrivingCoachUITheme {
-        Greeting("Android")
+    override fun onStop() {
+        foreground = false
+        vehicleConnection?.stop()
+        super.onStop()
     }
 }
