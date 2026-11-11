@@ -1,0 +1,551 @@
+11-10 03:29:14.609 13792 14010 I TestRunner: started: sampleTripOpensDetailsAndReturnsToList(com.example.drivingcoach.CoachPresentationTest)
+11-10 03:29:14.619 13792 14010 D IdlingRegistry: Registering idling resources: [androidx.compose.ui.test.EspressoLink@1547e45]
+11-10 03:29:14.636 13792 14010 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-10 03:29:14.641  1197  1197 D CarSystemBar: [OTA_BAR_TRACE] event=home_task_front, prevStatus=IDLE, newStatus=IDLE, isOtaInProgress=false, isHomeTaskRunning=true, isFullScreen=false, action=skip, reason=not_home, taskId=1000083
+11-10 03:29:14.645   852   914 D ConnectWindowUtil: return taskLaunchBounds
+11-10 03:29:14.646   852   914 D ConnectWindowUtil: alter windowingMode: WINDOWING_MODE_MULTI_WINDOW, launchBounds: Rect(0, 0 - 1682, 1210), removeWithTaskOrganizer: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}
+11-10 03:29:14.646   852   914 E CellBroadcastUtils: getDefaultCellBroadcastReceiverPackageName: no package found
+11-10 03:29:14.648  3130  3209 D EGL_emulation: app_time_stats: avg=217.33ms min=53.04ms max=431.14ms count=5
+11-10 03:29:14.677  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onTaskVisibilityChanged] ConnectTaskView onTaskVisibilityChanged(null): false
+11-10 03:29:14.679  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000083 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:14.679  3130  3130 D HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onFloatingWindowMovedToBack] onFloatingWindowRemoved
+11-10 03:29:14.680  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onDimmed] onDimmed: false}
+11-10 03:29:14.680  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskMovedToFront] ComponentInfo{ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity} (1000083)
+11-10 03:29:14.680  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN flg=0x10000000 cmp=ai.umos.maps.android.navigation.app/.MainActivity } (1000083)
+11-10 03:29:14.681  1197  1197 D CarSystemBar: [OTA_BAR_TRACE] event=home_task_front, prevStatus=IDLE, newStatus=IDLE, isOtaInProgress=false, isHomeTaskRunning=true, isFullScreen=false, action=skip, reason=not_home, taskId=1000091
+11-10 03:29:14.683   543   543 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+11-10 03:29:14.692  3703  3703 D MdViewModel$startThemeCheckOnForegroundCollect: [ThemeRestart] app returned to foreground, checking theme
+11-10 03:29:14.692  3703  3703 D MdViewModel: [ThemeCheck] checkThemeChangedWhileInBackground currentFromOs=VEGA ourTheme=VEGA
+11-10 03:29:14.696  3703  3703 I Mapbox  : [maps-android\MapboxLifecyclePlugin]: onStart is called, MapboxLifecycleObserver will be notified.
+11-10 03:29:14.697  3703  3703 I Mapbox  : [maps-android\GLRenderThread\mapName]: Renderer resumed, renderThreadPrepared=true, surface.isValid=true
+11-10 03:29:14.698  3703  3703 D FirebaseSessions: App foregrounded on ai.umos.maps.android.navigation.app
+11-10 03:29:14.704  3703  3703 I Mapbox  : [maps-android\MapboxLifecyclePlugin]: onResume is called, MapboxLifecycleObserver will be notified.
+11-10 03:29:14.704  3703  3703 I Mapbox  : [maps-android\GLRenderThread\mapName]: Scheduling thread service type reset with delay
+11-10 03:29:14.705  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:14.721  3703  4760 D EGL_emulation: app_time_stats: avg=115.19ms min=9.04ms max=2414.74ms count=28
+11-10 03:29:14.722  3065  3065 D 42dot   : onWindowFocusChangedNative
+11-10 03:29:14.725  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.drivingcoach/androidx.activity.ComponentActivity } (1000091)
+11-10 03:29:14.731 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: PRE_ON_CREATE
+11-10 03:29:14.731 13792 13792 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-10 03:29:14.746  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.drivingcoach/androidx.activity.ComponentActivity } (1000091)
+11-10 03:29:14.746 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: CREATED
+11-10 03:29:14.747 13792 13792 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=androidx.activity.ComponentActivity@7276b3e
+11-10 03:29:14.759 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: STARTED
+11-10 03:29:14.759 13792 13792 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=androidx.activity.ComponentActivity@7276b3e
+11-10 03:29:14.763  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000091 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:14.766  3703  4760 I Mapbox  : [maps-android\Mbgl-FpsManager\mapName]: Average map core rendering time is 1.6348 ms (or 611.70 FPS), missed 0 map render frames, skipped 0 (0 due to render pacing) out of 1 VSYNC pulses
+11-10 03:29:14.779  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.drivingcoach/androidx.activity.ComponentActivity } (1000091)
+11-10 03:29:14.788 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: RESUMED
+11-10 03:29:14.788 13792 13792 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=androidx.activity.ComponentActivity@7276b3e
+11-10 03:29:14.809  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onDimmed] onDimmed: false}
+11-10 03:29:14.810  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskCreated] onTaskCreated: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} (1000091)
+11-10 03:29:14.813  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskCreated] ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} (1000091), distractionOptimized: false)
+11-10 03:29:14.817  3703  4003 E OpenGLRenderer: Unable to match the desired swap behavior.
+11-10 03:29:14.821  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000091 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:14.824   852   930 D ConnectWindowUtil: handleWindowBounds: 4
+11-10 03:29:14.824   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:14.824   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:14.828  3130  3130 D HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onFloatingWindowMovedToBack] onFloatingWindowRemoved
+11-10 03:29:14.828  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onDimmed] onDimmed: false}
+11-10 03:29:14.829  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskMovedToFront] ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} (1000091)
+11-10 03:29:14.829  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10008000 cmp=com.example.drivingcoach/androidx.activity.ComponentActivity } (1000091)
+11-10 03:29:14.830  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onTaskVisibilityChanged] ConnectTaskView onTaskVisibilityChanged(ComponentInfo{ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity}): true
+11-10 03:29:14.834   852  4205 D ConnectWindowUtil: handleWindowBounds: 4
+11-10 03:29:14.834   852  4205 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:14.835   852  4205 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:14.867 13792 14288 E OpenGLRenderer: Unable to match the desired swap behavior.
+11-10 03:29:14.904   852   930 D ConnectWindowUtil: handleWindowBounds: 4
+11-10 03:29:14.904   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:14.904   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:14.921  3130  3130 I HOME_SCREEN: [HOME_SCREEN][Animator::onAnimationEnd] animation finished (canceled: false)
+11-10 03:29:14.923  1197  1288 D EGL_emulation: app_time_stats: avg=1061.27ms min=1061.27ms max=1061.27ms count=1
+11-10 03:29:14.925  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::updateTaskViewBounds] [ComponentInfo{ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity}] (Rect(853, 90 - 2535, 1300))isLandscapeInPortrait(false) blur(false),  bounds not changed(Rect(853, 90 - 2535, 1300)), ignored#1
+11-10 03:29:14.925  3130  3130 D HOME_SCREEN: [HOME_SCREEN][PleosUiRepositoryImpl::setTaskResizing] Setting task resizing to false
+11-10 03:29:14.926  3130  3130 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::setTaskResizing] setTaskResizing called with false
+11-10 03:29:14.927  5281  5566 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][MediaStorageRepositoryImpl::reconnectStorageApi] storageApi.connect(defaultNetwork)
+11-10 03:29:14.928  5281  5742 D StorageConnection: Connecting to Storage Manager Service at ad-main.local:58310
+11-10 03:29:14.929  5281  5742 D MediaRecordingConnection: Connecting to Media Recording Service at ad-main.local:58300
+11-10 03:29:14.932  5281  5742 I MediaRecordingConnection: Successfully connected to Media Recording Service
+11-10 03:29:14.936  5281  5742 I MediaRecordingAPI: MediaRecordingAPI connected successfully
+11-10 03:29:14.937  5281  5303 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][WindowStateServiceImpl::setTaskResizing] setTaskResizing called with false
+11-10 03:29:14.937  3130  3152 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:14.937  5928  5948 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:14.938  1197  1982 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:14.938  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::redrawWindowBar] redrawWindowBar mTask : 1 mTasksHidden : 0
+11-10 03:29:14.938  4490  4502 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:14.938  5281  7256 D TrafficStats: tagSocket(5) with statsTag=0xffffffff, statsUid=-1
+11-10 03:29:14.943   852   931 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+11-10 03:29:14.944   852   931 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+11-10 03:29:14.945   852   927 W ziparchive: Unable to open '/data/app/~~NtV44gV_SI8x3ckXg8BrvA==/com.example.drivingcoach-m6AY2oqyVKK5PI-kQqd5_w==/base.dm': No such file or directory
+11-10 03:29:14.948   852   927 I ActivityTaskManager: Displayed com.example.drivingcoach/androidx.activity.ComponentActivity for user 10: +299ms
+11-10 03:29:14.968  3065  4724 D EGL_emulation: app_time_stats: avg=74.10ms min=23.02ms max=189.52ms count=14
+11-10 03:29:14.968  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskStatusHandler::handleActiveTaskStatusChanged] update task status: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity
+11-10 03:29:14.969  3130  3130 D HOME_SCREEN: [HOME_SCREEN][HomeScreenContentProvider::setTaskStatus] setTaskStatus: size=1, status=ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity
+11-10 03:29:14.976  2794 13120 D [GAA]   : getActiveTasks updateTime:1794310154976
+11-10 03:29:14.977  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::notifyReadyIfNeeded] ready: true
+11-10 03:29:14.979  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@232820144, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:14.982  2794 13120 D [GAA]   : getActiveTasks changed: [ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity]
+11-10 03:29:14.983  2794 13120 D [GAA]   : onUpdateForegroundContext homeActiveTasks:[ai.umos.maps.android.navigation.app]
+11-10 03:29:14.983  2794 13120 W [GAA-SDK]GleoContextManager: setOnScreenContextInfo - cmd : 0
+11-10 03:29:14.983  2794  2794 D [GAA]   : observeSearchResult() >> NaviApp is Foreground. []
+11-10 03:29:14.983  2794  2794 D [GAA]   : onUpdateNaviSearchResult invoke!
+11-10 03:29:14.983  2794  2794 W [GAA-SDK]GleoContextManager: setOnScreenContextInfo - cmd : 1
+11-10 03:29:14.983  2794  2794 D [GAA-SDK]GleoContextManager: setOnScreenContextInfo - put ai.umos.maps.android.navigation.app | 
+11-10 03:29:15.003  3592  3592 I [Pleos]b: [main]Vehicle onChangeEvent: propertyId=291504905, areaId=0, value=77400.0
+11-10 03:29:15.005  3703  3703 I Mapbox  : [maps-android\GLRenderThread\mapName]: Executing thread service type reset from main thread
+11-10 03:29:15.005  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:15.005  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:15.006  3592  3673 D [Pleos]j: [DefaultDispatcher-worker-2]carPropertyFilter: FlowFilter key SdkPropertyKey(key=EV_BATTERY_LEVEL) areaId 0
+11-10 03:29:15.006  3592  3673 D [Pleos]j: compare to value: current(PropertyEventValue(propertyKey=SdkPropertyKey(key=EV_BATTERY_LEVEL), areaId=0, value=77400.0, error=null)) | latest(PropertyEventValue(propertyKey=SdkPropertyKey(key=EV_BATTERY_LEVEL), areaId=0, value=77400.0, error=null)) 
+11-10 03:29:15.006  3592  3673 D [Pleos]j: compare to time: 3971
+11-10 03:29:15.006  3592  3673 I [Pleos]j: [DefaultDispatcher-worker-2]fetchFilterMap propertyEventFilterMap 39
+11-10 03:29:15.006  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:15.007  3592  3673 D [Pleos]j: [DefaultDispatcher-worker-2]before latestMap value: PropertyEventFilterData(propertyEventValue=PropertyEventValue(propertyKey=SdkPropertyKey(key=EV_BATTERY_LEVEL), areaId=0, value=77400.0, error=null), collectTime=1794310151034)
+11-10 03:29:15.007  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:15.007  3703  3703 I ConnectVehicleRepositoryImpl$installGearBatteryRemainDistanceListeners: [ConnectVehicleRepositoryImpl.batteryLevelListener] onChangeEvent - 77400.0
+11-10 03:29:15.007  3592  3673 D [Pleos]j: [DefaultDispatcher-worker-2]after latestMap value: PropertyEventFilterData(propertyEventValue=PropertyEventValue(propertyKey=SdkPropertyKey(key=EV_BATTERY_LEVEL), areaId=0, value=77400.0, error=null), collectTime=1794310155007)
+11-10 03:29:15.007  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:15.007  3592  3673 D [Pleos]u: [DefaultDispatcher-worker-2]collect event: PropertyEventItem(packageNames=[ai.umos.ambientai], itemValue=PropertyEventValueItem(propertyKey=EV_BATTERY_LEVEL, areaIds=[0], value=77400.0, error=null))
+11-10 03:29:15.007  3592  3673 D [Pleos]u: [DefaultDispatcher-worker-2]broadcastPropertyCallback() called with: applicationId = ai.umos.ambientai, broadcastItem = ai.pleos.playground.vehicle.callback.IPropertyCallback$Stub$Proxy@fa07ff3, propertyEventItem = PropertyEventItem(packageNames=[ai.umos.ambientai], itemValue=PropertyEventValueItem(propertyKey=EV_BATTERY_LEVEL, areaIds=[0], value=77400.0, error=null))
+11-10 03:29:15.007  3592  3673 D [Pleos]u: [DefaultDispatcher-worker-2]include - EV_BATTERY_LEVEL
+11-10 03:29:15.007  2794  4423 D [Pleos][SDK]a: [binder:2794_6]onChangeEvent() called with: propIdName = EV_BATTERY_LEVEL, areaId = 0, value = 77400.0
+11-10 03:29:15.018  3703  4760 I Mapbox  : [maps-android\Mbgl-FpsManager\mapName]: Average map core rendering time is 1.2871 ms (or 776.94 FPS), missed 0 map render frames, skipped 0 (0 due to render pacing) out of 1 VSYNC pulses
+11-10 03:29:15.039  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:15.040  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:15.046  1197  1197 D HomeScreenContentResolver: onActiveTaskStatusChanged: [ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity]
+11-10 03:29:15.047  5281  5281 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][HomeScreenRepositoryImpl::notifyTaskStatusChanged] HomeScreen task status changed: [TaskStatus(componentName=ComponentInfo{ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity}, slotNo=0, slotWeight=2)]
+11-10 03:29:15.055   852   907 I system_server: NativeAlloc concurrent copying GC freed 319668(12MB) AllocSpace objects, 17(404KB) LOS objects, 49% free, 24MB/48MB, paused 5.033ms,455us total 619.233ms
+11-10 03:29:15.057  1197  1215 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@c330621]
+11-10 03:29:15.057  5928  5948 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@6b0bd66]
+11-10 03:29:15.057  3130  3645 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@dc5954f]
+11-10 03:29:15.058  4490  4502 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@8dfc453]
+11-10 03:29:15.066   852   909 W System  : A resource failed to call release. 
+11-10 03:29:15.071   852   909 W System  : A resource failed to call HardwareBuffer.close. 
+11-10 03:29:15.074   543   543 E BpTransactionCompletedListener: Failed to transact (-32)
+11-10 03:29:15.074   543   543 E BpTransactionCompletedListener: Failed to transact (-32)
+11-10 03:29:15.078   852   909 W System  : A resource failed to call release. 
+11-10 03:29:15.079   852   909 W System  : A resource failed to call HardwareBuffer.close. 
+11-10 03:29:15.081  1715  1736 D GnbContentProvider: updated type: 2 hit: 0, selection: is_active = ?, selectionArgs: 1, suppressNotify: true
+11-10 03:29:15.086   852   909 W System  : A resource failed to call release. 
+11-10 03:29:15.099  1715  1736 D GnbContentProvider: updated type: 2 hit: 1, selection: id = ?, selectionArgs: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, suppressNotify: true
+11-10 03:29:15.100  4034  4034 I IAPConnector: scheduleBindRetry: 123
+11-10 03:29:15.103  1715  1736 D GnbContentProvider: query type: 2, selection: timestamp != 0 AND leftOrder = -1 AND rightOrder = -1, selectionArgs: null
+11-10 03:29:15.105   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.105   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.105   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.105  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@232820144, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:15.107  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.car.evs/ai.umos.car.evs.CarEvsCameraPreviewActivity, orderType: leftOrder
+11-10 03:29:15.107  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.example.drivingcoach/com.example.drivingcoach.MainActivity, orderType: leftOrder
+11-10 03:29:15.107  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.vehiclecontrol/ai.umos.vehiclecontrol.VehicleControlActivity, orderType: leftOrder
+11-10 03:29:15.107  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.ambientai/ai.umos.ambientai.HistoryActivity, orderType: leftOrder
+11-10 03:29:15.107  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.phoneprojection/ai.umos.phoneprojection.ui.MainActivity, orderType: leftOrder
+11-10 03:29:15.109  1715  1736 D GnbContentProvider: query type: 2, selection: timestamp != 0 AND bottomOrder = -1, selectionArgs: null
+11-10 03:29:15.112  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.car.evs/ai.umos.car.evs.CarEvsCameraPreviewActivity, orderType: bottomOrder
+11-10 03:29:15.122  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.example.drivingcoach/com.example.drivingcoach.MainActivity, orderType: bottomOrder
+11-10 03:29:15.122  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.ambientai/ai.umos.ambientai.HistoryActivity, orderType: bottomOrder
+11-10 03:29:15.122  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.phoneprojection/ai.umos.phoneprojection.ui.MainActivity, orderType: bottomOrder
+11-10 03:29:15.123   852   930 D ConnectWindowUtil: handleWindowBounds: 4
+11-10 03:29:15.123   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.123   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.125  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000091 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:15.126  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::handleMultiWindowTaskAppeared] (multi window) name: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}, orientation: BOTH, id: 1000091)
+11-10 03:29:15.127  3130  3130 I HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::isSupportFullscreen] ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} is support fullscreen: false
+11-10 03:29:15.127  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::onFullscreenAvailable] task: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}, available: true
+11-10 03:29:15.127  1715  1736 D GnbContentProvider: query type: 2, selection: leftOrder != -1, selectionArgs: null
+11-10 03:29:15.127  3130  3206 D HOME_SCREEN: [HOME_SCREEN][AppLauncherImpl::onTaskAppeared] onTaskAppeared: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} (1000091)
+11-10 03:29:15.127  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::showTaskView] showTaskView: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}
+11-10 03:29:15.130  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::hideTask$app_release] hideTask ComponentInfo{ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity} (1000083)
+11-10 03:29:15.130  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::updateSlotWeight] driver: 2, passenger: 0
+11-10 03:29:15.134  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.135  3130  3130 D HOME_SCREEN: [HOME_SCREEN][PleosUiRepositoryImpl::setTaskResizing] Setting task resizing to true
+11-10 03:29:15.135  3130  3130 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::setTaskResizing] setTaskResizing called with true
+11-10 03:29:15.138  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, orderType: leftOrder
+11-10 03:29:15.138  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.callandmessage/ai.umos.mainscreen.MainScreenActivity, orderType: leftOrder
+11-10 03:29:15.138  5281  5298 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][WindowStateServiceImpl::setTaskResizing] setTaskResizing called with true
+11-10 03:29:15.139  5928  5948 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with true
+11-10 03:29:15.139  4490  4502 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with true
+11-10 03:29:15.139  1197  1609 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with true
+11-10 03:29:15.139  3130  3152 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with true
+11-10 03:29:15.143  1715  1736 D GnbContentProvider: query type: 2, selection: rightOrder != -1, selectionArgs: null
+11-10 03:29:15.143  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::updateTaskViewBounds] [ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}] taskViewBounds: Rect(0, 0 - 0, 0) -> updateBounds: Rect(853, 90 - 2535, 1300)
+11-10 03:29:15.148  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, orderType: rightOrder
+11-10 03:29:15.153  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.155  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.161  1715  3032 D GnbContentProvider: query type: 2, selection: bottomOrder != -1, selectionArgs: null
+11-10 03:29:15.162  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.162  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: DRIVER_SEAT_TEMP_DYNAMIC, orderType: bottomOrder
+11-10 03:29:15.162  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: STEERING_WHEEL_HEAT, orderType: bottomOrder
+11-10 03:29:15.163  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.vehiclecontrol/ai.umos.vehiclecontrol.VehicleControlActivity, orderType: bottomOrder
+11-10 03:29:15.163  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, orderType: bottomOrder
+11-10 03:29:15.163  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.callandmessage/ai.umos.mainscreen.MainScreenActivity, orderType: bottomOrder
+11-10 03:29:15.163  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: PASSENGER_SEAT_TEMP_DYNAMIC, orderType: bottomOrder
+11-10 03:29:15.164  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: RECIRCULATION, orderType: bottomOrder
+11-10 03:29:15.164  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: HVAC_AUTO, orderType: bottomOrder
+11-10 03:29:15.164  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onTaskCreated] ConnectTaskView onTaskCreated(ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity})
+11-10 03:29:15.168  1197  1197 D GnbMixedSlotController: onMixedListUpdated: orderType: , mMixedInfoList: {}
+11-10 03:29:15.169  1197  1197 D GnbMixedSlotController: refreshUi orderType: 
+11-10 03:29:15.169  1197  1197 D GnbMixedSlotController: onMixedListUpdated: orderType: bottomOrder, mMixedInfoList: {0=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=0, gnbHvacInfo=GnbHvacInfo(stringId=DRIVER_SEAT_TEMP_DYNAMIC, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558789, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 1=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=1, gnbHvacInfo=GnbHvacInfo(stringId=STEERING_WHEEL_HEAT, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558806, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 2=GnbMixedInfo(type=mixed_gnb_app, category=app, leftOrder=-1, rightOrder=-1, bottomOrder=2, gnbHvacInfo=GnbHvacInfo(stringId=, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=0, icon=0), gnbAppInfo=GnbAppInfo(intentUri=intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=ai.umos.vehiclecontrol/.VehicleControlActivity;end, timeStamp=0, isActive=0)), 3=GnbMixedInfo(type=mixed_gnb_app, category=app, leftOrder=-1, rightOrder=-1, bottomOrder=3, gnbHvacInfo=GnbHvacInfo(stringId=, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=0, icon=0), gnbAppInfo=GnbAppInfo(intentUri=intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=ai.umos.maps.android.navigation.app/.MainActivity;end, timeStamp=0, isActive=1)), 4=GnbMixedInfo(type=mixed_gnb_app, category=app, leftOrder=-1, rightOrder=-1, bottomOrder=4, gnbHvacInfo=GnbHvacInfo(stringId=, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=0, icon=0), gnbAppInfo=GnbAppInfo(intentUri=intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=ai.umos.callandmessage/ai.umos.mainscreen.MainScreenActivity;end, timeStamp=0, isActive=0)), 6=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=6, gnbHvacInfo=GnbHvacInfo(stringId=PASSENGER_SEAT_TEMP_DYNAMIC, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558799, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 7=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=7, gnbHvacInfo=GnbHvacInfo(stringId=RECIRCULATION, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558803, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 8=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=8, gnbHvacInfo=GnbHvacInfo(stringId=HVAC_AUTO, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558781, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0))}
+11-10 03:29:15.169  1197  1197 D GnbMixedSlotController: refreshUi orderType: bottomOrder
+11-10 03:29:15.171   852   930 D ConnectWindowUtil: handleWindowBounds: 4
+11-10 03:29:15.172   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.173   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.179  1197  1197 D GnbMixedContainer: setLayoutInfo, orderType:bottomOrder, slotId:3 isRemovable: false, id:ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, alwaysFavoritePackages:[ai.umos.vehiclecontrol, ai.umos.maps.android.navigation.app]
+11-10 03:29:15.179  1197  1197 D GnbAppButton: setAppActive: false
+11-10 03:29:15.179  1197  1197 D GnbAppButton: updateClickListener open ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity view: 254038963
+11-10 03:29:15.184  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.186  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.191  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.193  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.198  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.199  1197  1288 D EGL_emulation: app_time_stats: avg=345.65ms min=214.67ms max=495.92ms count=3
+11-10 03:29:15.203  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.206  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onInfoChanged] onInfoChanged: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}
+11-10 03:29:15.207  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:15.211  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::handleTaskInfoChanged] topActivity changed: ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} [1000091]
+11-10 03:29:15.214  3703  4548 D navi_engine: navi_service::engine_svc::api: no deadlocks detected!
+11-10 03:29:15.222  3703  4579 I navi_engine: navi_service::mapmatch_svc::mapmatching: [mm] org(127.094681,37.4127212:0), match(127.094681,37.4127212), head(0.00), speed(0.00), roadid(18446744073709551615), route(-2), sat(0), laneid(18446744073709551615), stat(0), off(0.0), l(0), r(0)
+11-10 03:29:15.225   852   930 D ConnectWindowUtil: handleWindowBounds: 4
+11-10 03:29:15.225   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.225   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.252  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::updateTaskViewBounds] [ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}] (Rect(853, 90 - 2535, 1300))isLandscapeInPortrait(false) blur(false),  bounds not changed(Rect(853, 90 - 2535, 1300)), ignored#1
+11-10 03:29:15.318   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.318   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.318   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.332  3065  4724 I DrivingRenderPerf: {"event":"RENDER_COUNTERS","output":0,"session":1,"mono_ns":422332646300,"submitted":10161,"gpu_completed":10159,"completed_sequence":0,"untracked":0,"rhi":"OpenGL"}
+11-10 03:29:15.342  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:15.342  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:15.358   852  4205 I ImeTracker: com.example.drivingcoach:8387f759: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-10 03:29:15.359   852  4205 I ImeTracker: com.example.drivingcoach:8387f759: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-10 03:29:15.371   852  1649 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.371   852  1649 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.371   852  1649 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.393  3130  3130 I HOME_SCREEN: [HOME_SCREEN][Animator::onAnimationEnd] animation finished (canceled: false)
+11-10 03:29:15.409  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::updateTaskViewBounds] [ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}] (Rect(853, 90 - 2535, 1300))isLandscapeInPortrait(false) blur(false),  bounds not changed(Rect(853, 90 - 2535, 1300)), ignored#1
+11-10 03:29:15.410  3130  3130 D HOME_SCREEN: [HOME_SCREEN][PleosUiRepositoryImpl::setTaskResizing] Setting task resizing to false
+11-10 03:29:15.415  3130  3130 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::setTaskResizing] setTaskResizing called with false
+11-10 03:29:15.417  5281  5298 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][WindowStateServiceImpl::setTaskResizing] setTaskResizing called with false
+11-10 03:29:15.418  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::redrawWindowBar] redrawWindowBar mTask : 1 mTasksHidden : 1
+11-10 03:29:15.418  4490  4502 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:15.418  1197  1215 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:15.418  3130 16058 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:15.419 13792 13792 D VRI[ComponentActivity]: Cancelling draw. cancelDueToPreDrawListener=false cancelDueToSync=true
+11-10 03:29:15.421  5928  5948 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with false
+11-10 03:29:15.421  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.422   852   931 D WindowManager: Disable applyEnterAnimationLocked (windowStateAnimator)
+11-10 03:29:15.422  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskStatusHandler::handleActiveTaskStatusChanged] update task status: com.example.drivingcoach/androidx.activity.ComponentActivity
+11-10 03:29:15.422  3130  3130 D HOME_SCREEN: [HOME_SCREEN][HomeScreenContentProvider::setTaskStatus] setTaskStatus: size=1, status=com.example.drivingcoach/androidx.activity.ComponentActivity
+11-10 03:29:15.424   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.425   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.425   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.432  2794 13121 D [GAA]   : getActiveTasks updateTime:1794310155431
+11-10 03:29:15.457  1278  4609 D android.hardware.gnss-service.ranchu: GnssHwListener:consume:87 sz=64
+11-10 03:29:15.463  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::notifyReadyIfNeeded] ready: true
+11-10 03:29:15.465  1197  1197 D HomeScreenContentResolver: onActiveTaskStatusChanged: [com.example.drivingcoach/androidx.activity.ComponentActivity]
+11-10 03:29:15.468  2794 13121 D [GAA]   : getActiveTasks changed: [com.example.drivingcoach/androidx.activity.ComponentActivity]
+11-10 03:29:15.468  2794 13121 D [GAA]   : onUpdateForegroundContext homeActiveTasks:[com.example.drivingcoach]
+11-10 03:29:15.468  2794 13121 W [GAA-SDK]GleoContextManager: setOnScreenContextInfo - cmd : 0
+11-10 03:29:15.472  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.472  1278  4609 D android.hardware.gnss-service.ranchu: GnssHwListener:consume:87 sz=64
+11-10 03:29:15.472  1278  4609 D android.hardware.gnss-service.ranchu: Gnss:onGnssLocationCb:311
+11-10 03:29:15.472  1278  4609 D android.hardware.gnss-service.ranchu: Gnss:onGnssLocationCb:333
+11-10 03:29:15.475  2794  2794 D [GAA]   : observeSearchResult() >> NaviApp is Background. ai.umos.maps.android.navigation.app clear
+11-10 03:29:15.477  5281  5281 D PLEOS_UI_SERVICE: [PLEOS_UI_SERVICE][HomeScreenRepositoryImpl::notifyTaskStatusChanged] HomeScreen task status changed: [TaskStatus(componentName=ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity}, slotNo=0, slotWeight=2)]
+11-10 03:29:15.479  5020  5020 D [Pleos]e: [main]onLocationCallback data FusedLocationData(latitude=37.421998333333335, longitude=-122.084, altitude=5.0, heading=0.0, confidence=5.0, timestampMillis=1794310155472)
+11-10 03:29:15.481  2794  2794 D [GAA]   : onUpdateNaviSearchResult invoke!
+11-10 03:29:15.481  2794  2794 W [GAA-SDK]GleoContextManager: setOnScreenContextInfo - cmd : 1
+11-10 03:29:15.481  2794  2794 D [GAA-SDK]GleoContextManager: setOnScreenContextInfo - put ai.umos.maps.android.navigation.app | 
+11-10 03:29:15.481  1197  1609 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@c1dda46]
+11-10 03:29:15.481  4490  4502 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@4a1190]
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: Invalid NMEA message: $GPGGA,112916,3725.3199,N,12205.0400,W,1,6,,5.0,M,0.,M,,,*47
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: java.lang.IllegalArgumentException: NMEA checksum mismatch: expected=47, actual=6C
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.manager.NmeaParser.validateChecksum(NmeaParser.kt:97)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.manager.NmeaParser.parse(NmeaParser.kt:41)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.repository.GpsLocationSourceRepositoryImpl.onNmeaMessage(GpsLocationSourceRepositoryImpl.kt:105)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.repository.GpsLocationSourceRepositoryImpl.$r8$lambda$JsOEzcPGJx6PXq1jQ1WtR33Cm4M(Unknown Source:0)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.repository.GpsLocationSourceRepositoryImpl$$ExternalSyntheticLambda0.onNmeaMessage(D8$$SyntheticClass:0)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.location.LocationManager$GnssNmeaTransport.lambda$onNmeaReceived$0(LocationManager.java:3462)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.location.LocationManager$GnssNmeaTransport$$ExternalSyntheticLambda0.accept(Unknown Source:6)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at com.android.internal.listeners.ListenerTransport.lambda$execute$0(ListenerTransport.java:60)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at com.android.internal.listeners.ListenerTransport.$r8$lambda$34DUU___L7AejgJbhHbijg4Kxvk(Unknown Source:0)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at com.android.internal.listeners.ListenerTransport$$ExternalSyntheticLambda0.run(Unknown Source:4)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.os.Handler.handleCallback(Handler.java:958)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.os.Looper.loopOnce(Looper.java:205)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.os.Looper.loop(Looper.java:294)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at android.app.ActivityThread.main(ActivityThread.java:8194)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at java.lang.reflect.Method.invoke(Native Method)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+11-10 03:29:15.482  3703  3703 W GpsLocationSource: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+11-10 03:29:15.482  5928  5948 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@5d9e8a7]
+11-10 03:29:15.487  3130  3645 D PLEOS_UI_LIB: [PLEOS_UI_LIB][WindowStateManager::onEvent] onEvent called with [ai.pleos.ui.windowstate.TaskStatus@d95010e]
+11-10 03:29:15.492  1715  3032 D GnbContentProvider: updated type: 2 hit: 1, selection: is_active = ?, selectionArgs: 1, suppressNotify: true
+11-10 03:29:15.495  1715  3032 D GnbContentProvider: updated type: 2 hit: 0, selection: id = ?, selectionArgs: com.example.drivingcoach/androidx.activity.ComponentActivity, suppressNotify: true
+11-10 03:29:15.505  1715  3032 D GnbContentProvider: query type: 2, selection: timestamp != 0 AND leftOrder = -1 AND rightOrder = -1, selectionArgs: null
+11-10 03:29:15.509  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.car.evs/ai.umos.car.evs.CarEvsCameraPreviewActivity, orderType: leftOrder
+11-10 03:29:15.510  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.example.drivingcoach/com.example.drivingcoach.MainActivity, orderType: leftOrder
+11-10 03:29:15.510  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.vehiclecontrol/ai.umos.vehiclecontrol.VehicleControlActivity, orderType: leftOrder
+11-10 03:29:15.510  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.ambientai/ai.umos.ambientai.HistoryActivity, orderType: leftOrder
+11-10 03:29:15.510  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.phoneprojection/ai.umos.phoneprojection.ui.MainActivity, orderType: leftOrder
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: Invalid NMEA message: $GPRMC,112916,A,3725.3199,N,12205.0400,W,0.00,0.00,101126,0.0,W*47
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: java.lang.IllegalArgumentException: NMEA checksum mismatch: expected=47, actual=7E
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.manager.NmeaParser.validateChecksum(NmeaParser.kt:97)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.manager.NmeaParser.parse(NmeaParser.kt:41)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.repository.GpsLocationSourceRepositoryImpl.onNmeaMessage(GpsLocationSourceRepositoryImpl.kt:105)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.repository.GpsLocationSourceRepositoryImpl.$r8$lambda$JsOEzcPGJx6PXq1jQ1WtR33Cm4M(Unknown Source:0)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at ai.umos.maps.android.navigation.app.data.repository.GpsLocationSourceRepositoryImpl$$ExternalSyntheticLambda0.onNmeaMessage(D8$$SyntheticClass:0)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.location.LocationManager$GnssNmeaTransport.lambda$onNmeaReceived$0(LocationManager.java:3462)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.location.LocationManager$GnssNmeaTransport$$ExternalSyntheticLambda0.accept(Unknown Source:6)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at com.android.internal.listeners.ListenerTransport.lambda$execute$0(ListenerTransport.java:60)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at com.android.internal.listeners.ListenerTransport.$r8$lambda$34DUU___L7AejgJbhHbijg4Kxvk(Unknown Source:0)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at com.android.internal.listeners.ListenerTransport$$ExternalSyntheticLambda0.run(Unknown Source:4)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.os.Handler.handleCallback(Handler.java:958)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.os.Looper.loopOnce(Looper.java:205)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.os.Looper.loop(Looper.java:294)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at android.app.ActivityThread.main(ActivityThread.java:8194)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at java.lang.reflect.Method.invoke(Native Method)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:552)
+11-10 03:29:15.512  3703  3703 W GpsLocationSource: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:971)
+11-10 03:29:15.514  1715  3032 D GnbContentProvider: query type: 2, selection: timestamp != 0 AND bottomOrder = -1, selectionArgs: null
+11-10 03:29:15.513  3130  3130 I Token   : Overriding OEM tokens with OEM values
+11-10 03:29:15.516  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.car.evs/ai.umos.car.evs.CarEvsCameraPreviewActivity, orderType: bottomOrder
+11-10 03:29:15.516  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, : , mixedId: com.example.drivingcoach/com.example.drivingcoach.MainActivity, orderType: bottomOrder
+11-10 03:29:15.516  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.ambientai/ai.umos.ambientai.HistoryActivity, orderType: bottomOrder
+11-10 03:29:15.516  1197  1197 D GnbMixedRecentController: type: mixed_gnb_app, app: app, mixedId: ai.umos.phoneprojection/ai.umos.phoneprojection.ui.MainActivity, orderType: bottomOrder
+11-10 03:29:15.519  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskInfoExt::isPreventHide] preventHidePackage: ai.ftdot.mariokart
+11-10 03:29:15.521  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskInfoExt::isPreventHide] preventHidePackage: ai.umos.aaosplayground
+11-10 03:29:15.522  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewContainer::isPreventHide] isPreventHide(ai.umos.maps.android.navigation.app): false
+11-10 03:29:15.522  1715  3032 D GnbContentProvider: query type: 2, selection: leftOrder != -1, selectionArgs: null
+11-10 03:29:15.524  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, orderType: leftOrder
+11-10 03:29:15.525  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.callandmessage/ai.umos.mainscreen.MainScreenActivity, orderType: leftOrder
+11-10 03:29:15.526  1715  3032 D GnbContentProvider: query type: 2, selection: rightOrder != -1, selectionArgs: null
+11-10 03:29:15.528  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, orderType: rightOrder
+11-10 03:29:15.530  1715  3032 D GnbContentProvider: query type: 2, selection: bottomOrder != -1, selectionArgs: null
+11-10 03:29:15.532  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: DRIVER_SEAT_TEMP_DYNAMIC, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: STEERING_WHEEL_HEAT, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.vehiclecontrol/ai.umos.vehiclecontrol.VehicleControlActivity, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_app, app: app, mixedId: ai.umos.callandmessage/ai.umos.mainscreen.MainScreenActivity, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: PASSENGER_SEAT_TEMP_DYNAMIC, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: RECIRCULATION, orderType: bottomOrder
+11-10 03:29:15.533  1197  1197 D GnbMixedController: type: mixed_gnb_hvac, climate: climate, mixedId: HVAC_AUTO, orderType: bottomOrder
+11-10 03:29:15.536  1197  1197 D GnbMixedSlotController: onMixedListUpdated: orderType: , mMixedInfoList: {}
+11-10 03:29:15.537  1197  1197 D GnbMixedSlotController: refreshUi orderType: 
+11-10 03:29:15.537  1197  1197 D GnbMixedSlotController: onMixedListUpdated: orderType: bottomOrder, mMixedInfoList: {0=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=0, gnbHvacInfo=GnbHvacInfo(stringId=DRIVER_SEAT_TEMP_DYNAMIC, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558789, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 1=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=1, gnbHvacInfo=GnbHvacInfo(stringId=STEERING_WHEEL_HEAT, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558806, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 2=GnbMixedInfo(type=mixed_gnb_app, category=app, leftOrder=-1, rightOrder=-1, bottomOrder=2, gnbHvacInfo=GnbHvacInfo(stringId=, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=0, icon=0), gnbAppInfo=GnbAppInfo(intentUri=intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=ai.umos.vehiclecontrol/.VehicleControlActivity;end, timeStamp=0, isActive=0)), 3=GnbMixedInfo(type=mixed_gnb_app, category=app, leftOrder=-1, rightOrder=-1, bottomOrder=3, gnbHvacInfo=GnbHvacInfo(stringId=, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=0, icon=0), gnbAppInfo=GnbAppInfo(intentUri=intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=ai.umos.maps.android.navigation.app/.MainActivity;end, timeStamp=0, isActive=0)), 4=GnbMixedInfo(type=mixed_gnb_app, category=app, leftOrder=-1, rightOrder=-1, bottomOrder=4, gnbHvacInfo=GnbHvacInfo(stringId=, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=0, icon=0), gnbAppInfo=GnbAppInfo(intentUri=intent:#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;launchFlags=0x10000000;component=ai.umos.callandmessage/ai.umos.mainscreen.MainScreenActivity;end, timeStamp=0, isActive=0)), 6=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=6, gnbHvacInfo=GnbHvacInfo(stringId=PASSENGER_SEAT_TEMP_DYNAMIC, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558799, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 7=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=7, gnbHvacInfo=GnbHvacInfo(stringId=RECIRCULATION, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558803, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0)), 8=GnbMixedInfo(type=mixed_gnb_hvac, category=climate, leftOrder=-1, rightOrder=-1, bottomOrder=8, gnbHvacInfo=GnbHvacInfo(stringId=HVAC_AUTO, title=0, stringIcon=, stringIconColor=0, tokenIcon=0, layout=2131558781, icon=0), gnbAppInfo=GnbAppInfo(intentUri=, timeStamp=0, isActive=0))}
+11-10 03:29:15.537  1197  1197 D GnbMixedSlotController: refreshUi orderType: bottomOrder
+11-10 03:29:15.539  1197  1197 D GnbMixedContainer: setLayoutInfo, orderType:bottomOrder, slotId:3 isRemovable: false, id:ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity, alwaysFavoritePackages:[ai.umos.vehiclecontrol, ai.umos.maps.android.navigation.app]
+11-10 03:29:15.539  1197  1197 D GnbAppButton: setAppActive: true
+11-10 03:29:15.539  1197  1197 D GnbAppButton: updateClickListener open ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity view: 254038963
+11-10 03:29:15.544   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.544   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.544   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.562   852  1649 D WindowManager: Disable applyAnimationLocked (windowStateAnimator)
+11-10 03:29:15.591  3703  3703 D FirebaseSessions: App backgrounded on ai.umos.maps.android.navigation.app
+11-10 03:29:15.595  3703  3703 I Mapbox  : [maps-android\MapboxLifecyclePlugin]: onStop is called, MapboxLifecycleObserver will be notified.
+11-10 03:29:15.598  3703  3703 I Mapbox  : [maps-android\GLRenderThread\mapName]: Renderer paused
+11-10 03:29:15.607  4034  4034 I IAPConnector: scheduleBindRetry: 123
+11-10 03:29:15.617  3703  4760 I Mapbox  : [maps-android\Mbgl-FpsManager\mapName]: Average map core rendering time is 2.2045470588235294 ms (or 453.61 FPS), missed 4 map render frames, skipped 4 (0 due to render pacing) out of 21 VSYNC pulses
+11-10 03:29:15.623   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.623   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.623   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.648  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:15.648  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:15.661  3703  4760 I Mapbox  : [maps-android\GLRenderThread\mapName]: Skip render frame - NOT creating surface although rendererNotSupported (false) || paused (true)
+11-10 03:29:15.669  3130  3209 D EGL_emulation: app_time_stats: avg=83.44ms min=3.48ms max=251.80ms count=12
+11-10 03:29:15.669  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onTaskVisibilityChanged] ConnectTaskView onTaskVisibilityChanged(ComponentInfo{ai.umos.maps.android.navigation.app/ai.umos.maps.android.navigation.app.MainActivity}): false
+11-10 03:29:15.687  3065  4401 D DRIVING_VIEW: DrivingView FPS: 15.04
+11-10 03:29:15.707  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:15.726  3130  3144 I umos.homescreen: Background young concurrent copying GC freed 67204(2933KB) AllocSpace objects, 8(416KB) LOS objects, 42% free, 4428KB/7664KB, paused 458us,1.139ms total 300.062ms
+11-10 03:29:15.743   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:15.744   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:15.744   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:15.777 13792 13792 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+11-10 03:29:15.777 13792 13792 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+11-10 03:29:15.825   221  2195 E sdv_vhal_rust: sdv_vhal_rust_ffi::delegator::vehicle_info: Failed to get vehicle information. Error { kind: SecureStorageError, message: "SecureStorageError: RPC error: Connection failed: Connection failed: Connection refused (os error 111)" }
+11-10 03:29:15.960  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:15.960  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:15.969  3065  4724 D EGL_emulation: app_time_stats: avg=51.65ms min=21.74ms max=142.66ms count=19
+11-10 03:29:16.006  3703  4760 I Mapbox  : [maps-android\GLRenderThread\mapName]: Skip render frame - NOT creating surface although rendererNotSupported (false) || paused (true)
+11-10 03:29:16.117  4034  4034 I IAPConnector: scheduleBindRetry: 123
+11-10 03:29:16.212  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:16.241  3703  4579 I navi_engine: navi_service::mapmatch_svc::mapmatching: [mm] org(127.094681,37.4127212:0), match(127.094681,37.4127212), head(0.00), speed(0.00), roadid(18446744073709551615), route(-2), sat(0), laneid(18446744073709551615), stat(0), off(0.0), l(0), r(0)
+11-10 03:29:16.263  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:16.263  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:16.339  3065  4724 I DrivingRenderPerf: {"event":"RENDER_COUNTERS","output":0,"session":1,"mono_ns":423339524900,"submitted":10185,"gpu_completed":10183,"completed_sequence":0,"untracked":0,"rhi":"OpenGL"}
+11-10 03:29:16.340 13792 14288 D EGL_emulation: app_time_stats: avg=35.04ms min=3.61ms max=389.51ms count=39
+11-10 03:29:16.455  1278  4609 D android.hardware.gnss-service.ranchu: GnssHwListener:consume:87 sz=64
+11-10 03:29:16.455  1278  4609 D android.hardware.gnss-service.ranchu: GnssHwListener:consume:87 sz=64
+11-10 03:29:16.455  1278  4609 D android.hardware.gnss-service.ranchu: Gnss:onGnssLocationCb:311
+11-10 03:29:16.455  1278  4609 D android.hardware.gnss-service.ranchu: Gnss:onGnssLocationCb:321
+11-10 03:29:16.569  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:16.570  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:16.625  4034  4034 I IAPConnector: scheduleBindRetry: 123
+11-10 03:29:16.637  2794  2813 I .umos.ambientai: Background young concurrent copying GC freed 27286(20MB) AllocSpace objects, 17(960KB) LOS objects, 45% free, 25MB/46MB, paused 10.013ms,135us total 46.253ms
+11-10 03:29:16.645  2757  2983 D TrafficStats: tagSocket(5) with statsTag=0xffffffff, statsUid=-1
+11-10 03:29:16.648   852   914 D ConnectWindowUtil: return taskLaunchBounds
+11-10 03:29:16.648   852   914 D ConnectWindowUtil: alter windowingMode: WINDOWING_MODE_MULTI_WINDOW, launchBounds: Rect(0, 0 - 1682, 1210), removeWithTaskOrganizer: ComponentInfo{com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity}
+11-10 03:29:16.649   852   914 E CellBroadcastUtils: getDefaultCellBroadcastReceiverPackageName: no package found
+11-10 03:29:16.660  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity } (1000092)
+11-10 03:29:16.662  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity } (1000092)
+11-10 03:29:16.664   404   404 W Zygote  : forkRepeatedly terminated due to non-simple command
+11-10 03:29:16.664   404   404 D Zygote  : mbuffer starts with 17, nice name is , mEnd = 1129, mNext = 35, mLinesLeft = 15, mFd = 5
+11-10 03:29:16.666  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000092 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:16.668  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity } (1000092)
+11-10 03:29:16.679  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onDimmed] onDimmed: false}
+11-10 03:29:16.682  1197  1197 D CarSystemBar: [OTA_BAR_TRACE] event=home_task_front, prevStatus=IDLE, newStatus=IDLE, isOtaInProgress=false, isHomeTaskRunning=true, isFullScreen=false, action=skip, reason=not_home, taskId=1000092
+11-10 03:29:16.682  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskCreated] onTaskCreated: ComponentInfo{com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity} (1000092)
+11-10 03:29:16.691  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskCreated] ComponentInfo{com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity} (1000092), distractionOptimized: false)
+11-10 03:29:16.697   404   404 I Zygote  : Entering forkRepeatedly native zygote loop
+11-10 03:29:16.707   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:16.708   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:16.708   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:16.708  3065  4401 D DRIVING_VIEW: DrivingView FPS: 30.36
+11-10 03:29:16.710  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000092 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:16.710  3130  3130 D HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onFloatingWindowMovedToBack] onFloatingWindowRemoved
+11-10 03:29:16.710  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onDimmed] onDimmed: false}
+11-10 03:29:16.710  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskMovedToFront] ComponentInfo{com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity} (1000092)
+11-10 03:29:16.710  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity } (1000092)
+11-10 03:29:16.711  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@137130365, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:16.712   404   404 D Zygote  : Forked child process 16326
+11-10 03:29:16.713  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:16.724  3130  3130 D ShellStartingWindow: ignore StartingWindowController.addStartingWindow
+11-10 03:29:16.724  3130  3209 D EGL_emulation: app_time_stats: avg=1055.05ms min=1055.05ms max=1055.05ms count=1
+11-10 03:29:16.734   543   543 I BpBinder: onLastStrongRef automatically unlinking death recipients: 
+11-10 03:29:16.735  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@137130365, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:16.773   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:16.773   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:16.773   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:16.791 16326 16326 I ivingcoach.test: Late-enabling -Xcheck:jni
+11-10 03:29:16.814  1197  1645 D StorageConnection: Disconnecting from Storage Manager Service
+11-10 03:29:16.815  1197  1645 I StorageConnection: Disconnected from Storage Manager Service
+11-10 03:29:16.815  1197  1645 D MediaRecordingConnection: Disconnecting from Media Recording Service
+11-10 03:29:16.815  1197  2463 W StorageConnection: Channel is shutting down, ignoring onReady wait
+11-10 03:29:16.816  1197  1645 I MediaRecordingConnection: Disconnected from Media Recording Service
+11-10 03:29:16.816  1197  1645 I MediaRecordingAPI: MediaRecordingAPI disconnected
+11-10 03:29:16.816  1197  1645 W MediaStorageRepository: reconnectStorageApi: connect(defaultNetwork) failed, Connection timed out after 5000ms
+11-10 03:29:16.818  1197  2027 D MediaStorageRepository: scheduleReconnectStorageApi: reconnect after 5000ms
+11-10 03:29:16.873  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 5 tasks
+11-10 03:29:16.873  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:16.904  1197  1288 D EGL_emulation: app_time_stats: avg=990.36ms min=968.01ms max=1012.71ms count=2
+11-10 03:29:16.927 16326 16326 I ivingcoach.test: Using CollectorTypeCC GC.
+11-10 03:29:16.932 16326 16326 W ivingcoach.test: Unexpected CPU variant for x86: x86_64.
+11-10 03:29:16.932 16326 16326 W ivingcoach.test: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-10 03:29:16.949   614   636 I adbd    : jdwp connection from 16326
+11-10 03:29:16.988  3065  4724 D EGL_emulation: app_time_stats: avg=30.54ms min=17.91ms max=57.88ms count=33
+11-10 03:29:16.991  3130  3130 D HOME_SCREEN: [HOME_SCREEN][AppLauncherImpl::handleUidImportance$lambda$9] (FOUND) processInfo found: com.example.drivingcoach.test:1010176
+11-10 03:29:17.004  3592  3592 I [Pleos]b: [main]Vehicle onChangeEvent: propertyId=291504905, areaId=0, value=77400.0
+11-10 03:29:17.004  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:17.004  3592  3673 I PropertyEventValueExt: [DefaultDispatcher-worker-2]asStringValue() ENTER propertyId=SdkPropertyKey(key=EV_BATTERY_LEVEL), value=77400.0, kotlinType=kotlin.Float, javaType=java.lang.Float, isArray=false, componentType=null
+11-10 03:29:17.005  3592  3673 D [Pleos]j: [DefaultDispatcher-worker-2]carPropertyFilter: FlowFilter key SdkPropertyKey(key=EV_BATTERY_LEVEL) areaId 0
+11-10 03:29:17.005  3592  3673 D [Pleos]j: compare to value: current(PropertyEventValue(propertyKey=SdkPropertyKey(key=EV_BATTERY_LEVEL), areaId=0, value=77400.0, error=null)) | latest(PropertyEventValue(propertyKey=SdkPropertyKey(key=EV_BATTERY_LEVEL), areaId=0, value=77400.0, error=null)) 
+11-10 03:29:17.005  3592  3673 D [Pleos]j: compare to time: 1997
+11-10 03:29:17.010 16326 16326 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 1010176; state: ENABLED
+11-10 03:29:17.010 16326 16326 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 1010176; state: ENABLED
+11-10 03:29:17.021 16326 16326 W ziparchive: Unable to open '/data/app/~~tr4aQfjlvXHE3ypiRciCRA==/com.example.drivingcoach.test-INLXCxGTOw5gF4gFy85tZg==/base.dm': No such file or directory
+11-10 03:29:17.021 16326 16326 W ziparchive: Unable to open '/data/app/~~tr4aQfjlvXHE3ypiRciCRA==/com.example.drivingcoach.test-INLXCxGTOw5gF4gFy85tZg==/base.dm': No such file or directory
+11-10 03:29:17.030 16326 16326 D nativeloader: Configuring clns-6 for other apk /data/app/~~tr4aQfjlvXHE3ypiRciCRA==/com.example.drivingcoach.test-INLXCxGTOw5gF4gFy85tZg==/base.apk. target_sdk_version=37, uses_libraries=, library_path=/data/app/~~tr4aQfjlvXHE3ypiRciCRA==/com.example.drivingcoach.test-INLXCxGTOw5gF4gFy85tZg==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/10/com.example.drivingcoach.test
+11-10 03:29:17.039 16326 16326 V GraphicsEnvironment: Currently set values for:
+11-10 03:29:17.039 16326 16326 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+11-10 03:29:17.039 16326 16326 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+11-10 03:29:17.041 16326 16326 V GraphicsEnvironment: ANGLE GameManagerService for com.example.drivingcoach.test: false
+11-10 03:29:17.041 16326 16326 V GraphicsEnvironment: com.example.drivingcoach.test is not listed in per-application setting
+11-10 03:29:17.041 16326 16326 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+11-10 03:29:17.067  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@137130365, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:17.073 16326 16399 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-10 03:29:17.080 16326 16399 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-10 03:29:17.082 16326 16399 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-10 03:29:17.129  4034  4034 I IAPConnector: scheduleBindRetry: 123
+11-10 03:29:17.146  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskRemovalStarted] ComponentInfo{com.example.drivingcoach/androidx.activity.ComponentActivity} (1000091)
+11-10 03:29:17.221 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: PAUSED
+11-10 03:29:17.222 13792 13792 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=androidx.activity.ComponentActivity@7276b3e
+11-10 03:29:17.229  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 4 tasks
+11-10 03:29:17.229  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:17.229  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:17.231 16326 16326 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 1010176; state: DISABLED
+11-10 03:29:17.234 16326 16326 W OpenGLRenderer: Unknown dataspace 0
+11-10 03:29:17.246  3703  4579 I navi_engine: navi_service::mapmatch_svc::mapmatching: [mm] org(127.094681,37.4127212:0), match(127.094681,37.4127212), head(0.00), speed(0.00), roadid(18446744073709551615), route(-2), sat(0), laneid(18446744073709551615), stat(0), off(0.0), l(0), r(0)
+11-10 03:29:17.280   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.280   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.280   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.286  3065  3065 D 42dot   : onWindowFocusChangedNative
+11-10 03:29:17.288   852  1721 I ImeTracker: ai.umos.drivingview:8bf80550: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-10 03:29:17.288   852  1721 I ImeTracker: ai.umos.drivingview:8bf80550: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-10 03:29:17.292  1197  1197 D CarSystemBar: [OTA_BAR_TRACE] event=home_task_front, prevStatus=IDLE, newStatus=IDLE, isOtaInProgress=false, isHomeTaskRunning=true, isFullScreen=false, action=skip, reason=not_home, taskId=1000082
+11-10 03:29:17.295   852  1721 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.295   852  1721 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.295   852  1721 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.297  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@137130365, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:17.312  1197  1288 D EGL_emulation: app_time_stats: avg=418.24ms min=2.77ms max=1702.02ms count=5
+11-10 03:29:17.312  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task 1000082 is running on Display ID: 0, Name: 기본으로 제공되는 화면
+11-10 03:29:17.313  3130  3130 D HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onFloatingWindowMovedToBack] onFloatingWindowRemoved
+11-10 03:29:17.313  3130  3130 I HOME_SCREEN: [HOME_SCREEN][HomeActivityViewModel::onDimmed] onDimmed: false}
+11-10 03:29:17.313  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskMovedToFront] ComponentInfo{ai.umos.drivingview/ai.umos.drivingview.DrivingViewActivity} (1000082)
+11-10 03:29:17.313  3130  3130 I HOME_SCREEN: [HOME_SCREEN][PackageManagerRepositoryImpl::getTaskType] component: Intent { act=android.intent.action.MAIN flg=0x10000000 cmp=ai.umos.drivingview/.DrivingViewActivity } (1000082)
+11-10 03:29:17.315  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskRemovalStarted] ComponentInfo{com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity} (1000092)
+11-10 03:29:17.376   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.376   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.377   221   237 I sdv_vhal_rust: sdv_vhal_rust_ffi::rust_vehicle_hardware: vhal set_value: VehiclePropValue { timestamp: 0, prop: 290459441, area_id: 0, status: Available, raw_value: RawPropValues { int32_values: [], int64_values: [424375], float_values: [], byte_values: [], string_bytes: [] } }
+11-10 03:29:17.377   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.383  3065  4724 I DrivingRenderPerf: {"event":"RENDER_COUNTERS","output":0,"session":1,"mono_ns":424382985200,"submitted":10211,"gpu_completed":10209,"completed_sequence":0,"untracked":0,"rhi":"OpenGL"}
+11-10 03:29:17.388   852   914 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.388   852   914 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.388   852   914 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.399 16326 16397 W OpenGLRenderer: Failed to choose config with EGL_SWAP_BEHAVIOR_PRESERVED, retrying without...
+11-10 03:29:17.399 16326 16397 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-10 03:29:17.457  1278  4609 D android.hardware.gnss-service.ranchu: GnssHwListener:consume:87 sz=64
+11-10 03:29:17.457  1278  4609 D android.hardware.gnss-service.ranchu: GnssHwListener:consume:87 sz=64
+11-10 03:29:17.457  1278  4609 D android.hardware.gnss-service.ranchu: Gnss:onGnssLocationCb:311
+11-10 03:29:17.457  1278  4609 D android.hardware.gnss-service.ranchu: Gnss:onGnssLocationCb:333
+11-10 03:29:17.468  5020  5020 D [Pleos]e: [main]onLocationCallback data FusedLocationData(latitude=37.421998333333335, longitude=-122.084, altitude=5.0, heading=0.0, confidence=5.0, timestampMillis=1794310157457)
+11-10 03:29:17.471   185   185 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-10 03:29:17.471 16326 16397 I Gralloc4: mapper 4.x is not supported
+11-10 03:29:17.499 16326 16397 E OpenGLRenderer: Unable to match the desired swap behavior.
+11-10 03:29:17.506  3703  4760 I Mapbox  : [maps-android\GLRenderThread\mapName]: Skip render frame - NOT creating surface although rendererNotSupported (false) || paused (true)
+11-10 03:29:17.533  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 3 tasks
+11-10 03:29:17.533  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:17.590   852  1721 D WindowManager: Disable applyAnimationLocked (windowStateAnimator)
+11-10 03:29:17.600  3130  3130 D HOME_SCREEN: [HOME_SCREEN][ConnectTaskView::onComputeInternalInsets] ignore invalid task insets: view=ConnectTaskView@137130365, taskId=null, component=null, top=null, bounds=Rect(0, 0 - 2560, 1440), touchableRegion=SkRegion((0,0,2560,90)(2535,90,2560,1120)(0,1120,853,1300)(2535,1120,2560,1300)(0,1300,2560,1440))
+11-10 03:29:17.612   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.613   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.613   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.622 13792 14288 D OpenGLRenderer: endAllActiveAnimators on 0x7eba4e3be940 (UnprojectedRipple) with handle 0x7eb9be3a7250
+11-10 03:29:17.637   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.637   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.637   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.642  4034  4034 I IAPConnector: scheduleBindRetry: 123
+11-10 03:29:17.651 16326 16326 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@a71473d
+11-10 03:29:17.675 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: STOPPED
+11-10 03:29:17.677 13792 13792 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=androidx.activity.ComponentActivity@7276b3e
+11-10 03:29:17.680   852  1983 W InputManager-JNI: Input channel object 'd7c37b1 com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity (client)' was disposed without first being removed with the input manager!
+11-10 03:29:17.701  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskRemoved] onTaskRemoved: 1000092
+11-10 03:29:17.711   852   941 I libprocessgroup: Successfully killed process cgroup uid 1010176 pid 16326 in 16ms
+11-10 03:29:17.724   404   404 I Zygote  : Process 16326 exited due to signal 9 (Killed)
+11-10 03:29:17.726   543   543 E IPCThreadState: Binder transaction failure: 494797/29189/-3
+11-10 03:29:17.726   543   543 E BpTransactionCompletedListener: Failed to transact (-32)
+11-10 03:29:17.731  4490  4490 D CarEvsVehicleInfoService: Digital mirror is disabled by system property
+11-10 03:29:17.746  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task with ID 1000092 not found
+11-10 03:29:17.746  3130  3130 I HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskRemoved] ComponentInfo{com.example.drivingcoach.test/androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity} (taskId: 1000092)
+11-10 03:29:17.775  3065  4401 D DRIVING_VIEW: DrivingView FPS: 19.67
+11-10 03:29:17.785 13792 13792 D LifecycleMonitor: Lifecycle status change: androidx.activity.ComponentActivity@7276b3e in: DESTROYED
+11-10 03:29:17.786 13792 13792 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-10 03:29:17.791 13792 14010 D IdlingRegistry: Unregistering idling resources: [androidx.compose.ui.test.EspressoLink@1547e45]
+11-10 03:29:17.792 13792 13792 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@82fc197
+11-10 03:29:17.794   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.794   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.795   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.812  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskSlotLayout::cancelTaskInteractionHandler] cancelTaskInteractionHandler
+11-10 03:29:17.815  3130  3130 D HOME_SCREEN: [HOME_SCREEN][AppLauncherImpl::updateRemovedTaskLaunchInfo] updateRemovedTaskLaunchInfo #1 (10) : 10
+11-10 03:29:17.816  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::onTaskRemoved] onTaskRemoved: 1000092
+11-10 03:29:17.816  3130  3130 D HOME_SCREEN: [HOME_SCREEN][TaskViewManager::isPassengerTask] Task with ID 1000092 not found
+11-10 03:29:17.816  3130  3130 D HOME_SCREEN: [HOME_SCREEN][AppLauncherImpl::handleUidImportance$lambda$12] (GONE) uid: 1010176
+11-10 03:29:17.827   221  2195 E sdv_vhal_rust: sdv_vhal_rust_ffi::delegator::vehicle_info: Failed to get vehicle information. Error { kind: SecureStorageError, message: "SecureStorageError: RPC error: Connection failed: Connection failed: Connection refused (os error 111)" }
+11-10 03:29:17.839  4490  4490 D CarEvsAppState: isCarEvsActivityRunning: ai.umos.car.evs.CarEvsBlindSpotCameraPreviewActivity not found in 3 tasks
+11-10 03:29:17.839  4490  4490 W CarEvsVehicleInfoService: Garbage activity checker + (running=false, activityRunning=false)
+11-10 03:29:17.845  3130  3209 D EGL_emulation: app_time_stats: avg=279.98ms min=230.29ms max=351.48ms count=4
+11-10 03:29:17.848   852  4205 W InputManager-JNI: Input channel object '90065e com.example.drivingcoach/androidx.activity.ComponentActivity (client)' was disposed without first being removed with the input manager!
+11-10 03:29:17.852   852   930 D ConnectWindowUtil: handleWindowBounds: 5
+11-10 03:29:17.852   852   930 D ConnectWindowUtil: handleWindowChanged(filtered): 0
+11-10 03:29:17.852   852   930 D ConnectWindowUtil: window not changed, skip update
+11-10 03:29:17.879 13792 14010 I TestRunner: finished: sampleTripOpensDetailsAndReturnsToList(com.example.drivingcoach.CoachPresentationTest)
