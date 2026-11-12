@@ -42,7 +42,7 @@
 - `assembleDebug`, `testDebugUnitTest`, `lintDebug`, `assembleDebugAndroidTest`를 실행합니다.
 - Android Studio의 `DriverOverviewPreview.kt`에서 `App states` 그룹을 엽니다. 7개 상태 각각의 주·야간·영문·글자 크기 200% 화면을 검토합니다.
 
-검증 결과: `assembleDebug`, `testDebugUnitTest`, `lintDebug`, `assembleDebugAndroidTest` 모두 통과했습니다. JVM 테스트는 총 29개이며 실패·오류 0개입니다. 이번 단계에서 ViewModel 8개와 공급원 선택 2개를 추가했습니다. Compose UI 회귀 테스트 3개는 추가 후 컴파일했으며 실행하지 않았습니다.
+검증 결과: `assembleDebug`, `testDebugUnitTest`, `lintDebug`, `assembleDebugAndroidTest` 모두 통과했습니다. 선행 #5 병합을 반영한 현재 JVM 테스트는 총 41개이며 실패·오류 0개입니다. 이번 단계에서 ViewModel 8개와 공급원 선택 2개를 추가했습니다. Compose UI 회귀 테스트 3개는 추가 후 컴파일했으며 실행하지 않았습니다.
 
 Preview 실제 렌더링·스크린샷, 기기 UI 테스트, 차량 서비스 전환은 팀원의 대상 환경 확인이 필요합니다.
 
