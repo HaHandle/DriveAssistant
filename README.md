@@ -17,6 +17,8 @@ UI 전용 데이터 모델과 교체 가능한 Mock 공급원을 추가했습니
 
 `ui/preview/DriverOverviewPreview.kt`의 `App states` Preview는 7가지 상태를 실제 앱 화면에 직접 주입합니다. 주간·야간·넓은 영문 화면·글자 크기 200% 구성을 제공합니다. ViewModel이나 차량 서비스 없이 검토할 수 있습니다. 연결 구조와 완료 기준은 [상태 연결 단계](docs/frontend-state-flow.md)를 확인하세요.
 
+4단계 대시보드에는 7일·30일·전체 기간 선택과 점수 추이 그래프를 추가했습니다. 마지막 기록일을 기준으로 기간을 표시하고 미측정 구간은 선을 끊습니다. 기간 첫 기록 대비 변화와 기존의 직전 기록 대비 변화를 구분합니다. [대시보드 구현·검토 안내](docs/frontend-score-dashboard.md)와 `ui/preview/ScoreDashboardPreview.kt`의 Preview에서 확인할 수 있습니다.
+
 ## 빌드
 
 기존 프로젝트의 JDK 25, Android SDK 37.0 환경을 사용합니다.

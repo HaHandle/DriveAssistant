@@ -4,6 +4,8 @@
 
 1~2단계의 UI 전용 모델과 Mock 공급원을 기존 코칭 화면에 연결합니다. 대시보드 그래프·기간 선택, 분석 상세 탐색, 숙련도·티어 전용 화면은 후속 단계입니다. 서버 API, 인증, 점수 합산, 실제 티어 기준은 정의하지 않습니다.
 
+후속 4단계의 기간 선택·점수 추이 그래프는 [대시보드 검토 문서](frontend-score-dashboard.md)에 별도로 기록합니다. 아래는 3단계 당시의 상태 연결 범위와 검증 결과입니다.
+
 `MainActivity → 기기별 Repository 선택 → DriverOverviewViewModel.uiState → collectAsStateWithLifecycle → DrivingCoachApp → CoachHomeScreen`
 
 - 일반 Android 기기는 기존 정상 Mock 시나리오를 사용합니다.

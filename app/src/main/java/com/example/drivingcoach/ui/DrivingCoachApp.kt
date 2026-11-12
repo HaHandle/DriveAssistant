@@ -32,6 +32,7 @@ import com.example.drivingcoach.R
 import com.example.drivingcoach.data.DriverOverviewState
 import com.example.drivingcoach.data.mock.MockDriverOverviewData
 import com.example.drivingcoach.data.mock.OverviewScenario
+import com.example.drivingcoach.ui.model.ScorePeriod
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
 import com.example.drivingcoach.vehicle.PresentationPolicy
 import com.example.drivingcoach.vehicle.VehicleUxState
@@ -53,6 +54,7 @@ fun DrivingCoachApp(
     var selectedTrip by rememberSaveable { mutableIntStateOf(-1) }
     var previewRestricted by rememberSaveable { mutableStateOf(false) }
     var previewActive by rememberSaveable { mutableStateOf(false) }
+    var scorePeriod by rememberSaveable { mutableIntStateOf(ScorePeriod.WEEK.ordinal) }
     val policy = PresentationPolicy.resolve(vehicleUxState, previewRestricted, motion, foreground)
     val feedback = LocalHapticFeedback.current
     fun touch() {
@@ -157,6 +159,8 @@ fun DrivingCoachApp(
                                             else -> CoachHomeScreen(
                                                 sampleData = policy.showSampleData,
                                                 overviewState = overviewState,
+                                                scorePeriod = ScorePeriod.entries[scorePeriod],
+                                                onScorePeriod = { touch(); scorePeriod = it.ordinal },
                                                 onRetry = { touch(); onRetryOverview() },
                                                 focus = focus,
                                                 previewActive = previewActive,
