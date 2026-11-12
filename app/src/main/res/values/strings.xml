@@ -118,7 +118,7 @@
     <string name="habit_observations">관찰 %2$d회 중 %1$d회 충족</string>
     <string name="habit_open_details">%1$s 상세 보기</string>
     <string name="habit_detail_eyebrow">운전 습관 분석 · 예시</string>
-    <string name="habit_back">습관 목록으로</string>
+    <string name="habit_back">목록으로</string>
     <string name="habit_assessment_heading">평가</string>
     <string name="habit_evidence_heading">관찰 근거</string>
     <string name="habit_deferred">평가 보류</string>
