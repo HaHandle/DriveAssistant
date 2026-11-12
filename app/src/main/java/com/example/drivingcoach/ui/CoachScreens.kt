@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
@@ -27,8 +28,8 @@ import com.example.drivingcoach.data.DriverOverviewState
 import com.example.drivingcoach.ui.model.DriverOverview
 import com.example.drivingcoach.ui.model.DrivingHabitAnalysis
 import com.example.drivingcoach.ui.model.HabitKind
-import com.example.drivingcoach.ui.model.HabitStatus
 import com.example.drivingcoach.ui.model.ScorePeriod
+import com.example.drivingcoach.ui.model.toHabitAnalysisPresentation
 
 private val focusLabels = listOf(R.string.focus_balanced, R.string.focus_smooth, R.string.focus_efficient)
 private val focusTitles = listOf(R.string.balanced_title, R.string.smooth_title, R.string.efficient_title)
@@ -67,11 +68,13 @@ fun CoachHomeScreen(
     onFocus: (Int) -> Unit,
     onPreview: () -> Unit,
     onHistory: () -> Unit,
+    onSelectHabit: ((HabitKind) -> Unit)? = null,
+    scrollState: ScrollState = rememberScrollState(),
 ) {
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val wide = maxWidth >= 940.dp
         Column(
-            Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(28.dp),
+            Modifier.fillMaxSize().verticalScroll(scrollState).testTag("coach-home").padding(28.dp),
             verticalArrangement = Arrangement.spacedBy(28.dp),
         ) {
             Eyebrow(stringResource(R.string.home_eyebrow))
@@ -88,7 +91,7 @@ fun CoachHomeScreen(
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                         CoachingPanel(sampleData, focus, previewActive, onFocus, onPreview)
                         if (sampleData && overviewState is DriverOverviewState.Ready) {
-                            OverviewHabitsPanel(overviewState.overview.habits)
+                            OverviewHabitsPanel(overviewState.overview.habits, onSelectHabit)
                         }
                         InsightPanel()
                         if (sampleData && overviewState is DriverOverviewState.Ready) LatestTrip(onHistory)
@@ -101,7 +104,7 @@ fun CoachHomeScreen(
                 }
                 CoachingPanel(sampleData, focus, previewActive, onFocus, onPreview)
                 if (sampleData && overviewState is DriverOverviewState.Ready) {
-                    OverviewHabitsPanel(overviewState.overview.habits)
+                    OverviewHabitsPanel(overviewState.overview.habits, onSelectHabit)
                 }
                 InsightPanel()
                 if (sampleData && overviewState is DriverOverviewState.Ready) LatestTrip(onHistory)
@@ -223,32 +226,15 @@ private fun OverviewScore(overview: DriverOverview, focus: Int) {
 
 /** Shared by the app and direct-state previews; observations never become aggregate scores. */
 @Composable
-fun OverviewHabitsPanel(habits: List<DrivingHabitAnalysis>) {
+fun OverviewHabitsPanel(habits: List<DrivingHabitAnalysis>, onSelectHabit: ((HabitKind) -> Unit)? = null) {
     CoachPanel(Modifier.fillMaxWidth()) {
         Eyebrow(stringResource(R.string.overview_habits))
         if (habits.isEmpty()) {
             Text(stringResource(R.string.habit_unobserved), style = MaterialTheme.typography.bodyMedium)
         }
         habits.forEach { habit ->
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(when (habit.kind) {
-                    HabitKind.STOP_CONTROL -> R.string.habit_stop_control
-                    HabitKind.SIGNAL_TIMING -> R.string.habit_signal_timing
-                    HabitKind.SIGNAL_HOLD -> R.string.habit_signal_hold
-                    HabitKind.SIGNAL_CANCEL -> R.string.habit_signal_cancel
-                }), style = MaterialTheme.typography.titleMedium)
-                Text(stringResource(when (habit.status) {
-                    HabitStatus.MET -> R.string.habit_met
-                    HabitStatus.REVIEW -> R.string.habit_review
-                    HabitStatus.UNOBSERVED -> R.string.habit_unobserved
-                }), style = MaterialTheme.typography.bodyMedium)
-                val counts = habit.observations
-                if (counts?.hasObservations == true) {
-                    Text(stringResource(R.string.habit_observations, counts.met, counts.observed),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
+            HabitSummaryRow(habit.toHabitAnalysisPresentation(),
+                onClick = onSelectHabit?.let { select -> { select(habit.kind) } })
         }
     }
 }
