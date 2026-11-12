@@ -26,16 +26,29 @@ import com.example.drivingcoach.data.mock.OverviewScenario
 import com.example.drivingcoach.ui.CoachPanel
 import com.example.drivingcoach.ui.Eyebrow
 import com.example.drivingcoach.ui.LiquidScore
+import com.example.drivingcoach.ui.DrivingCoachApp
+import com.example.drivingcoach.ui.OverviewHabitsPanel
 import com.example.drivingcoach.ui.model.DriverOverview
 import com.example.drivingcoach.ui.model.DriverProgress
-import com.example.drivingcoach.ui.model.HabitKind
-import com.example.drivingcoach.ui.model.HabitStatus
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
+import com.example.drivingcoach.vehicle.VehicleUxState
 
 /** Direct state injection keeps previews independent of Activity, ViewModel and vehicle services. */
 class DriverOverviewPreviewParameterProvider : PreviewParameterProvider<DriverOverviewState> {
     override val values: Sequence<DriverOverviewState>
         get() = OverviewScenario.entries.asSequence().map(MockDriverOverviewData::state)
+}
+
+@Preview(name = "App states · day", widthDp = 520, heightDp = 1100, locale = "ko")
+@Preview(name = "App states · night", widthDp = 520, heightDp = 1100, locale = "ko",
+    uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "App states · large text", widthDp = 520, heightDp = 1100, locale = "ko", fontScale = 2f)
+@Preview(name = "App states · wide English", widthDp = 1280, heightDp = 900, locale = "en")
+@Composable
+private fun DriverOverviewAppPreview(
+    @PreviewParameter(DriverOverviewPreviewParameterProvider::class) state: DriverOverviewState,
+) {
+    DrivingCoachApp(VehicleUxState.PREVIEW, foreground = true, overviewState = state)
 }
 
 @Preview(name = "Overview data · day", widthDp = 520, heightDp = 1100, locale = "ko")
@@ -88,30 +101,7 @@ private fun OverviewReadyPreview(overview: DriverOverview) {
             else stringResource(R.string.overview_score_change, change),
             style = MaterialTheme.typography.bodyMedium)
     }
-    CoachPanel(Modifier.fillMaxWidth()) {
-        Eyebrow(stringResource(R.string.overview_habits))
-        overview.habits.forEach { habit ->
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(stringResource(when (habit.kind) {
-                    HabitKind.STOP_CONTROL -> R.string.habit_stop_control
-                    HabitKind.SIGNAL_TIMING -> R.string.habit_signal_timing
-                    HabitKind.SIGNAL_HOLD -> R.string.habit_signal_hold
-                    HabitKind.SIGNAL_CANCEL -> R.string.habit_signal_cancel
-                }), style = MaterialTheme.typography.titleMedium)
-                Text(stringResource(when (habit.status) {
-                    HabitStatus.MET -> R.string.habit_met
-                    HabitStatus.REVIEW -> R.string.habit_review
-                    HabitStatus.UNOBSERVED -> R.string.habit_unobserved
-                }), style = MaterialTheme.typography.bodyMedium)
-                val counts = habit.observations
-                if (counts?.hasObservations == true) {
-                    Text(stringResource(R.string.habit_observations, counts.met, counts.observed),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
-        }
-    }
+    OverviewHabitsPanel(overview.habits)
     CoachPanel(Modifier.fillMaxWidth()) {
         Eyebrow(stringResource(R.string.overview_progress))
         when (val progress = overview.progress) {

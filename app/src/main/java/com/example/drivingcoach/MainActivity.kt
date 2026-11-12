@@ -8,6 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.drivingcoach.data.createDriverOverviewRepository
+import com.example.drivingcoach.ui.DriverOverviewViewModel
 import com.example.drivingcoach.ui.DrivingCoachApp
 import com.example.drivingcoach.vehicle.AutomotiveUxConnection
 import com.example.drivingcoach.vehicle.VehicleUxState
@@ -20,13 +24,23 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        if (packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+        val automotive = packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)
+        if (automotive) {
             vehicleConnection = AutomotiveUxConnection(this) { vehicleUxState = it }
         } else {
             vehicleUxState = VehicleUxState.PREVIEW
         }
+        val overviewViewModel = ViewModelProvider(
+            this, DriverOverviewViewModel.Factory(createDriverOverviewRepository(automotive)),
+        )[DriverOverviewViewModel::class.java]
         setContent {
-            DrivingCoachApp(vehicleUxState = vehicleUxState, foreground = foreground)
+            val overviewState by overviewViewModel.uiState.collectAsStateWithLifecycle()
+            DrivingCoachApp(
+                vehicleUxState = vehicleUxState,
+                foreground = foreground,
+                overviewState = overviewState,
+                onRetryOverview = overviewViewModel::retry,
+            )
         }
     }
 

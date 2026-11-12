@@ -7,11 +7,16 @@ import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.drivingcoach.ui.DrivingCoachApp
+import com.example.drivingcoach.data.DriverOverviewState
+import com.example.drivingcoach.data.mock.MockDriverOverviewData
+import com.example.drivingcoach.data.mock.OverviewScenario
+import com.example.drivingcoach.ui.model.DrivingScore
 import com.example.drivingcoach.vehicle.VehicleUxState
 import org.junit.Before
 import org.junit.Rule
@@ -82,5 +87,50 @@ class CoachPresentationTest {
         compose.onNodeWithText(text(R.string.tab_settings)).assertIsNotEnabled()
         compose.onNodeWithTag("exit-driving-preview").performScrollTo().performClick()
         compose.onNodeWithTag("restricted-screen").assertDoesNotExist()
+    }
+
+    @Test
+    fun overviewLoadingEmptyAndRetryDoNotDisplayStaleScores() {
+        val state = mutableStateOf<DriverOverviewState>(DriverOverviewState.Loading)
+        var retries = 0
+        val normal = MockDriverOverviewData.state(OverviewScenario.NORMAL) as DriverOverviewState.Ready
+        val changed = DriverOverviewState.Ready(normal.overview.copy(
+            score = normal.overview.score.copy(current = DrivingScore(73))))
+        compose.setContent {
+            DrivingCoachApp(VehicleUxState.PREVIEW, foreground = true, overviewState = state.value,
+                onRetryOverview = { retries++; state.value = changed })
+        }
+        compose.onNodeWithTag("overview-loading").assertIsDisplayed()
+        compose.onNodeWithTag("overview-ready").assertDoesNotExist()
+        compose.runOnIdle { state.value = DriverOverviewState.Empty }
+        compose.onNodeWithTag("overview-empty").assertIsDisplayed()
+        compose.runOnIdle { state.value = MockDriverOverviewData.state(OverviewScenario.ERROR) }
+        compose.onNodeWithTag("overview-retry").performScrollTo().performClick()
+        compose.runOnIdle { org.junit.Assert.assertEquals(1, retries) }
+        compose.onNodeWithContentDescription(context.getString(R.string.score_accessibility, 73))
+            .performScrollTo().assertIsDisplayed()
+        compose.onNodeWithTag("overview-error").assertDoesNotExist()
+    }
+
+    @Test
+    fun partialOverviewDisplaysUnmeasuredInsteadOfZero() {
+        compose.setContent {
+            DrivingCoachApp(VehicleUxState.PREVIEW, foreground = true,
+                overviewState = MockDriverOverviewData.state(OverviewScenario.PARTIAL))
+        }
+        compose.onNodeWithTag("overview-unmeasured").assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.score_accessibility, 0))
+            .assertDoesNotExist()
+    }
+
+    @Test
+    fun automotivePresentationRejectsInjectedSampleScores() {
+        compose.setContent {
+            DrivingCoachApp(VehicleUxState.AVAILABLE, foreground = true,
+                overviewState = MockDriverOverviewData.state(OverviewScenario.NORMAL))
+        }
+        compose.onNodeWithTag("overview-ready").assertDoesNotExist()
+        compose.onNodeWithTag("sample-data-label").assertDoesNotExist()
+        compose.onNodeWithText(text(R.string.connection_title)).assertIsDisplayed()
     }
 }

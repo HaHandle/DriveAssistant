@@ -29,6 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
 import androidx.core.view.WindowCompat
 import com.example.drivingcoach.R
+import com.example.drivingcoach.data.DriverOverviewState
+import com.example.drivingcoach.data.mock.MockDriverOverviewData
+import com.example.drivingcoach.data.mock.OverviewScenario
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
 import com.example.drivingcoach.vehicle.PresentationPolicy
 import com.example.drivingcoach.vehicle.VehicleUxState
@@ -37,6 +40,8 @@ import com.example.drivingcoach.vehicle.VehicleUxState
 fun DrivingCoachApp(
     vehicleUxState: VehicleUxState,
     foreground: Boolean,
+    overviewState: DriverOverviewState = DriverOverviewState.Empty,
+    onRetryOverview: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val store = remember(context) { context.getSharedPreferences("coach_presentation", Context.MODE_PRIVATE) }
@@ -151,6 +156,8 @@ fun DrivingCoachApp(
                                             )
                                             else -> CoachHomeScreen(
                                                 sampleData = policy.showSampleData,
+                                                overviewState = overviewState,
+                                                onRetry = { touch(); onRetryOverview() },
                                                 focus = focus,
                                                 previewActive = previewActive,
                                                 onFocus = {
@@ -228,7 +235,8 @@ private fun CoachNavigation(
 @Preview(name = "Phone · English", widthDp = 400, heightDp = 900, locale = "en")
 @Composable
 private fun CoachPreview() {
-    DrivingCoachApp(VehicleUxState.PREVIEW, foreground = true)
+    DrivingCoachApp(VehicleUxState.PREVIEW, foreground = true,
+        overviewState = MockDriverOverviewData.state(OverviewScenario.NORMAL))
 }
 
 @Preview(name = "Driving restrictions", widthDp = 960, heightDp = 640, locale = "ko")

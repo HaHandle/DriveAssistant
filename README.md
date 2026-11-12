@@ -13,7 +13,9 @@ UI 전용 데이터 모델과 교체 가능한 Mock 공급원을 추가했습니
 
 팀원 검토 방법과 검증 범위는 [프론트엔드 검토 문서](docs/frontend-review.md)를 확인하세요. Android Studio에서는 `DrivingCoachApp.kt`의 Compose Preview로 넓은 창·분할 창·야간·영문·주행 제한 화면을 볼 수 있습니다.
 
-새 데이터 시나리오는 `ui/preview/DriverOverviewPreview.kt`에서 확인합니다. 기존 앱 화면으로의 ViewModel 연결은 다음 단계이며, 이번 변경은 기존 탐색·설정·차량 제한 동작을 바꾸지 않습니다.
+`DriverOverviewViewModel`의 상태를 기존 코칭 화면에 연결했습니다. 화면이 활성화된 동안 저장소를 구독하고 로딩·빈 기록·오류·재시도·미측정을 구분합니다. 차량 데이터 공급원은 연결 대기 상태이며 Mock 점수로 대체하지 않습니다. 기존 탐색·설정 키와 차량 제한 정책을 유지합니다.
+
+`ui/preview/DriverOverviewPreview.kt`의 `App states` Preview는 7가지 상태를 실제 앱 화면에 직접 주입합니다. 주간·야간·넓은 영문 화면·글자 크기 200% 구성을 제공합니다. ViewModel이나 차량 서비스 없이 검토할 수 있습니다. 연결 구조와 완료 기준은 [상태 연결 단계](docs/frontend-state-flow.md)를 확인하세요.
 
 ## 빌드
 

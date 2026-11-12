@@ -86,6 +86,7 @@
     <string name="overview_loading">Loading your data.</string>
     <string name="overview_empty">There are no records to display yet.</string>
     <string name="overview_error">Data is currently unavailable.</string>
+    <string name="overview_retry">Try again</string>
     <string name="overview_unmeasured">Not measured</string>
     <string name="overview_no_comparison">No comparison is available.</string>
     <string name="overview_score_change">%1$+d points from the previous record · Sample</string>
