@@ -79,24 +79,36 @@ fun ScoreTrendPanel(
             modifier = Modifier.testTag("score-period-counts"))
 
         val motion = LocalCoachMotion.current
-        AnimatedContent(
-            targetState = window,
-            modifier = Modifier.fillMaxWidth(),
-            transitionSpec = {
-                if (motion) fadeIn(tween(180)) togetherWith fadeOut(tween(90))
-                else EnterTransition.None togetherWith ExitTransition.None
-            },
-            label = "scorePeriodChart",
-        ) { selected ->
-            when {
-                selected.points.isEmpty() -> TrendNotice(R.string.dashboard_no_history, "score-trend-empty")
-                selected.measuredCount == 0 -> TrendNotice(R.string.dashboard_no_measurements, "score-trend-unmeasured")
-                else -> ScoreTrendChart(selected, zoneId)
+        if (motion) {
+            AnimatedContent(
+                targetState = period,
+                modifier = Modifier.fillMaxWidth(),
+                transitionSpec = { fadeIn(tween(180)) togetherWith fadeOut(tween(90)) },
+                label = "scorePeriodChart",
+            ) { selectedPeriod ->
+                val selected = remember(observations, selectedPeriod, zoneId) {
+                    buildScoreTrendWindow(observations, selectedPeriod, zoneId)
+                }
+                TrendWindowContent(selected, zoneId)
             }
+        } else {
+            // Removing AnimatedContent disposes an in-flight fade immediately on motion or foreground restrictions.
+            TrendWindowContent(window, zoneId)
         }
         if (window.missingCount > 0) {
             Text(stringResource(R.string.dashboard_missing_note), style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+@Composable
+private fun TrendWindowContent(window: ScoreTrendWindow, zoneId: ZoneId) {
+    Box(Modifier.fillMaxWidth().testTag("score-trend-content-${window.period.name.lowercase()}")) {
+        when {
+            window.points.isEmpty() -> TrendNotice(R.string.dashboard_no_history, "score-trend-empty")
+            window.measuredCount == 0 -> TrendNotice(R.string.dashboard_no_measurements, "score-trend-unmeasured")
+            else -> ScoreTrendChart(window, zoneId)
         }
     }
 }

@@ -5,14 +5,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -21,6 +24,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.drivingcoach.data.DriverOverviewState
 import com.example.drivingcoach.data.mock.MockDriverOverviewData
 import com.example.drivingcoach.data.mock.OverviewScenario
+import com.example.drivingcoach.ui.LocalCoachMotion
 import com.example.drivingcoach.ui.ScoreTrendPanel
 import com.example.drivingcoach.ui.model.DrivingScore
 import com.example.drivingcoach.ui.model.ScoreObservation
@@ -84,5 +88,44 @@ class ScoreTrendPanelTest {
         compose.onNodeWithTag("score-trend-empty").performScrollTo().assertIsDisplayed()
         compose.onNodeWithTag("score-trend-chart").assertDoesNotExist()
         compose.onNodeWithTag("score-period-range").assertDoesNotExist()
+    }
+
+    @Test fun dataRefreshReplacesContentWithoutStartingAPeriodFade() {
+        compose.mainClock.autoAdvance = false
+        var points by mutableStateOf(emptyList<ScoreObservation>())
+        compose.setContent {
+            CompositionLocalProvider(LocalCoachMotion provides true) {
+                DrivingCoachUITheme {
+                    ScoreTrendPanel(points, ScorePeriod.WEEK, {}, zoneId = ZoneId.of("UTC"))
+                }
+            }
+        }
+        compose.onNodeWithTag("score-trend-empty").assertIsDisplayed()
+        compose.runOnIdle { points = listOf(normal.last().copy(score = DrivingScore(0))) }
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithTag("score-trend-chart").assertExists()
+        compose.onNodeWithTag("score-trend-empty").assertDoesNotExist()
+        compose.onAllNodesWithTag("score-trend-content-week").assertCountEquals(1)
+    }
+
+    @Test fun disablingMotionDuringAPeriodFadeLeavesOnlyTheTargetContent() {
+        compose.mainClock.autoAdvance = false
+        var period by mutableStateOf(ScorePeriod.WEEK)
+        var motion by mutableStateOf(true)
+        compose.setContent {
+            CompositionLocalProvider(LocalCoachMotion provides motion) {
+                DrivingCoachUITheme {
+                    ScoreTrendPanel(normal, period, { period = it }, zoneId = ZoneId.of("UTC"))
+                }
+            }
+        }
+        compose.runOnIdle { period = ScorePeriod.MONTH }
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithTag("score-trend-content-week").assertExists()
+        compose.onNodeWithTag("score-trend-content-month").assertExists()
+        compose.runOnIdle { motion = false }
+        compose.mainClock.advanceTimeByFrame()
+        compose.onNodeWithTag("score-trend-content-week").assertDoesNotExist()
+        compose.onAllNodesWithTag("score-trend-content-month").assertCountEquals(1)
     }
 }
