@@ -1,0 +1,50 @@
+name: Compose Preview Review
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/compose-preview-review.yml'
+      - 'tools/preview-review/**'
+      - 'app/src/**'
+      - 'gradle/libs.versions.toml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compose-preview-review-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+      - name: Install matching SDK packages
+        run: sdkmanager --channel=3 'platforms;android-37.0' 'build-tools;36.0.0'
+      - name: Render actual Compose components without an emulator
+        run: ./gradlew --no-daemon -p tools/preview-review updateDebugScreenshotTest --console=plain
+      - name: Collect render inventory and review samples
+        if: always()
+        run: python3 tools/preview-review/collect_results.py
+      - name: Upload preview images and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compose-preview-review-${{ github.run_id }}
+          path: |
+            tools/preview-review/src/screenshotTestDebug/reference/
+            tools/preview-review/build/reports/tests/updateDebugScreenshotTest/
+            tools/preview-review/build/test-results/updateDebugScreenshotTest/
+            tools/preview-review/build/preview-manifest.json
+          if-no-files-found: warn
