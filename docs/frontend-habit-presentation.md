@@ -44,7 +44,7 @@
 - 원본 모델·Mock을 변경하지 않고 정상·부분 누락 fixture를 매핑함.
 - 신규 JVM 테스트와 기존 테스트가 통과하며 앱·테스트 APK 컴파일 및 Lint에서 오류가 없음.
 
-검증 결과: `:app:assembleDebug`, `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebugAndroidTest`가 모두 통과했습니다. JVM 테스트는 기존 44개와 신규 12개를 합쳐 56개이며 실패·오류·건너뜀은 0개입니다. Lint 오류는 0개이며 기존 파일의 리소스·복수형·의존성 안내 등 경고 19개가 남아 있습니다. 새 표시 모델과 테스트 파일에는 Lint 경고가 없습니다.
+검증 결과: `:app:assembleDebug`, `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebugAndroidTest`가 모두 통과했습니다. 최신 `main` 기준 기존 56개와 이번 단계 신규 12개를 합쳐 JVM 테스트 68개가 통과했으며 실패·오류·건너뜀은 0개입니다. Lint 오류는 0개이며 기존 파일의 리소스·복수형·의존성 안내 등 경고 19개가 남아 있습니다. 새 표시 모델과 테스트 파일에는 Lint 경고가 없습니다.
 
 이번 단계에는 화면 변경이 없으므로 Preview 실제 렌더링이나 기기 UI 테스트 실행은 포함하지 않습니다. 테스트 APK는 컴파일만 확인했습니다.
 
