@@ -57,6 +57,22 @@ Compose UI 회귀 테스트는 13개를 추가했습니다. 항목별 진입·�
 
 Preview도 정의와 컴파일만 확인했습니다. Android Studio 실제 렌더링·스크린샷, TalkBack, 물리적 글자 크기·터치 영역, 실차 제한 전환은 추가 검토 대상입니다. 에뮬레이터 부팅 문제는 조사하지 않았습니다.
 
+## 2026-11-13 선행 동기화와 검토
+
+앱 코드 검증 대상은 `57d0e94968059012ec2c2cca789516c583fc0889`입니다. 병합된 main `9dc07b2`를 merge commit으로 반영해 #15의 기간 선택 전용 모션·모션 비허용 시 전환 제거, #16의 표시 모델·검증 개수 정정, #19의 PR #12 증빙을 보존했습니다. PR #17의 base는 main이며 고유 변경은 기존 13개 파일입니다.
+
+해당 커밋을 별도 작업 디렉터리에서 빌드했습니다. `assembleDebug`, `testDebugUnitTest`, `lintDebug`, `assembleDebugAndroidTest`가 모두 성공했고 83개 Gradle 작업을 실제 실행했습니다. JVM 73개는 실패·오류·건너뜀 0개입니다. Lint 오류 0개·기존 경고 19개이며 UI 테스트 APK는 컴파일만 확인했습니다.
+
+현재 기기 조회에서 연결된 ADB 기기가 없었습니다. 에뮬레이터를 새로 부팅하거나 부팅 문제를 조사하지 않았고, `HabitAnalysisScreenTest` 13개와 TalkBack을 실행 통과로 기록하지 않습니다. 선택 키 재조회·삭제/중복 거부·차량 Mock 차단·진행 중 상세 페이드 제거는 코드와 기존 JVM 경계 테스트를 대조했으며, 실제 탐색·상태 복원·스크롤·모션 중단의 실행 확인은 남아 있습니다.
+
+실행 가능한 팀원 환경에서는 이 PR의 최신 앱 코드로 다음 테스트를 확인합니다. Windows 경로 옵션과 JDK/SDK 설정은 README의 빌드 안내를 따릅니다.
+
+```text
+./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.drivingcoach.HabitAnalysisScreenTest,com.example.drivingcoach.ScoreTrendPanelTest
+```
+
+습관 화면 13개와 점수 추이 회귀 6개의 결과를 구분하고 대상 커밋·기기/OS·실행 명령·JUnit 결과를 남깁니다. 실패가 있으면 원인과 재현 조건을 먼저 기록합니다. 오래된 #12 차량 캡처와 #18의 기존 정적 이미지가 이번 동적 테스트를 대신하지는 않습니다. 최신 소스의 정적 이미지 재생성은 #18의 선행 동기화 후 확인합니다.
+
 ## 팀원 리뷰 요청
 
 - 목록과 상세에서 누락·관찰 0회·관찰 후 미충족·평가 보류 문구가 명확히 구분되는지 확인해 주세요.
