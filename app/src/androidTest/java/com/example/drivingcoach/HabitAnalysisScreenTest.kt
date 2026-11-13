@@ -12,6 +12,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -48,6 +49,9 @@ class HabitAnalysisScreenTest {
 
     private fun open(kind: HabitKind) {
         compose.onNodeWithTag("habit-row-${kind.name}").performScrollTo().performClick()
+        compose.waitUntil(timeoutMillis = 5_000) {
+            compose.onAllNodesWithTag("habit-detail").fetchSemanticsNodes().isNotEmpty()
+        }
         compose.onNodeWithTag("habit-detail").assertIsDisplayed()
     }
 

@@ -53,7 +53,7 @@ Android Studio에서 `ui/preview/HabitAnalysisPreview.kt`의 Habit analysis 그�
 
 최종 코드에서 `:app:assembleDebug`, `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebugAndroidTest`가 모두 통과했습니다. JVM은 기존 68개와 신규 선택 검증 5개를 합쳐 73개이며 실패·오류·건너뜀은 0개입니다. Lint 오류는 0개이며 기존 경고 19개가 남아 있습니다. 신규 습관 화면·선택·테스트 파일에는 Lint 경고가 없습니다.
 
-Compose UI 회귀 테스트는 13개를 추가했습니다. 항목별 진입·복귀, 스크롤·기간 유지, 시스템 뒤로 가기, 선택 복원, 현재 횟수 갱신, 비 Ready 상태·삭제·차량 제한·탭 이동 시 상세 제거, 누락·0회·미충족·평가 보류, 퇴장 페이드 중 백그라운드 전환을 다룹니다. UI 테스트 APK는 컴파일만 확인했으며 기기에서 실행하지 않았습니다.
+Compose UI 회귀 테스트는 13개를 추가했습니다. 항목별 진입·복귀, 스크롤·기간 유지, 시스템 뒤로 가기, 선택 복원, 현재 횟수 갱신, 비 Ready 상태·삭제·차량 제한·탭 이동 시 상세 제거, 누락·0회·미충족·평가 보류, 퇴장 페이드 중 백그라운드 전환을 다룹니다. Pleos Connect v2.1.0 Android 14 AVD에서 13개 모두 통과했고, 점수 추이 회귀 테스트 6개도 별도로 모두 통과했습니다.
 
 Preview도 정의와 컴파일만 확인했습니다. Android Studio 실제 렌더링·스크린샷, TalkBack, 물리적 글자 크기·터치 영역, 실차 제한 전환은 추가 검토 대상입니다. 에뮬레이터 부팅 문제는 조사하지 않았습니다.
 
@@ -63,15 +63,16 @@ Preview도 정의와 컴파일만 확인했습니다. Android Studio 실제 렌�
 
 해당 커밋을 별도 작업 디렉터리에서 빌드했습니다. `assembleDebug`, `testDebugUnitTest`, `lintDebug`, `assembleDebugAndroidTest`가 모두 성공했고 83개 Gradle 작업을 실제 실행했습니다. JVM 73개는 실패·오류·건너뜀 0개입니다. Lint 오류 0개·기존 경고 19개이며 UI 테스트 APK는 컴파일만 확인했습니다.
 
-현재 기기 조회에서 연결된 ADB 기기가 없었습니다. 에뮬레이터를 새로 부팅하거나 부팅 문제를 조사하지 않았고, `HabitAnalysisScreenTest` 13개와 TalkBack을 실행 통과로 기록하지 않습니다. 선택 키 재조회·삭제/중복 거부·차량 Mock 차단·진행 중 상세 페이드 제거는 코드와 기존 JVM 경계 테스트를 대조했으며, 실제 탐색·상태 복원·스크롤·모션 중단의 실행 확인은 남아 있습니다.
+Pleos Connect v2.1.0 AVD를 Android 14, `Connect on x86_64 emulator` 환경으로 부팅해 최신 앱 코드와 테스트를 실행했습니다. 첫 13개 실행에서는 상세 진입 클릭 직후 표시를 확인하던 한 테스트가 1회 실패했지만, 해당 테스트 단독 실행과 같은 13개 전체 재실행은 통과했습니다. 기능 실패는 재현되지 않았으며 테스트 도우미가 상세 semantics 생성까지 최대 5초 기다리도록 동기화 조건을 보강했습니다. 보강 후 `HabitAnalysisScreenTest` 13개는 실패·오류·건너뜀 없이 통과했습니다. 이어 `ScoreTrendPanelTest` 6개도 실패·오류·건너뜀 없이 통과했습니다.
 
-실행 가능한 팀원 환경에서는 이 PR의 최신 앱 코드로 다음 테스트를 확인합니다. Windows 경로 옵션과 JDK/SDK 설정은 README의 빌드 안내를 따릅니다.
+두 클래스는 각각 실행해 JUnit 결과를 분리했습니다. Gradle 속성에 두 클래스 이름을 쉼표로 함께 전달한 실행에서는 첫 클래스만 실행됐으므로 아래처럼 별도 명령을 사용합니다. Windows 경로 옵션과 JDK/SDK 설정은 README의 빌드 안내를 따릅니다.
 
 ```text
-./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.drivingcoach.HabitAnalysisScreenTest,com.example.drivingcoach.ScoreTrendPanelTest
+./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.drivingcoach.HabitAnalysisScreenTest
+./gradlew :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.example.drivingcoach.ScoreTrendPanelTest
 ```
 
-습관 화면 13개와 점수 추이 회귀 6개의 결과를 구분하고 대상 커밋·기기/OS·실행 명령·JUnit 결과를 남깁니다. 실패가 있으면 원인과 재현 조건을 먼저 기록합니다. 오래된 #12 차량 캡처와 #18의 기존 정적 이미지가 이번 동적 테스트를 대신하지는 않습니다. 최신 소스의 정적 이미지 재생성은 #18의 선행 동기화 후 확인합니다.
+이 검증으로 탐색·상태 복원·스크롤·데이터 제거·차량 제한·모션 중단의 자동화된 동작 범위를 확인했습니다. TalkBack, 실차 제한 전환, 물리적 글자 크기·터치 영역 검증은 여전히 미실시입니다. 오래된 #12 차량 캡처와 #18의 정적 이미지를 이번 동적 테스트의 결과로 재해석하지 않습니다.
 
 ## 팀원 리뷰 요청
 
