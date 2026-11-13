@@ -45,6 +45,11 @@ fun DrivingCoachApp(
     foreground: Boolean,
     overviewState: DriverOverviewState = DriverOverviewState.Empty,
     onRetryOverview: () -> Unit = {},
+    trainingState: TrainingUiState = TrainingUiState(),
+    onRequestSpeedPermission: () -> Unit = {},
+    onStartTraining: (Int) -> Unit = {},
+    onFinishTraining: () -> Unit = {},
+    onResetTraining: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val store = remember(context) { context.getSharedPreferences("coach_presentation", Context.MODE_PRIVATE) }
@@ -58,6 +63,7 @@ fun DrivingCoachApp(
     val homeScrollState = rememberScrollState()
     var previewRestricted by rememberSaveable { mutableStateOf(false) }
     var previewActive by rememberSaveable { mutableStateOf(false) }
+    var trainingOpen by rememberSaveable { mutableStateOf(false) }
     var scorePeriod by rememberSaveable { mutableIntStateOf(ScorePeriod.WEEK.ordinal) }
     val policy = PresentationPolicy.resolve(vehicleUxState, previewRestricted, motion, foreground)
     val habits = (overviewState as? DriverOverviewState.Ready)?.overview?.habits.orEmpty()
@@ -80,9 +86,11 @@ fun DrivingCoachApp(
             previewActive = false
         }
     }
-    BackHandler(enabled = tab != 0 || selectedTrip >= 0 || selectedHabitKey != null || previewRestricted) {
+    BackHandler(enabled = trainingOpen || tab != 0 || selectedTrip >= 0 ||
+        selectedHabitKey != null || previewRestricted) {
         when {
             previewRestricted && policy.showSampleData -> previewRestricted = false
+            trainingOpen -> { onResetTraining(); trainingOpen = false }
             selectedHabitKey != null -> selectedHabitKey = null
             selectedTrip >= 0 -> selectedTrip = -1
             else -> tab = 0
@@ -122,7 +130,8 @@ fun DrivingCoachApp(
                                 Spacer(Modifier.height(40.dp))
                                 CoachNavigation(tab = if (policy.allowDetails) tab else 0,
                                     vertical = true, enabled = policy.allowDetails,
-                                    onSelect = { touch(); selectedTrip = -1; selectedHabitKey = null; tab = it })
+                                    onSelect = { touch(); onResetTraining(); trainingOpen = false
+                                        selectedTrip = -1; selectedHabitKey = null; tab = it })
                             }
                         }
                         Column(Modifier.weight(1f).fillMaxHeight()) {
@@ -133,6 +142,15 @@ fun DrivingCoachApp(
                                         unknown = vehicleUxState == VehicleUxState.UNAVAILABLE,
                                         preview = policy.showSampleData,
                                         onExitPreview = { touch(); previewRestricted = false },
+                                    )
+                                } else if (trainingOpen) {
+                                    SpeedTrainingScreen(
+                                        state = trainingState,
+                                        onRequestPermission = onRequestSpeedPermission,
+                                        onStart = onStartTraining,
+                                        onFinish = onFinishTraining,
+                                        onReset = onResetTraining,
+                                        onBack = { onResetTraining(); trainingOpen = false },
                                     )
                                 } else {
                                     AnimatedContent(
@@ -188,6 +206,7 @@ fun DrivingCoachApp(
                                                 },
                                                 onPreview = { touch(); previewActive = !previewActive },
                                                 onHistory = { touch(); tab = 1 },
+                                                onTraining = { touch(); trainingOpen = true },
                                                 onSelectHabit = { touch(); selectedHabitKey = it.name },
                                                 scrollState = homeScrollState,
                                             ) }
@@ -198,7 +217,8 @@ fun DrivingCoachApp(
                             if (!rail) {
                                 CoachNavigation(tab = if (policy.allowDetails) tab else 0,
                                     vertical = false, enabled = policy.allowDetails,
-                                    onSelect = { touch(); selectedTrip = -1; selectedHabitKey = null; tab = it },
+                                    onSelect = { touch(); onResetTraining(); trainingOpen = false
+                                        selectedTrip = -1; selectedHabitKey = null; tab = it },
                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp))
                             }
                         }
