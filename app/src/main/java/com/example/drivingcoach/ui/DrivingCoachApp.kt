@@ -13,6 +13,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -33,6 +34,7 @@ import com.example.drivingcoach.data.DriverOverviewState
 import com.example.drivingcoach.data.mock.MockDriverOverviewData
 import com.example.drivingcoach.data.mock.OverviewScenario
 import com.example.drivingcoach.ui.model.ScorePeriod
+import com.example.drivingcoach.ui.model.findHabitDetail
 import com.example.drivingcoach.ui.theme.DrivingCoachUITheme
 import com.example.drivingcoach.vehicle.PresentationPolicy
 import com.example.drivingcoach.vehicle.VehicleUxState
@@ -52,10 +54,19 @@ fun DrivingCoachApp(
     var focus by rememberSaveable { mutableIntStateOf(store.getInt("focus", 0).coerceIn(0, 2)) }
     var tab by rememberSaveable { mutableIntStateOf(0) }
     var selectedTrip by rememberSaveable { mutableIntStateOf(-1) }
+    var selectedHabitKey by rememberSaveable { mutableStateOf<String?>(null) }
+    val homeScrollState = rememberScrollState()
     var previewRestricted by rememberSaveable { mutableStateOf(false) }
     var previewActive by rememberSaveable { mutableStateOf(false) }
     var scorePeriod by rememberSaveable { mutableIntStateOf(ScorePeriod.WEEK.ordinal) }
     val policy = PresentationPolicy.resolve(vehicleUxState, previewRestricted, motion, foreground)
+    val habits = (overviewState as? DriverOverviewState.Ready)?.overview?.habits.orEmpty()
+    val canShowHabitDetails = tab == 0 && policy.allowDetails && policy.showSampleData &&
+        overviewState is DriverOverviewState.Ready
+    val selectedHabit = if (canShowHabitDetails) findHabitDetail(habits, selectedHabitKey) else null
+    LaunchedEffect(selectedHabitKey, selectedHabit != null) {
+        if (selectedHabitKey != null && selectedHabit == null) selectedHabitKey = null
+    }
     val feedback = LocalHapticFeedback.current
     fun touch() {
         if (haptics) feedback.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -65,12 +76,14 @@ fun DrivingCoachApp(
         if (!policy.allowDetails) {
             tab = 0
             selectedTrip = -1
+            selectedHabitKey = null
             previewActive = false
         }
     }
-    BackHandler(enabled = tab != 0 || selectedTrip >= 0 || previewRestricted) {
+    BackHandler(enabled = tab != 0 || selectedTrip >= 0 || selectedHabitKey != null || previewRestricted) {
         when {
             previewRestricted && policy.showSampleData -> previewRestricted = false
+            selectedHabitKey != null -> selectedHabitKey = null
             selectedTrip >= 0 -> selectedTrip = -1
             else -> tab = 0
         }
@@ -109,7 +122,7 @@ fun DrivingCoachApp(
                                 Spacer(Modifier.height(40.dp))
                                 CoachNavigation(tab = if (policy.allowDetails) tab else 0,
                                     vertical = true, enabled = policy.allowDetails,
-                                    onSelect = { touch(); selectedTrip = -1; tab = it })
+                                    onSelect = { touch(); selectedTrip = -1; selectedHabitKey = null; tab = it })
                             }
                         }
                         Column(Modifier.weight(1f).fillMaxHeight()) {
@@ -156,7 +169,12 @@ fun DrivingCoachApp(
                                                 },
                                                 onPreviewDriving = { touch(); previewRestricted = true },
                                             )
-                                            else -> CoachHomeScreen(
+                                            else -> HabitAnalysisDestination(
+                                                selectedKindName = selectedHabitKey,
+                                                habits = habits,
+                                                enabled = canShowHabitDetails,
+                                                onBack = { touch(); selectedHabitKey = null },
+                                            ) { CoachHomeScreen(
                                                 sampleData = policy.showSampleData,
                                                 overviewState = overviewState,
                                                 scorePeriod = ScorePeriod.entries[scorePeriod],
@@ -170,7 +188,9 @@ fun DrivingCoachApp(
                                                 },
                                                 onPreview = { touch(); previewActive = !previewActive },
                                                 onHistory = { touch(); tab = 1 },
-                                            )
+                                                onSelectHabit = { touch(); selectedHabitKey = it.name },
+                                                scrollState = homeScrollState,
+                                            ) }
                                         }
                                     }
                                 }
@@ -178,7 +198,7 @@ fun DrivingCoachApp(
                             if (!rail) {
                                 CoachNavigation(tab = if (policy.allowDetails) tab else 0,
                                     vertical = false, enabled = policy.allowDetails,
-                                    onSelect = { touch(); selectedTrip = -1; tab = it },
+                                    onSelect = { touch(); selectedTrip = -1; selectedHabitKey = null; tab = it },
                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp))
                             }
                         }
