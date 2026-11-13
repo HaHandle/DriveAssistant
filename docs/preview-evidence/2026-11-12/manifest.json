@@ -1,0 +1,599 @@
+{
+  "commit": "739a0a9652a9fa3f8f1153117479adcafe7505f4",
+  "tests": 96,
+  "failures": 0,
+  "errors": 0,
+  "images": [
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_0.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "c15cd8e829b3a892bf67e10f35ec5a28a044bd95bec61bb34dabf3ca4d4396e6"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_1.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "fdd57abb09b8bded7a10fcfb0a0a982c6e69ac4586c878226678a4f43f507f3d"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_2.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "ad0e8aaf509d09ed0f041d37901d5beb5027a57d526a20c826a5409bc8af368a"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_3.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "1c2e1ee70207a6116cf12a2299ec4415a4d09e58959eaed25681e9f154b0bb28"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_4.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "29dd677e9542a68570b6c6238ff5a9ed2fc8e9316dd86651684054660e631f31"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_5.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "c15cd8e829b3a892bf67e10f35ec5a28a044bd95bec61bb34dabf3ca4d4396e6"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppDay_96d7a036_44ac4194_6.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "c15cd8e829b3a892bf67e10f35ec5a28a044bd95bec61bb34dabf3ca4d4396e6"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_0.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "b3c4b2aa370d00113633180f15213020df5708d183e889a4678292fbd851c299"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_1.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "05c44814793177d41c428d028d20063103bb212c8f59ef98b162e1b344a2a252"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_2.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "6a2582c14fe0f25732e0e44a8016f4d110cf2ad727df9848999ce59b883ce92f"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_3.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "125058897c54a5eb9ca7395f49759fe549a352b83c4a18f50dfbb6aa9e94661d"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_4.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "e5866d7254e5f6a449db05366edb31acad1366f707e95c516166ee4d5c51349e"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_5.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "b3c4b2aa370d00113633180f15213020df5708d183e889a4678292fbd851c299"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppEnglish_e3eefb08_44ac4194_6.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "b3c4b2aa370d00113633180f15213020df5708d183e889a4678292fbd851c299"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_0.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "d487d40d2e513ce1a7db9f2a4caf025a07badf573c430975d53219e0151be99e"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_1.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "e34a3e21b9338674d6ab6936f2c88ecb9b0f5f34d8ce4bd53a19c3005b6a4a71"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_2.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "f04687b2fb806954e9d8f7863a399c155cd48a4bd55423fd5396ba1290f90fda"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_3.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "46c4af34771b8f8e39f6571490874ce7a7bef818c82c973075687cb72a57f50e"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_4.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "5325af9657d86055ea3856413b2575efb574e864267d6126cefa48f01994217c"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_5.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "d487d40d2e513ce1a7db9f2a4caf025a07badf573c430975d53219e0151be99e"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppLargeText_c4af6cca_44ac4194_6.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "d487d40d2e513ce1a7db9f2a4caf025a07badf573c430975d53219e0151be99e"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_0.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "433c429634bc5d1628f6fa0ed0ef97bee142d2876f791c49c65d6b25273c917f"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_1.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "125d92f9e1c1b0ce18120655f4981c105cc801388bb0fae7ac41149c234795e0"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_2.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "161b0d30e931d7f9041c062063faf538bc55f9e8313669ff33acf2e3127d7634"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_3.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "229b16f8ada367b9a0f2d8a0018d3b90966df354287dcaee5b1961a0df0ee565"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_4.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "cf0d94bc89b39a43dd18a94a0206fae33c431bc7b850a7e964d6152ddf8b2bd9"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_5.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "433c429634bc5d1628f6fa0ed0ef97bee142d2876f791c49c65d6b25273c917f"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/AppNight_1c0075b3_44ac4194_6.png",
+      "width": 1365,
+      "height": 2888,
+      "sha256": "433c429634bc5d1628f6fa0ed0ef97bee142d2876f791c49c65d6b25273c917f"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_0.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "dafb478e7c3b47f7c1d1688a95a1c13f4fc263998664f7d6fb0719c0d5d18f32"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_1.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "dd3f95d40d092736f51714439db23f6fa8fd5d61d73a1e230215f18f3a790b4e"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_2.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "b794401b2243d37cd1b5225a63ba84f299412934ca0fff15f6ee67ed623d8a17"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_3.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "a1d33c3d24da2a6a3f8f2f4025e6ea1382f4a99650e2e2258da5105c1b8f42f2"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_4.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "4ab7e050a2541220fe2fd8761468d44326494fd8fdd77d736e3f7b9eb7a7bc24"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_5.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "65d08d1345ecadd52caa35e61bbfd7b3e8ee56a66b01441edb4db99424ec1e74"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_6.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "32f6b73fe6bec209ace0c09de216e90455ed146cba90081654d7d849d5233b22"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_7.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "c2d864a45b38b4be6bf6dffe7be14cce86bc19cb8b21ef570560f2f36129d31c"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitDay_74ee2281_ef61f5dc_8.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "9e3450d86c1a411118c8902bf6038b6fe9b4779661791337a82d3f6d93847c79"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_0.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "c9a343fabf1acdb319a586f582c045bd74b527afdff538129ffe83291ccce30a"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_1.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "682ea12acd4664010732eb1ae93d22d9a740bc7eb4960fd6dc9e4f456830dc2a"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_2.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "9b0a9e923212f39f34c8d6660205906a13b386ef8714d0cc502458abc83aec9c"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_3.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "889523cd8feb9c5501fc1b3db9589b290c72add3c6d91f420f53b9c255486456"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_4.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "a580a2eee809c5c8545e56fd2fcb89aae271829048455dd9d14a0a8e2f821f7b"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_5.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "158258b3f4441dd43859600b3b70452a1bc43f79290651ff7677e3a6cdedd817"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_6.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "3f7f639d3d3f5698a1622c2e454fd7deb0c55ce2374e62d6722e37857dd38a63"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_7.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "a4f96c9f6934bf58b3916a5c90a1851fc2b0731bf58254a90b6b40349a2bd3f8"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitEnglish_e3eefb08_ef61f5dc_8.png",
+      "width": 3360,
+      "height": 2363,
+      "sha256": "c7ce496eb5d61217dc62a5fb5fe27356ef5bbd4975c2b8af8c7cd9748d5b16b4"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_0.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "48da07bc4e4719d5cc534eb339b336ecb83ecd6ace24e2de3112593a735087ce"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_1.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "09cc3c22d8e4fd53cdbfdf74a402826e0515deac0a08e6b9bb7784b571e5c5ce"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_2.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "2b4fde73433ade8bcecbfca651b947c967a2b765eb0f349e61da4338f52d4e78"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_3.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "8af019e4ca383e7b7400404ba71a6a8b99bd1909ecdf3e3fa98b3fc332ed87dd"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_4.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "3f57fc4b69020fc2e55804836b3a0ea5f341d5c047c6a66e7a3d68b4c40c0699"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_5.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "3176b5110bbf36558faffafd6a865675287356eb33d50e9fc82e0516c8f160a7"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_6.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "7ac14f11cca2ae0c1ea0847eb56c57ce22286fecb92547fc109411f24f5aec2d"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_7.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "f598fe27ba06ea088c93c3988371f50928f03955812fc1b119f17838ece6bac5"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitLargeText_1267071a_ef61f5dc_8.png",
+      "width": 840,
+      "height": 3675,
+      "sha256": "707c815dbb1138c5896b4b2432b24df22cdd98dfc645d112783e2ebd8574ea1d"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_0.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "77699287000546d23af28cff40accd968149b3f8cc44d732e474fbfe76207f15"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_1.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "a0b10447989fad0ab3f2e028c9ee077289983dac9a80b3a2a056b83176181c08"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_2.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "b28655a3c81e1e5ce7db29a47a9c301a0dc92aef1d4b9bf82bdac88665ee2b7a"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_3.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "5cf2815087ee5c45e43b77903f87e93f0da3632e4346d127d993e853b42072de"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_4.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "ebe4746275e287c7d78935c3e2885072fe753474f9032842d7c39db90001fe99"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_5.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "e6f3674e6c47ea4b36486d676b34313a42baa6f6e0e087279851e5d0f8d92060"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_6.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "fc9ec644cf9577b13b95e50c7790558baabe8e282a2dc4ad87b974c8306eea4f"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_7.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "e75b0c6c7fe3053c9b5cd90f9566ac319fa648d899def1aa40c12c7ac012d453"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/HabitNight_fa42bc23_ef61f5dc_8.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "ba56802afcecacc04a140490634b4a2f2052a375808563098aa525c92fb8176c"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_0.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "4e397a327a547cc9d76c16ff78c95b4dad47e7752316932706c0f951da184c94"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_1.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "37bd42a05e4dc747f4333ad1c7a7a4f342b9768957edac0d7c64961587926e11"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_2.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "a7b3da59ecf408bba869d507422c68322a9c53330e33f53ac6b3fa09e6a98152"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_3.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "854c7f487e6a923b48e867664da1af0aa28cfe541378aa3091ecd6e6f028f2d9"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_4.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "90b16ae453b4bda13e26e01b096514234d6a48820391aa513975cbc2714a7661"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_5.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "fc793ea1de77ae2aabef66db6d53b582ea9f7279cc5a57d4daf24880d3c7a0b3"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_6.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "6f96b0a1a04962f05546511ab340298eeeef944c24687d747ed6a1ae50faef6b"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreDay_74ee2281_96928bf4_7.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "b91943ae02f1d9533216e09bf9e7d46a08d14fb254add145e1f7265bcc6fd944"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_0.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "a7293d1f1d86f7cd7355240c551c9ef3b97160a2091eb4934c9954e542215251"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_1.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "a5c785748c6d721f53b0cb914c70432a4bc1da1277aa05952a1a8829a1e7a44a"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_2.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "0ef83a875728926671b3dbbe8439b335330a382e0e98dcaf69b3bb9677cd7dbc"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_3.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "81c27656f6be5c9a51b4fc9f39ef5c503f4a700ade69c794f93a1a5b4a23fdd1"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_4.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "244aaa672e9cce3bc771f78f426b075156f3e7b052d58580eca06d5fe3a6c079"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_5.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "68dc57fa8aa363aae9caf6f3af4ca7f7b8ca1d17b6551d56327e29252f19b17d"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_6.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "f47ae8601e44891a0bb7c7c1505cd5fe389eb754b256c85122ba192b0c73ddea"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreEnglish_77b70cd3_96928bf4_7.png",
+      "width": 2520,
+      "height": 2100,
+      "sha256": "26c11849c1936532e68ea7a17d7315e1a70e8fd3b64083dc158b4d89ecb8bf33"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_0.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "def1566e64e5442fa3628cb7da23a8d8cf966a6938c93c742eafddcffcae83f6"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_1.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "49ea6bf228ef412360ae33d88091f4897e16b3a618e27ed33b682f08c33b9559"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_2.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "786d05c6ae073eb58520654e56693a343758bbdf78541d2fa0304f7b5160ad68"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_3.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "2e915f219b3cefc52ec1982ed77d4f884b75c1d5dc2642ae6df5d5805dee5c72"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_4.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "45de560962b7b453c5319f248fdafe6eaacca7ec92b4ee02a4d34de814ac7ec6"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_5.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "03719cd042f2e32c234e921c1078a31fc7a32738ab4853ede6fdea48cef5fe40"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_6.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "c4ae7510308033559c60ad03be5ae1973d6ffb7dc3a78e461b89a54cf85fa9c2"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreLargeText_7b03df8b_96928bf4_7.png",
+      "width": 840,
+      "height": 2888,
+      "sha256": "35005fce4f2ad573cff4274ae522bdf64c669ba79a85c165632a7793942b1c06"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_0.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "ac1948b3bfa724e69e583838c760b988bf9dd93aa00fff4c06d4c53260026d42"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_1.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "4ce188ddb7ba9bf6cd880c1f6da92ee8761fd792db0d19a951db69a89988a652"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_2.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "d9f5f29fadaab93ea965859a532701478c4c3bd43a47aff05dc14ed4e27c6bf7"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_3.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "6739cdda3a8fc33c9f37e1fce83ed6857719151f551ef99c30dee4814ecf9909"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_4.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "5ef32fcd81d38e0cb02116230ad28b3678363b152594276cbd1ac41a988ef765"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_5.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "72fb056bf29902bf85a7bc7b4d9dda0ac57ea64b945a0a3afc8673f8697109bb"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_6.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "ce37bb825703c3f8dfad24709355b2cff6d09693cd60ff547c49bc74bd654ead"
+    },
+    {
+      "path": "com/example/drivingcoach/review/FrontendPreviewReviewKt/ScoreNight_fa42bc23_96928bf4_7.png",
+      "width": 1365,
+      "height": 2625,
+      "sha256": "370060f979e119ece4e3359a55295f2c82552aa10a421b3c9a4f6660d4a8264b"
+    }
+  ],
+  "reviewed": false,
+  "coverage": {
+    "HabitDay": 9,
+    "HabitNight": 9,
+    "HabitLargeText": 9,
+    "HabitEnglish": 9,
+    "ScoreDay": 8,
+    "ScoreNight": 8,
+    "ScoreLargeText": 8,
+    "ScoreEnglish": 8,
+    "AppDay": 7,
+    "AppNight": 7,
+    "AppLargeText": 7,
+    "AppEnglish": 7
+  }
+}
