@@ -68,6 +68,7 @@ fun CoachHomeScreen(
     onFocus: (Int) -> Unit,
     onPreview: () -> Unit,
     onHistory: () -> Unit,
+    onTraining: () -> Unit = {},
     onSelectHabit: ((HabitKind) -> Unit)? = null,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -80,6 +81,9 @@ fun CoachHomeScreen(
             Eyebrow(stringResource(R.string.home_eyebrow))
             PageHeading(R.string.home_title, R.string.home_subtitle)
             if (sampleData) SampleLabel()
+            Button(onClick = onTraining, modifier = Modifier.fillMaxWidth().testTag("open-speed-training")) {
+                Text("정차 제어 연수")
+            }
             if (wide) {
                 Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
                     Column(Modifier.weight(1.3f), verticalArrangement = Arrangement.spacedBy(24.dp)) {
